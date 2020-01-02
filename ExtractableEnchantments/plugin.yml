@@ -1,0 +1,14 @@
+name: ExtractableEnchantments
+main: mc.balzarian.ee.Main
+version: 2.0
+api-version: 1.13
+author: Balzarian
+commands:
+  extractableenchantments:
+    description: Extractable Enchantments provided command.
+    permission: ee.ee
+    aliases: [ee]
+permissions:
+  ee.ee:
+     description: Allows you to manipulate with this plugin
+     default: op
