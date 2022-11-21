@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-16">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/vault"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/custom enchants"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/excellent enchants"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.14"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.15"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.16.5"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.16.1"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.16.3"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/nex engine"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.18"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.17"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.18.1"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/enchantments plus"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spigot 1.19.1"/>
+	<classpathentry kind="lib" path="C:/Users/Asus/Desktop/Rudolfs/Servers/plugins/API-ItemsAdder-master"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/eco"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/eco enchants"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
