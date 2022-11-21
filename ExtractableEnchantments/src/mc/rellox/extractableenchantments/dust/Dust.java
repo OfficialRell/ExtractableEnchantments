@@ -1,6 +1,7 @@
 package mc.rellox.extractableenchantments.dust;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -64,8 +65,8 @@ public final class Dust {
 	
 	private ShapedRecipe loadRecipe() {
 		if(recipe_toggle == false) return null;
-		int e = 0;
-		for(Material m : recipe_matrix) if(m == null) e++;
+		int e = 9 - (int) Stream.of(recipe_matrix)
+				.filter(x -> x != null).count();
 		if(e == 9) return null;
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(ExtractableEnchantments.instance(),
 				"dust_" + key), item_static());

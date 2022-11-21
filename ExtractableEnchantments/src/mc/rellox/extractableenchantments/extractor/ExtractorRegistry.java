@@ -343,12 +343,10 @@ public final class ExtractorRegistry implements Listener {
 			event.getInventory().setResult(null);
 			return;
 		}
-		int a = 64;
-		for(ItemStack item : matrix) {
-			if(item == null) continue;
-			int m = item.getAmount();
-			if(m < a) a = m;
-		}
+		int a = Stream.of(matrix)
+				.filter(i -> i != null)
+				.mapToInt(ItemStack::getAmount)
+				.min().orElse(64);
 		if(event.isShiftClick() == false) {
 			if(event.getClick() == ClickType.NUMBER_KEY) {
 				int button = event.getHotbarButton();

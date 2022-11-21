@@ -3,6 +3,7 @@ package mc.rellox.extractableenchantments.dust;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,14 +55,17 @@ public final class DustRegistry implements Listener {
 	}
 	
 	public static Dust dust(String key) {
-		for(Dust x : DUSTS) if(x.key.equalsIgnoreCase(key) == true) return x;
-		return null;
+		return DUSTS.stream()
+				.filter(e -> e.key.equalsIgnoreCase(key))
+				.findFirst()
+				.orElse(null);
 	}
 	
 	public static Dust dust(ItemStack item) {
-		if(item == null) return null;
-		for(Dust x : DUSTS) if(x.is(item) == true) return x;
-		return null;
+		return DUSTS.stream()
+				.filter(e -> e.is(item))
+				.findFirst()
+				.orElse(null);
 	}
 	
 	public static int readPercent(ItemStack item) {
@@ -286,12 +290,10 @@ public final class DustRegistry implements Listener {
 			event.getInventory().setResult(null);
 			return;
 		}
-		int a = 64;
-		for(ItemStack item : matrix) {
-			if(item == null) continue;
-			int m = item.getAmount();
-			if(m < a) a = m;
-		}
+		int a = Stream.of(matrix)
+			.filter(i -> i != null)
+			.mapToInt(ItemStack::getAmount)
+			.min().orElse(64);
 		if(event.isShiftClick() == false) {
 			if(event.getClick() == ClickType.NUMBER_KEY) {
 				int button = event.getHotbarButton();
