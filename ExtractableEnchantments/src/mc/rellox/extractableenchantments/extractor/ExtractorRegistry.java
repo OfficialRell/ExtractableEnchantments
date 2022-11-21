@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -97,14 +98,17 @@ public final class ExtractorRegistry implements Listener {
 	}
 	
 	public static Extractor extractor(String key) {
-		for(Extractor x : EXTACTORS) if(x.key.equalsIgnoreCase(key) == true) return x;
-		return null;
+		return EXTACTORS.stream()
+				.filter(e -> e.key.equalsIgnoreCase(key))
+				.findFirst()
+				.orElse(null);
 	}
 	
 	public static Extractor extractor(ItemStack item) {
-		if(item == null) return null;
-		for(Extractor x : EXTACTORS) if(x.is(item) == true) return x;
-		return null;
+		return EXTACTORS.stream()
+				.filter(e -> e.is(item))
+				.findFirst()
+				.orElse(null);
 	}
 
 	@EventHandler()
@@ -539,9 +543,7 @@ public final class ExtractorRegistry implements Listener {
 		ITEM_WITH_FLAGS() {
 			@Override
 			public boolean ignore(ItemMeta meta) {
-				for(ItemFlag flag : ItemFlag.values())
-					if(meta.hasItemFlag(flag) == true) return true;
-				return false;
+				return Stream.of(ItemFlag.values()).anyMatch(meta::hasItemFlag);
 			}
 		},
 		ITEM_UNBREAKABLE() {
