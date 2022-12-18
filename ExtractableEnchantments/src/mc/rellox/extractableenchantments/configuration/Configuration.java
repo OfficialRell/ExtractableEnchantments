@@ -65,7 +65,7 @@ public final class Configuration {
 				Language.a(ChatColor.DARK_GRAY + "* " + ChatColor.DARK_AQUA + "Drag and drop onto an item"),
 				Language.a(ChatColor.DARK_AQUA + "to remove a random enchantment!")));
 		file.addDefault(path + ".Glint", true);
-		file.addDefault(path + ".CustomModelData", 1);
+		file.addDefault(path + ".CustomModelData", 0);
 		file.addDefault(path + ".Chance.Toggle", false);
 	    file.addDefault(path + ".Chance.Destroy", false);
 	    file.addDefault(path + ".Chance.Min", 1);
@@ -103,7 +103,7 @@ public final class Configuration {
 				"",
 				Language.a(ChatColor.DARK_GRAY + "* " + ChatColor.GRAY + "Middle click to split in half.")));
 		file.addDefault(path + ".Glint", true);
-		file.addDefault(path + ".CustomModelData", 1);
+		file.addDefault(path + ".CustomModelData", 0);
 		file.addDefault(path + ".Allowed", Arrays.asList("default"));
 		file.addDefault(path + ".Books", false);
 		file.addDefault(path + ".Limit", -1);
