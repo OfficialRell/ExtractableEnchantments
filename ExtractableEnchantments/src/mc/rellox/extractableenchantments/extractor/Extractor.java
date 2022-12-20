@@ -1,9 +1,9 @@
 package mc.rellox.extractableenchantments.extractor;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.bukkit.Material;
@@ -90,7 +90,9 @@ public final class Extractor {
 
 		this.extract_unsafe = extract_unsafe;
 		
-		this.ignored_enchantments = new HashSet<>(ignored_enchantments);
+		this.ignored_enchantments = ignored_enchantments.stream()
+				.map(String::toLowerCase)
+				.collect(Collectors.toSet());
 		
 		this.extraction = extraction;
 		this.extract = extract;
@@ -151,10 +153,11 @@ public final class Extractor {
 		return Stream.of(constraints).anyMatch(c -> c.ignore(meta));
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean allow(Enchantment e) {
 		if(ignored_enchantments.isEmpty() == true) return true;
-		String key = e.getKey().getKey();
-		return ignored_enchantments.contains(key) == false;
+		if(ignored_enchantments.contains(e.getKey().getKey()) == true) return true;
+		return ignored_enchantments.contains(e.getName()) == false;
 	}
 	
 	public ItemStack item_static() {
