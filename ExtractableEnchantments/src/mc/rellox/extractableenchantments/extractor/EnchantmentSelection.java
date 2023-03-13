@@ -48,7 +48,7 @@ public class EnchantmentSelection implements Listener {
 		Map<Enchantment, Integer> map = meta instanceof EnchantmentStorageMeta storage ?
 				storage.getStoredEnchants() : meta.getEnchants();
 		this.map = map.entrySet().stream()
-				.filter(e -> extractor.filter().test(e.getKey()))
+				.filter(e ->  extractor.filter().test(e.getKey()))
 			.collect(Collectors.toMap(t -> t.getKey(), t -> t.getValue()));
 		
 		this.es = this.map.keySet().toArray(Enchantment[]::new);

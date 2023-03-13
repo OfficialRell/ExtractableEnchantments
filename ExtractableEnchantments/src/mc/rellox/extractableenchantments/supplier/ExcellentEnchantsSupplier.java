@@ -27,7 +27,7 @@ import mc.rellox.extractableenchantments.extractor.ExtractorRegistry.ExtractionT
 import mc.rellox.extractableenchantments.utils.Utils;
 import su.nightexpress.excellentenchants.ExcellentEnchants;
 import su.nightexpress.excellentenchants.api.enchantment.ExcellentEnchant;
-import su.nightexpress.excellentenchants.manager.EnchantManager;
+import su.nightexpress.excellentenchants.enchantment.EnchantManager;
 
 public class ExcellentEnchantsSupplier implements ESupplier<ExcellentEnchants, ExcellentEnchant> {
 	
@@ -61,8 +61,10 @@ public class ExcellentEnchantsSupplier implements ESupplier<ExcellentEnchants, E
 			if(failed == true) {
 				if(ex.extraction == ExtractionType.RANDOM) player.setItemOnCursor(null);
 				if(ex.chance_destroy == true) {
-					EnchantManager.removeEnchant(item, ee);
-					EnchantManager.updateItemLoreEnchants(item);
+//					EnchantManager.removeEnchant(item, ee);
+//					EnchantManager.updateItemLoreEnchants(item);
+					EnchantManager.removeEnchantment(item, ee);
+					EnchantManager.updateEnchantmentsDisplay(item);
 					player.sendMessage(Language.exteaction_destroy_custom(removed, level));
 					ExtractorRegistry.playOnFail(player, true);
 				} else {
@@ -71,8 +73,10 @@ public class ExcellentEnchantsSupplier implements ESupplier<ExcellentEnchants, E
 				}
 			} else {
 				if(ex.extraction == ExtractionType.RANDOM) player.setItemOnCursor(null);
-				EnchantManager.removeEnchant(item, ee);
-				EnchantManager.updateItemLoreEnchants(item);
+//				EnchantManager.removeEnchant(item, ee);
+//				EnchantManager.updateItemLoreEnchants(item);
+				EnchantManager.removeEnchantment(item, ee);
+				EnchantManager.updateEnchantmentsDisplay(item);
 				ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
 				EnchantmentStorageMeta book_meta = (EnchantmentStorageMeta) book.getItemMeta();
 				if(Configuration.book_chance_toggle() == true) {
@@ -85,7 +89,9 @@ public class ExcellentEnchantsSupplier implements ESupplier<ExcellentEnchants, E
 					p.set(DustRegistry.key_chance, PersistentDataType.INTEGER, chance);
 				}
 				book.setItemMeta(book_meta);
-				EnchantManager.addEnchant(book, ee, level, true);
+//				EnchantManager.addEnchant(book, ee, level, true);
+				EnchantManager.addEnchantment(book, ee, level, true);
+				EnchantManager.updateEnchantmentsDisplay(book);
 				if(ex.extraction == ExtractionType.RANDOM) {
 					if(player.getGameMode() == GameMode.CREATIVE) player.getInventory().addItem(book);
 					else player.setItemOnCursor(book);

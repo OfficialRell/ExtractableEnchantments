@@ -30,7 +30,7 @@ public class ExtractableEnchantments extends JavaPlugin {
 	
 	private static Plugin plugin;
 	
-	private static final double VERSION_PLUGIN = 9.7;
+	private static final double VERSION_PLUGIN = 9.8;
 	
 	public static final EconomySupplier ECONOMY = new EconomySupplier();
 	

@@ -156,7 +156,7 @@ public final class Extractor {
 	@SuppressWarnings("deprecation")
 	private boolean allow(Enchantment e) {
 		if(ignored_enchantments.isEmpty() == true) return true;
-		if(ignored_enchantments.contains(e.getKey().getKey()) == true) return true;
+		if(ignored_enchantments.contains(e.getKey().getKey()) == true) return false;
 		return ignored_enchantments.contains(e.getName()) == false;
 	}
 	

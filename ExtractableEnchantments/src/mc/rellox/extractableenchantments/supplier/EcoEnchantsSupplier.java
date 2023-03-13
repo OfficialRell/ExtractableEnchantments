@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -21,7 +20,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 import com.willfp.ecoenchants.EcoEnchantsPlugin;
-import com.willfp.ecoenchants.enchants.EcoEnchantLike;
 
 import mc.rellox.extractableenchantments.configuration.Configuration;
 import mc.rellox.extractableenchantments.configuration.Language;
@@ -34,6 +32,7 @@ import mc.rellox.extractableenchantments.utils.Utils;
 public class EcoEnchantsSupplier implements ESupplier<EcoEnchantsPlugin, Enchantment> {
 	
 	private EcoEnchantsPlugin plugin;
+	private EcoEnchantsVersion version;
 	
 	@Override
 	public EcoEnchantsPlugin get() {
@@ -43,27 +42,22 @@ public class EcoEnchantsSupplier implements ESupplier<EcoEnchantsPlugin, Enchant
 	@Override
 	public void load() {
 		this.plugin = load0();
+		try {
+			Class.forName("com.willfp.ecoenchants.display.EnchantmentCache");
+			this.version = new EcoEnchantsVersionOld();
+		} catch (Exception e) {
+			this.version = new EcoEnchantsVersionNew();
+		}
 	}
-
+	
 	@Override
 	public boolean isEnchantment(Enchantment e) {
-		return e instanceof EcoEnchantLike;
+		return version.isEnchantment(e);
 	}
-
+	
 	@Override
 	public String name(Enchantment e) {
-		if(e instanceof EcoEnchantLike ee) return ChatColor.stripColor(ee.getUnformattedDisplayName());
-		return "Unknown";
-//		EcoEnchantLike ee = (EcoEnchantLike) e;
-//		return ee.getDisplayName();
-//		try {
-//			Field field = ee.getClass().getField("unformattedDisplayName");
-//			field.setAccessible(true);
-//			String s = (String) field.get(ee);
-//			return s == null ? "Unknown" : s;
-//		} catch (Exception x) {}
-//		return "Unknown";
-//		return ChatColor.stripColor(EnchantmentCache.getEntry(e).getName());
+		return version.name(e);
 	}
 
 	@Override
@@ -133,6 +127,11 @@ public class EcoEnchantsSupplier implements ESupplier<EcoEnchantsPlugin, Enchant
 	private static EcoEnchantsPlugin load0() {
 		Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("EcoEnchants");
 		return (EcoEnchantsPlugin) plugin;
+	}
+	
+	public static interface EcoEnchantsVersion {
+		boolean isEnchantment(Enchantment e);
+		String name(Enchantment e);
 	}
 
 }
