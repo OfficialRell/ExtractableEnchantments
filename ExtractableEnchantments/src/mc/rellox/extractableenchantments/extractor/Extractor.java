@@ -157,7 +157,8 @@ public final class Extractor {
 	private boolean allow(Enchantment e) {
 		if(ignored_enchantments.isEmpty() == true) return true;
 		if(ignored_enchantments.contains(e.getKey().getKey()) == true) return false;
-		return ignored_enchantments.contains(e.getName()) == false;
+		if(ignored_enchantments.contains(e.getName()) == true) return false;
+		return ignored_enchantments.contains(e.getName().toLowerCase()) == false;
 	}
 	
 	public ItemStack item_static() {

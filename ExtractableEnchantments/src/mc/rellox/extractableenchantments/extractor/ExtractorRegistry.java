@@ -201,17 +201,20 @@ public final class ExtractorRegistry implements Listener {
 	
 	protected static void extract(Extractor ex, Player player, ItemStack item, Enchantment removed, int level,
 			boolean failed, boolean storage) {
-		if(ExtractableEnchantments.EXCELLENT_ENCHANTS.get() != null
+		if(ExtractableEnchantments.EXCELLENT_ENCHANTS != null
+				&& ExtractableEnchantments.EXCELLENT_ENCHANTS.get() != null
 				&& ExtractableEnchantments.EXCELLENT_ENCHANTS.isEnchantment(removed) == true) {
 			ExtractableEnchantments.EXCELLENT_ENCHANTS.extract(ex, player, item, removed, level, failed, storage);
 			return;
 		}
-		if(ExtractableEnchantments.CUSTOM_ENCHANTS.get() != null
+		if(ExtractableEnchantments.CUSTOM_ENCHANTS != null
+				&& ExtractableEnchantments.CUSTOM_ENCHANTS.get() != null
 				&& ExtractableEnchantments.CUSTOM_ENCHANTS.isEnchantment(removed) == true) {
 			ExtractableEnchantments.CUSTOM_ENCHANTS.extract(ex, player, item, removed, level, failed, storage);
 			return;
 		}
-		if(ExtractableEnchantments.ECO_ENCHANTS.get() != null
+		if(ExtractableEnchantments.ECO_ENCHANTS != null
+				&& ExtractableEnchantments.ECO_ENCHANTS.get() != null
 				&& ExtractableEnchantments.ECO_ENCHANTS.isEnchantment(removed) == true) {
 			ExtractableEnchantments.ECO_ENCHANTS.extract(ex, player, item, removed, level, failed, storage);
 			return;

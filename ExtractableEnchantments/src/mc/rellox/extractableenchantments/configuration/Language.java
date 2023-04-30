@@ -153,7 +153,8 @@ public final class Language {
 
 	public static String getByName(Enchantment e, int level) {
 		String name;
-		if(ExtractableEnchantments.ECO_ENCHANTS.get() != null) 
+		if(ExtractableEnchantments.ECO_ENCHANTS != null
+				&& ExtractableEnchantments.ECO_ENCHANTS.get() != null) 
 			name = ChatColor.AQUA + ExtractableEnchantments.ECO_ENCHANTS.name(e);
 		else name = ChatColor.AQUA + name(e);
 		return e.getMaxLevel() > 1 ? name + " " + roman(level) : name;
@@ -273,7 +274,8 @@ public final class Language {
 	@SuppressWarnings("deprecation")
 	public static String extraction_fail_custom(Enchantment e) {
 		String name;
-		if(ExtractableEnchantments.ECO_ENCHANTS.get() != null) 
+		if(ExtractableEnchantments.ECO_ENCHANTS != null
+				&& ExtractableEnchantments.ECO_ENCHANTS.get() != null) 
 			name = ExtractableEnchantments.ECO_ENCHANTS.name(e);
 		else name = e.getName();
 		return extraction_fail.replace("%enchant%", name);

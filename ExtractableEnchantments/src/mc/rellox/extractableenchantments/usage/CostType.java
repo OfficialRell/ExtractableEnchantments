@@ -58,7 +58,8 @@ public abstract class CostType {
 		CostType c = null;
 		try {
 			c = (CostType) CostType.class.getDeclaredField(s).get(null);
-			if(c == ECONOMY && ExtractableEnchantments.ECONOMY.get() == null) c = EXPERIENCE_POINTS;
+			if(c == ECONOMY && ExtractableEnchantments.ECONOMY == null
+					|| ExtractableEnchantments.ECONOMY.get() == null) c = EXPERIENCE_POINTS;
 		} catch (Exception e) {}
 		return c == null ? EXPERIENCE_POINTS : c;
 	}

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,19 +48,21 @@ public final class Configuration {
 		create();
 	}
 
-	public static void create() {
+	private static void create() {
 		f = new File(ExtractableEnchantments.instance().getDataFolder(), "config.yml");
 		if(f.getParentFile().exists() == false) f.getParentFile().mkdirs(); 
 		if(f.exists() == true) file = YamlConfiguration.loadConfiguration(f); 
-		try {
-			f.createNewFile();
-		} catch (IOException e) {}
-		file = YamlConfiguration.loadConfiguration(f);
+		else {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {}
+			file = YamlConfiguration.loadConfiguration(f);
+		}
 		
 		String path = "Extractors.default";
 		file.addDefault(path + ".Material", Material.NETHER_BRICK.name());
 		file.addDefault(path + ".Name", Language.a(ChatColor.AQUA + "Enchantment Extractor"));
-		file.addDefault(path + ".Info", Arrays.asList(
+		file.addDefault(path + ".Info", List.of(
 				Language.a(ChatColor.DARK_GRAY + "* " + ChatColor.DARK_AQUA + "Drag and drop onto an item"),
 				Language.a(ChatColor.DARK_AQUA + "to remove a random enchantment!")));
 		file.addDefault(path + ".Glint", true);
@@ -95,16 +96,31 @@ public final class Configuration {
 	    file.addDefault(path + ".Recipe.Matrix", recipe);
 	    
 		path = "Dusts.default";
+		
+		if(file.isList(path + ".Info") == true) {
+			var l = file.getStringList(path + ".Info");
+			boolean save = false;
+			for(int i = 0; i < l.size(); i++) {
+				String s = l.get(i);
+				if(s.contains("Middle click") == false) continue;
+				s = s.replace("Middle click", "Shift-right-click");
+				l.set(i, s);
+				save = true;
+				break;
+			}
+			if(save == true) file.set(path + ".Info", l);
+		}
+		
 		file.addDefault(path + ".Material", Material.SUGAR.name());
 		file.addDefault(path + ".Name", Language.a(ChatColor.YELLOW + "Dust of Chance " + ChatColor.AQUA + "(%percent%%)"));
-		file.addDefault(path + ".Info", Arrays.asList(
+		file.addDefault(path + ".Info", List.of(
 				Language.a(ChatColor.DARK_GRAY + "* " + ChatColor.GOLD + "Drag and drop onto an extractor"),
 				Language.a(ChatColor.GOLD + "to increase its extraction chance!"),
 				"",
-				Language.a(ChatColor.DARK_GRAY + "* " + ChatColor.GRAY + "Middle click to split in half.")));
+				Language.a(ChatColor.DARK_GRAY + "* " + ChatColor.GRAY + "Shift-right-click to split in half.")));
 		file.addDefault(path + ".Glint", true);
 		file.addDefault(path + ".CustomModelData", 0);
-		file.addDefault(path + ".Allowed", Arrays.asList("default"));
+		file.addDefault(path + ".Allowed", List.of("default"));
 		file.addDefault(path + ".Books", false);
 		file.addDefault(path + ".Limit", -1);
 	    file.addDefault(path + ".Recipe.Toggle", false);
@@ -258,11 +274,11 @@ public final class Configuration {
 				Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
 				while(it.hasNext() == true) {
 					Recipe r = it.next();
-					if(r instanceof ShapedRecipe == false) continue;
-					ShapedRecipe sr = (ShapedRecipe) r;
-					if(sr.getKey().equals(recipe.getKey()) == true) {
-						it.remove();
-						break;
+					if(r instanceof ShapedRecipe sr) {
+						if(sr.getKey().equals(recipe.getKey()) == true) {
+							it.remove();
+							break;
+						}
 					}
 				}
 			}

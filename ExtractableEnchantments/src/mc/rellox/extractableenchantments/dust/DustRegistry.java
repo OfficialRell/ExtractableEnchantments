@@ -118,7 +118,7 @@ public final class DustRegistry implements Listener {
 		Player player = (Player) event.getWhoClicked();
 		if(Utils.isNull(curr) == false)  {
 			if(Utils.isNull(curs) == true) {
-				if(event.getClick() != ClickType.MIDDLE) return;
+				if(event.getClick() != ClickType.SHIFT_RIGHT) return;
 				ItemStack item_dust = curr;
 				Dust dust = dust(item_dust);
 				if(dust == null || allow(player) == false) return;
@@ -211,7 +211,7 @@ public final class DustRegistry implements Listener {
 			if(b == 1) Language.chance_extractor_set(item_hand, perc_hand);
 			else Language.chance_book_set(item_hand, perc_hand);
 		} else if(Utils.isNull(curs) == false) {
-			if(event.getClick() != ClickType.MIDDLE) return;
+			if(event.getClick() != ClickType.SHIFT_RIGHT) return;
 			ItemStack item_dust = curs;
 			Dust dust = dust(item_dust);
 			if(dust == null || allow(player) == false) return;

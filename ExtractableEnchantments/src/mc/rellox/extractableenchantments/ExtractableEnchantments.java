@@ -19,9 +19,11 @@ import mc.rellox.extractableenchantments.configuration.Language;
 import mc.rellox.extractableenchantments.dust.DustRegistry;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.supplier.CustomEnchantsSupplier;
+import mc.rellox.extractableenchantments.supplier.ESupplier;
 import mc.rellox.extractableenchantments.supplier.EcoEnchantsSupplier;
 import mc.rellox.extractableenchantments.supplier.EconomySupplier;
 import mc.rellox.extractableenchantments.supplier.ExcellentEnchantsSupplier;
+import mc.rellox.extractableenchantments.supplier.ESupplier.HookType;
 import mc.rellox.extractableenchantments.utils.Metrics;
 import mc.rellox.extractableenchantments.utils.Utils;
 import mc.rellox.extractableenchantments.utils.Version;
@@ -30,13 +32,17 @@ public class ExtractableEnchantments extends JavaPlugin {
 	
 	private static Plugin plugin;
 	
-	private static final double VERSION_PLUGIN = 9.8;
+	private static final double VERSION_PLUGIN = 9.9;
 	
-	public static final EconomySupplier ECONOMY = new EconomySupplier();
+	public static final EconomySupplier ECONOMY =
+			(EconomySupplier) ESupplier.of(HookType.economy);//new EconomySupplier();
 	
-	public static final ExcellentEnchantsSupplier EXCELLENT_ENCHANTS = new ExcellentEnchantsSupplier();
-	public static final CustomEnchantsSupplier CUSTOM_ENCHANTS = new CustomEnchantsSupplier();
-	public static final EcoEnchantsSupplier ECO_ENCHANTS = new EcoEnchantsSupplier();
+	public static final ExcellentEnchantsSupplier EXCELLENT_ENCHANTS =
+			(ExcellentEnchantsSupplier) ESupplier.of(HookType.excellent_enchant);//new ExcellentEnchantsSupplier();
+	public static final CustomEnchantsSupplier CUSTOM_ENCHANTS =
+			(CustomEnchantsSupplier) ESupplier.of(HookType.custom_enchants);//new CustomEnchantsSupplier();
+	public static final EcoEnchantsSupplier ECO_ENCHANTS =
+			(EcoEnchantsSupplier) ESupplier.of(HookType.eco_enchants);//new EcoEnchantsSupplier();
     
 	private boolean loaded;
 	
@@ -59,18 +65,26 @@ public class ExtractableEnchantments extends JavaPlugin {
 			});
 			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "Extractable Enchantments " + 
 					ChatColor.AQUA + "v" + VERSION_PLUGIN + ChatColor.GREEN + " enabled!");
-			ECONOMY.load();
-			if(ECONOMY.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-					+ ChatColor.DARK_AQUA + "Vault has been found, economy enabled!");
-			EXCELLENT_ENCHANTS.load();
-			if(EXCELLENT_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-					+ ChatColor.DARK_BLUE + "ExcellentEnchants has been found!");
-			CUSTOM_ENCHANTS.load();
-			if(CUSTOM_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-					+ ChatColor.DARK_BLUE + "Custom Enchantments has been found!");
-			ECO_ENCHANTS.load();
-			if(ECO_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-					+ ChatColor.DARK_BLUE + "EcoEnchants has been found!");
+			if(ECONOMY != null) {
+				ECONOMY.load();
+				if(ECONOMY.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
+						+ ChatColor.DARK_AQUA + "Vault has been found, economy enabled!");
+			}
+			if(EXCELLENT_ENCHANTS != null) {
+				EXCELLENT_ENCHANTS.load();
+				if(EXCELLENT_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
+						+ ChatColor.DARK_BLUE + "ExcellentEnchants has been found!");
+			}
+			if(CUSTOM_ENCHANTS != null) {
+				CUSTOM_ENCHANTS.load();
+				if(CUSTOM_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
+						+ ChatColor.DARK_BLUE + "Custom Enchantments has been found!");
+			}
+			if(ECO_ENCHANTS != null) {
+				ECO_ENCHANTS.load();
+				if(ECO_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
+						+ ChatColor.DARK_BLUE + "EcoEnchants has been found!");
+			}
 			Configuration.initialize();
 			Language.initialize();
 			ExtractorRegistry.initialize();

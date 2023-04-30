@@ -5,7 +5,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
 
-public final class EconomySupplier {
+public final class EconomySupplier implements HookInstance<Economy> {
 	
 	private Economy economy;
 	

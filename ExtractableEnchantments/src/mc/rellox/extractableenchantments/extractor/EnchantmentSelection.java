@@ -59,6 +59,7 @@ public class EnchantmentSelection implements Listener {
 		this.v = Bukkit.createInventory(player, s * 9, Language.extractor_selection_name());
 		update();
 		player.setItemOnCursor(null);
+		player.closeInventory();
 		player.openInventory(v);
 	}
 	
