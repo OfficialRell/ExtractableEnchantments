@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.extractor.Extractor;
+import mc.rellox.extractableenchantments.extractor.Extractor.RecipeItem;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry.ExtractionType;
 import mc.rellox.extractableenchantments.usage.CostType;
 import mc.rellox.extractableenchantments.utils.Utils;
@@ -44,7 +45,7 @@ public class ExtractorEdit implements Listener {
 	protected CostType cost_type;
 	protected Material cost_material;
 	protected boolean recipe_toggle;
-	protected Material[] recipe_matrix;
+	protected RecipeItem[] recipe_matrix;
 	
 	private final String name;
 	private final List<String> info;
@@ -424,8 +425,11 @@ public class ExtractorEdit implements Listener {
 				public void run() {
 					int[] ss = {10, 11, 12, 19, 20, 21, 28, 29, 30};
 					ItemStack slot;
-					for(int i = 0; i < 9; i++) 
-						recipe_matrix[i] = (slot = v.getItem(ss[i])) == null ? null : slot.getType();
+					for(int i = 0; i < 9; i++) {
+						slot = v.getItem(ss[i]);
+						if(slot == null) continue;
+						recipe_matrix[i] = new RecipeItem(slot.getType(), slot.getAmount());
+					}
 					update();
 				}
 			}.runTaskLater(ExtractableEnchantments.instance(), 1);
@@ -478,8 +482,9 @@ public class ExtractorEdit implements Listener {
 		return item;
 	}
 	
-	private static ItemStack m(Material m) {
-		return m == null ? null : new ItemStack(m);
+	private static ItemStack m(RecipeItem r) {
+		if(r == null) return null;
+		return r == null ? null : new ItemStack(r.material(), r.amount());
 	}
 	
 	private static ItemStack x() {

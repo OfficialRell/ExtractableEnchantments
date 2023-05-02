@@ -50,6 +50,7 @@ import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.configuration.Configuration;
 import mc.rellox.extractableenchantments.configuration.Language;
 import mc.rellox.extractableenchantments.dust.DustRegistry;
+import mc.rellox.extractableenchantments.extractor.Extractor.RecipeItem;
 import mc.rellox.extractableenchantments.usage.Cost;
 import mc.rellox.extractableenchantments.utils.Utils;
 
@@ -307,8 +308,18 @@ public final class ExtractorRegistry implements Listener {
 				}
 			}
 			if(ex == null) return;
-			event.getInventory().setResult(ex.item_static());
+			CraftingInventory v = event.getInventory();
+			ItemStack[] ms = v.getMatrix();
+			RecipeItem[] rs = ex.recipe_matrix;
+			if(match(ms, rs) == false) v.setResult(null);
+			else v.setResult(ex.item_static());
 		}
+	}
+	
+	private static boolean match(ItemStack[] ms, RecipeItem[] rs) {
+		for(int i = 0; i < ms.length; i++)
+			if(ms[i].getAmount() < rs[i].amount()) return false;
+		return true;
 	}
 
 	@EventHandler
@@ -325,47 +336,59 @@ public final class ExtractorRegistry implements Listener {
 		}
 		if(ex == null) return;
 		event.setCancelled(true);
-		CraftingInventory ci = event.getInventory();
-		ItemStack[] matrix = ci.getMatrix();
-		if(contains(matrix) == true || DustRegistry.contains(matrix) == true) {
-			event.getInventory().setResult(null);
+		CraftingInventory v = event.getInventory();
+		ItemStack[] ms = v.getMatrix();
+		RecipeItem[] rs = ex.recipe_matrix;
+		if(contains(ms) == true || DustRegistry.contains(ms) == true) {
+			v.setResult(null);
 			return;
 		}
-		for(ItemStack item : matrix) {
+		for(ItemStack item : ms) {
 			for(Extractor x : EXTACTORS) {
 				if(x.is(item) == true) {
-					event.getInventory().setResult(null);
+					v.setResult(null);
 					return;
 				}
 			}
+		}
+		if(match(ms, rs) == false) {
+			v.setResult(null);
+			return;
 		}
 		Player player = (Player) event.getWhoClicked();
 		if(player.hasPermission("ee.craft." + ex.key) == false) {
 			player.sendMessage(Language.permission_warn_craft());
 			player.playSound(player.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2f, 1f);
-			event.getInventory().setResult(null);
+			v.setResult(null);
 			return;
 		}
-		int a = Stream.of(matrix)
-				.filter(i -> i != null)
-				.mapToInt(ItemStack::getAmount)
-				.min().orElse(64);
+		int a = 64;
+		for(int i = 0; i < ms.length; i++) {
+			ItemStack item = ms[i];
+			RecipeItem ri = rs[i];
+			int o = item.getAmount() / ri.amount();
+			if(a > o) a = o;
+		}
+		if(a <= 0) {
+			v.setResult(null);
+			return;
+		}
 		if(event.isShiftClick() == false) {
 			if(event.getClick() == ClickType.NUMBER_KEY) {
 				int button = event.getHotbarButton();
 				PlayerInventory pi = player.getInventory();
 				if(Utils.isNull(pi.getItem(button)) == false) return; 
 				pi.setItem(button, ex.item());
-				matrix(matrix, 1);
+				matrix(ms, rs, 1);
 			} else {
 				ItemStack curs = player.getItemOnCursor();
 				if(ex.chance_toggle == true) {
 					if(Utils.isNull(curs) == false) return; 
 					player.setItemOnCursor(ex.item());
-					matrix(matrix, 1);
+					matrix(ms, rs, 1);
 				} else if(Utils.isNull(curs) == true) {
 					player.setItemOnCursor(ex.item());
-					matrix(matrix, 1);
+					matrix(ms, rs, 1);
 				} else return;
 			}
 		} else {
@@ -373,20 +396,20 @@ public final class ExtractorRegistry implements Listener {
 			if(f <= 0) return; 
 			if(f >= a) {
 				player.getInventory().addItem(ex.items(a));
-				matrix(matrix, a);
+				matrix(ms, rs, a);
 			} else {
 				player.getInventory().addItem(ex.items(f));
-				matrix(matrix, f);
+				matrix(ms, rs, f);
 			}
 		}
-		ci.setMatrix(matrix);
+		v.setMatrix(ms);
 	}
 
-	private static void matrix(ItemStack[] matrix, int a) {
-		for(int i = 0, l; i < matrix.length; i++) {
-			ItemStack item = matrix[i];
+	private static void matrix(ItemStack[] ms, RecipeItem[] rs, int a) {
+		for(int i = 0, l; i < ms.length; i++) {
+			ItemStack item = ms[i];
 			if(item != null) {
-				if((l = item.getAmount() - a) <= 0) matrix[i] = null;
+				if((l = item.getAmount() - a * rs[i].amount()) <= 0) ms[i] = null;
 				else item.setAmount(l);
 			}
 		}

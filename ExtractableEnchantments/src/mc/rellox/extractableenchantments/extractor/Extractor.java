@@ -59,14 +59,14 @@ public final class Extractor {
 	public final Constraint[] constraints;
 	
 	public final boolean recipe_toggle;
-	public final Material[] recipe_matrix;
+	public final RecipeItem[] recipe_matrix;
 	public final ShapedRecipe recipe;
 	
 	public Extractor(String key, Material material, String name, List<String> info,
 			boolean glint, int model, boolean chance_toggle, boolean chance_destroy, int chance_min, int chance_max,
 			boolean cost_toggle, CostType cost_type, Material cost_material, int cost_value,
 			boolean book_chance_force, int book_chance_value, boolean extract_unsafe, List<String> ignored_enchantments,
-			ExtractionType extraction, Extract extract, Constraint[] constraints, boolean recipe_toggle, Material[] recipe_matrix) {
+			ExtractionType extraction, Extract extract, Constraint[] constraints, boolean recipe_toggle, RecipeItem[] recipe_matrix) {
 		this.key = key;
 		
 		this.material = material;
@@ -105,16 +105,17 @@ public final class Extractor {
 	
 	private ShapedRecipe loadRecipe() {
 		if(recipe_toggle == false) return null;
-		int e = 0;
-		for(Material m : recipe_matrix) if(m == null) e++;
-		if(e == 9) return null;
+		if(Stream.of(recipe_matrix)
+				.map(RecipeItem::material)
+				.filter(m -> m == null)
+				.count() == 9) return null;
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(ExtractableEnchantments.instance(),
 				"extractor_" + key), item_static());
 		recipe.shape("abc", "def", "ghi");
-		e = 0;
-		for(Material m : recipe_matrix) {
-			if(m != null) recipe.setIngredient((char) ('a' + e), m);
-			e++;
+		int i = 0;
+		for(RecipeItem r : recipe_matrix) {
+			if(r != null) recipe.setIngredient((char) ('a' + i), r.material());
+			i++;
 		}
 		Configuration.updateRecipe(recipe);
 		return recipe;
@@ -214,6 +215,8 @@ public final class Extractor {
 		while(--a >= 0) items[a] = item();
 		return items;
 	}
+	
+	public static record RecipeItem(Material material, int amount) {}
 	
 
 }

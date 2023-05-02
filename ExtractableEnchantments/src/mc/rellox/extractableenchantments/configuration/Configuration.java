@@ -23,6 +23,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.dust.Dust;
 import mc.rellox.extractableenchantments.extractor.Extractor;
+import mc.rellox.extractableenchantments.extractor.Extractor.RecipeItem;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry.Constraint;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry.Extract;
@@ -238,11 +239,26 @@ public final class Configuration {
 						cs = cl.toArray(new Constraint[0]);
 					} else cs = null;
 					boolean recipe_toggle = file.getBoolean(path + ".Recipe.Toggle", true);
-					Material[] recipe_matrix = new Material[9];
+					RecipeItem[] recipe_matrix = new RecipeItem[9];
 					list = file.getStringList(path + ".Recipe.Matrix");
 					if(list.size() == 9) {
 						int e = 0;
-						for(int i = 0; i < 9; i++) if((recipe_matrix[i] = Utils.getMaterial(list.get(i), null)) == null) e++;
+						for(int i = 0; i < 9; i++) {
+							String s = list.get(i);
+							if(s.matches("[a-zA-z_]*:\\d*") == true) {
+								String[] ss = s.split(":");
+								Material m = Utils.getMaterial(ss[0], null);
+								if(m == null) e++;
+								else {
+									if(Utils.isInteger(ss[1]) == false) e++;
+									else recipe_matrix[i] = new RecipeItem(m, Integer.parseInt(ss[1])); 
+								}
+							} else {
+								Material m = Utils.getMaterial(s, null);
+								if(m == null) e++;
+								else recipe_matrix[i] = new RecipeItem(m, 1); 
+							}
+						}
 						if(e == 9) {
 							Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
 									+ ChatColor.RED + "Unable to load recipe for extractor (" + key + "), recipe cannot be empty!");
@@ -357,7 +373,8 @@ public final class Configuration {
 	    file.set(path + ".Extraction", e.extraction.name());
 	    file.set(path + ".Recipe.Toggle", e.recipe_toggle);
 	    List<String> recipe = new ArrayList<>(9);
-	    for(Material m : e.recipe_matrix) recipe.add(m == null ? "EMPTY" : m.name());
+	    for(RecipeItem m : e.recipe_matrix) recipe.add(m == null ? "EMPTY"
+	    		: m.material().name() + (m.amount() > 1 ? ":" + m.amount() : ""));
 	    file.set(path + ".Recipe.Matrix", recipe);
 	    save();
 	}
