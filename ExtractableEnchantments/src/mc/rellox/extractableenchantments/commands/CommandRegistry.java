@@ -1,7 +1,5 @@
 package mc.rellox.extractableenchantments.commands;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,29 +31,6 @@ public final class CommandRegistry {
 		if(EE != null && EE.equals(command) == true) {
 			String help0 = help(command, null, "reload", "extractor", "dust", "edit");
 			if(args.length < 1) sender.sendMessage(help0);
-			else if(args[0].equalsIgnoreCase("debug") == true) {
-				Object o = ExtractableEnchantments.ECO_ENCHANTS.get();
-				if(o != null) {
-					try {
-						System.out.println("Fields:");
-						Field[] fields = o.getClass().getFields();
-						for(Field field : fields) {
-							System.out.println("- " + field.getName() + " -> " + field.getType().getName());
-						}
-						System.out.println("Methods:");
-						Method[] methods = o.getClass().getMethods();
-						for(Method method : methods) {
-							System.out.println("- " + method.getName());
-							Class<?>[] ps = method.getParameterTypes();
-							if(ps != null && ps.length > 0) {
-								for(Class<?> p : ps) System.out.println("  > " + p.getName());
-							}
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else System.out.println("Unable to find EcoEnchants plugin!");
-			}
 			else if(args[0].equalsIgnoreCase("reload") == true) {
 				ExtractableEnchantments.update(sender);
 				if(player != null) player.playSound(player.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 2f, 1.5f);
@@ -112,44 +87,56 @@ public final class CommandRegistry {
 						String help2 = help(command, "dust " + args[1], "percent*") + extra("amount?*") + extra("player?");
 						if(args.length < 3) sender.sendMessage(help2);
 						else {
-							if(Utils.isInteger(args[2]) == true) {
-								int p = Integer.parseInt(args[2]);
-								if(p <= 0) warn(sender, "Invalid percentage (#0)!", p);
-								else if(p > dust.limit) warn(sender, "Dust percentage limit reached (#0 > #1)!", p, dust.limit);
+							String pa = args[2];
+							if(pa.matches("\\d+(?:-\\d+)?") == false) {
+								warn(sender, "Invalid percentage (#0)!", pa);
+								return;
+							}
+							int p;
+							if(pa.indexOf('-') > 0) {
+								String[] ps = pa.split("-");
+								int i0 = Integer.parseInt(ps[0]);
+								int i1 = Integer.parseInt(ps[1]);
+								if(i0 > i1) {
+									warn(sender, "Invalid percentage (#0)!", pa);
+									return;
+								}
+								p = Utils.between(i0, i1);
+							} else p = Integer.parseInt(pa);
+							if(p > dust.limit) warn(sender, "Dust percentage limit reached (#0 > #1)!", p, dust.limit);
+							else {
+								int a;
+								if(args.length < 4) a = 1;
 								else {
-									int a;
-									if(args.length < 4) a = 1;
+									if(Utils.isInteger(args[3]) == true) {
+										a = Integer.parseInt(args[3]);
+										if(a <= 0) {
+											warn(sender, "Invalid amount (#0)!", a);
+											return;
+										}
+									} else return;
+								}
+								if(args.length < 5) {
+									if(player == null) return;
+									ItemStack[] items = dust.items(p, a);
+									player.getInventory().addItem(items);
+									success(sender, "Got #0 × #1", Utils.displayName(items[0]), a);
+									player.playSound(player.getEyeLocation(), Sound.ENTITY_ITEM_PICKUP, 2f, 1.5f);
+								} else {
+									Player getter = Bukkit.getPlayer(args[4]);
+									if(getter == null) warn(sender, "Unable to fine a player with name #0!", args[4]);
 									else {
-										if(Utils.isInteger(args[3]) == true) {
-											a = Integer.parseInt(args[3]);
-											if(a <= 0) {
-												warn(sender, "Invalid amount (#0)!", a);
-												return;
-											}
-										} else return;
-									}
-									if(args.length < 5) {
-										if(player == null) return;
-										ItemStack[] items = dust.items(p, a);
-										player.getInventory().addItem(items);
-										success(sender, "Got #0 × #1", Utils.displayName(items[0]), a);
-										player.playSound(player.getEyeLocation(), Sound.ENTITY_ITEM_PICKUP, 2f, 1.5f);
-									} else {
-										Player getter = Bukkit.getPlayer(args[4]);
-										if(getter == null) warn(sender, "Unable to fine a player with name #0!", args[4]);
+										int f = Utils.slots(getter);
+										if(a <= f) getter.getInventory().addItem(dust.items(p, a));
 										else {
-											int f = Utils.slots(getter);
-											if(a <= f) getter.getInventory().addItem(dust.items(p, a));
-											else {
-												int l = a - f;
-												getter.getInventory().addItem(dust.items(p, f));
-												ItemStack[] items = dust.items(p, l);
-												for(ItemStack item : items) getter.getWorld().dropItem(getter.getLocation(), item);
-											}
+											int l = a - f;
+											getter.getInventory().addItem(dust.items(p, f));
+											ItemStack[] items = dust.items(p, l);
+											for(ItemStack item : items) getter.getWorld().dropItem(getter.getLocation(), item);
 										}
 									}
 								}
-							} else warn(sender, "Invalid percentage (#0)!", args[2]);
+							}
 						}
 					}
 				}
