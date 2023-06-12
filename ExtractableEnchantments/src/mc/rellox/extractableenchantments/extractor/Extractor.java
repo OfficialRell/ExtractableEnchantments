@@ -51,7 +51,8 @@ public final class Extractor {
 	public final int book_chance_value;
 	
 	public final boolean extract_unsafe;
-	
+
+	public final boolean stackable;
 	public final Set<String> ignored_enchantments;
 	
 	public final ExtractionType extraction;
@@ -66,7 +67,8 @@ public final class Extractor {
 			boolean glint, int model, boolean chance_toggle, boolean chance_destroy, int chance_min, int chance_max,
 			boolean cost_toggle, CostType cost_type, Material cost_material, int cost_value,
 			boolean book_chance_force, int book_chance_value, boolean extract_unsafe, List<String> ignored_enchantments,
-			ExtractionType extraction, Extract extract, Constraint[] constraints, boolean recipe_toggle, RecipeItem[] recipe_matrix) {
+			boolean stackable, ExtractionType extraction, Extract extract, Constraint[] constraints,
+			boolean recipe_toggle, RecipeItem[] recipe_matrix) {
 		this.key = key;
 		
 		this.material = material;
@@ -90,6 +92,7 @@ public final class Extractor {
 
 		this.extract_unsafe = extract_unsafe;
 		
+		this.stackable = stackable;
 		this.ignored_enchantments = ignored_enchantments.stream()
 				.map(String::toLowerCase)
 				.collect(Collectors.toSet());
@@ -204,7 +207,8 @@ public final class Extractor {
 		meta.setLore(Language.item_layout().build(info, lore_chance, lore_destroy, lore_cost));
 		PersistentDataContainer p = meta.getPersistentDataContainer();
 		p.set(ExtractorRegistry.key_extractor, PersistentDataType.STRING, key);
-		p.set(ExtractorRegistry.key_random, PersistentDataType.INTEGER, Utils.random());
+		if(stackable == false || chance_toggle == true)
+			p.set(ExtractorRegistry.key_random, PersistentDataType.INTEGER, Utils.random());
 		p.set(DustRegistry.key_chance, PersistentDataType.INTEGER, chance);
 		item.setItemMeta(meta);
 		return item;

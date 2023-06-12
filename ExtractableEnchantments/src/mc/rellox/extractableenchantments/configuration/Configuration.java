@@ -36,7 +36,7 @@ public final class Configuration {
 	
 	private static File f;
 	private static FileConfiguration file;
-	
+
 	public static float extraction_volume;
 	
 	private static boolean book_chance_toggle;
@@ -122,6 +122,7 @@ public final class Configuration {
 		file.addDefault(path + ".Glint", true);
 		file.addDefault(path + ".CustomModelData", 0);
 		file.addDefault(path + ".Allowed", List.of("default"));
+		file.addDefault(path + ".Stackable", false);
 		file.addDefault(path + ".Books", false);
 		file.addDefault(path + ".Limit", -1);
 	    file.addDefault(path + ".Recipe.Toggle", false);
@@ -139,6 +140,7 @@ public final class Configuration {
 	    file.addDefault(path + ".Recipe.Matrix", recipe);
 	    
 	    file.addDefault("Settings.Sounds.ExtractionVolume", 1.0);
+	    file.addDefault("Settings.Items.CanStack", false);
 	    
 	    file.addDefault("Book.Chance.Toggle", false);
 	    file.addDefault("Book.Chance.Min", 1);
@@ -228,6 +230,7 @@ public final class Configuration {
 					else if(book_chance_value > 100) book_chance_value = 100;
 					boolean extract_unsafe = file.getBoolean(path + ".Extract.Unsafe", true);
 					List<String> ignored_enchantments = file.getStringList(path + ".IgnoredEnchantments");
+					boolean stackable = file.getBoolean(path + ".Stackable", false);
 					ExtractionType extraction = ExtractionType.of(file.getString(path + ".Extraction"));
 					Extract extract = Extract.of(file.getString(path + ".Filter"));
 					List<String> list = file.getStringList(path + ".Constraints");
@@ -270,7 +273,7 @@ public final class Configuration {
 					Extractor extractor = new Extractor(key, material, name, info, glint, model, chance_toggle, chance_destroy,
 							chance_min, chance_max, cost_toggle, cost_type, cost_material, cost_value,
 							book_chance_force, book_chance_value, extract_unsafe, ignored_enchantments,
-							extraction, extract, cs, recipe_toggle, recipe_matrix);
+							stackable, extraction, extract, cs, recipe_toggle, recipe_matrix);
 					extractors.add(extractor);
 				}
 			}
