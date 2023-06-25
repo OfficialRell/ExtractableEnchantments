@@ -20,10 +20,10 @@ import mc.rellox.extractableenchantments.dust.DustRegistry;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.supplier.CustomEnchantsSupplier;
 import mc.rellox.extractableenchantments.supplier.ESupplier;
+import mc.rellox.extractableenchantments.supplier.ESupplier.HookType;
 import mc.rellox.extractableenchantments.supplier.EcoEnchantsSupplier;
 import mc.rellox.extractableenchantments.supplier.EconomySupplier;
 import mc.rellox.extractableenchantments.supplier.ExcellentEnchantsSupplier;
-import mc.rellox.extractableenchantments.supplier.ESupplier.HookType;
 import mc.rellox.extractableenchantments.utils.Metrics;
 import mc.rellox.extractableenchantments.utils.Utils;
 import mc.rellox.extractableenchantments.utils.Version;
@@ -32,7 +32,7 @@ public class ExtractableEnchantments extends JavaPlugin {
 	
 	private static Plugin plugin;
 	
-	private static final double VERSION_PLUGIN = 9.9;
+	private static final double VERSION_PLUGIN = 10.0;
 	
 	public static final EconomySupplier ECONOMY =
 			(EconomySupplier) ESupplier.of(HookType.economy);//new EconomySupplier();

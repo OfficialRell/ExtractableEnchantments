@@ -25,8 +25,8 @@ import mc.rellox.extractableenchantments.extractor.Extractor;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry.ExtractionType;
 import mc.rellox.extractableenchantments.utils.Utils;
-import su.nightexpress.excellentenchants.api.enchantment.ExcellentEnchant;
-import su.nightexpress.excellentenchants.enchantment.EnchantManager;
+import su.nightexpress.excellentenchants.enchantment.impl.ExcellentEnchant;
+import su.nightexpress.excellentenchants.enchantment.util.EnchantUtils;
 
 public class ExcellentEnchantsSupplier implements ESupplier<Plugin, Enchantment> {
 	
@@ -60,8 +60,8 @@ public class ExcellentEnchantsSupplier implements ESupplier<Plugin, Enchantment>
 			if(failed == true) {
 				if(ex.extraction == ExtractionType.RANDOM) player.setItemOnCursor(null);
 				if(ex.chance_destroy == true) {
-					EnchantManager.removeEnchantment(item, removed);
-					EnchantManager.updateEnchantmentsDisplay(item);
+					EnchantUtils.remove(item, removed);
+					EnchantUtils.updateDisplay(item);
 					player.sendMessage(Language.exteaction_destroy_custom(removed, level));
 					ExtractorRegistry.playOnFail(player, true);
 				} else {
@@ -70,8 +70,8 @@ public class ExcellentEnchantsSupplier implements ESupplier<Plugin, Enchantment>
 				}
 			} else {
 				if(ex.extraction == ExtractionType.RANDOM) player.setItemOnCursor(null);
-				EnchantManager.removeEnchantment(item, removed);
-				EnchantManager.updateEnchantmentsDisplay(item);
+				EnchantUtils.remove(item, removed);
+				EnchantUtils.updateDisplay(item);
 				ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
 				EnchantmentStorageMeta book_meta = (EnchantmentStorageMeta) book.getItemMeta();
 				if(Configuration.book_chance_toggle() == true) {
@@ -84,8 +84,8 @@ public class ExcellentEnchantsSupplier implements ESupplier<Plugin, Enchantment>
 					p.set(DustRegistry.key_chance, PersistentDataType.INTEGER, chance);
 				}
 				book.setItemMeta(book_meta);
-				EnchantManager.addEnchantment(book, removed, level, true);
-				EnchantManager.updateEnchantmentsDisplay(book);
+				EnchantUtils.add(book, removed, level, true);
+				EnchantUtils.updateDisplay(book);
 				if(ex.extraction == ExtractionType.RANDOM) {
 					if(player.getGameMode() == GameMode.CREATIVE) player.getInventory().addItem(book);
 					else player.setItemOnCursor(book);

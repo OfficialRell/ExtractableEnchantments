@@ -77,6 +77,7 @@ public final class Configuration {
 	    file.addDefault(path + ".Cost.Material", Material.GOLD_INGOT.name());
 	    file.addDefault(path + ".Cost.Value", 32);
 	    file.addDefault(path + ".Extract.Unsafe", true);
+		file.addDefault(path + ".Stackable", false);
 	    file.addDefault(path + ".IgnoredEnchantments", new ArrayList<>());
 	    file.addDefault(path + ".Book.Chance.Force", false);
 	    file.addDefault(path + ".Book.Chance.Value", 100);
@@ -122,7 +123,6 @@ public final class Configuration {
 		file.addDefault(path + ".Glint", true);
 		file.addDefault(path + ".CustomModelData", 0);
 		file.addDefault(path + ".Allowed", List.of("default"));
-		file.addDefault(path + ".Stackable", false);
 		file.addDefault(path + ".Books", false);
 		file.addDefault(path + ".Limit", -1);
 	    file.addDefault(path + ".Recipe.Toggle", false);

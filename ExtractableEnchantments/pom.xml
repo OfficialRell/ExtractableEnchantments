@@ -2,9 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>9.9</version>
+  <version>10.0</version>
   <name>ExtractableEnchantments</name>
   <description>Implements enchantment extraction from items</description>
+  
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
