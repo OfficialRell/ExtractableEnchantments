@@ -1,24 +1,27 @@
-package mc.rellox.extractableenchantments.utils;
+package mc.rellox.extractableenchantments.utility;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
-import mc.rellox.extractableenchantments.utils.Version.VersionType;
+import mc.rellox.extractableenchantments.utility.Version.VersionType;
+import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
-public final class Utils {
+public final class Utility {
 	
 	private static final Random R = new Random();
 	
@@ -52,21 +55,25 @@ public final class Utils {
 		}
 	}
 	
-	public static boolean isFull(Player player) {
-		PlayerInventory pi = player.getInventory();
-		for(int i = 0; i < 36; i++) if(isNull(pi.getItem(i)) == true) return false;
-		return true;
-	}
-
-	public static int slots(Player player) {
-		PlayerInventory pi = player.getInventory();
-		int a = 0;
-		for(int i = 0; i < 36; i++) if(isNull(pi.getItem(i)) == true) a++;
-		return a;
-	}
-
-	public static boolean isNull(ItemStack item) {
-		return item == null || item.getType() == Material.AIR;
+	public static void update(CraftingRecipe recipe) {
+		if(recipe == null) return;
+		boolean removed = false;
+		try {
+			removed = RF.order(Bukkit.getServer(), "removeRecipe", false, NamespacedKey.class).as(boolean.class)
+					.invoke(false, recipe.getKey());
+		} catch (Exception e) {}
+		if(removed == false) {
+			Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
+			while(it.hasNext() == true) {
+				Recipe r = it.next();
+				if(r instanceof CraftingRecipe craft) {
+					if(craft.getKey().equals(recipe.getKey()) == false) continue;
+					it.remove();
+					break;
+				}
+			}
+		}
+		Bukkit.addRecipe(recipe);
 	}
 	
 	public static Class<?> craft(String s) {
@@ -121,46 +128,48 @@ public final class Utils {
 		return true;
 	}
 	
-	public static String displayName(Material m) {
-		return displayName(new ItemStack(m));
+	public static String displayName(Material material) {
+		return displayName(new ItemStack(material));
 	}
 	
 	public static String displayName(ItemStack item) {
-		Class<?> c = craft("inventory.CraftItemStack");
 		try {
-			Method m = c.getMethod("asNMSCopy", ItemStack.class);
-			Object o = m.invoke(null, item);
-			c = o.getClass();
+			Class<?> clazz = RF.craft("inventory.CraftItemStack");
+			Object nms_item = RF.order(clazz, "asNMSCopy", ItemStack.class).invoke(item);
+			String a, b = "getString";
+			
 			if(Version.version == VersionType.v_18_1) {
-				m = c.getDeclaredMethod("v");
-				o = m.invoke(o);
-				m = o.getClass().getMethod("a");
+				a = "v";
+				b = "a";
 			} else if(Version.version == VersionType.v_18_2) {
-				m = c.getDeclaredMethod("w");
-				o = m.invoke(o);
-				m = o.getClass().getMethod("a");
+				a = "w";
+				b = "a";
 			} else if(Version.version == VersionType.v_19_1
 					|| Version.version == VersionType.v_19_2
 					|| Version.version == VersionType.v_19_3) {
-				m = c.getDeclaredMethod("x");
-				o = m.invoke(o);
-				m = o.getClass().getMethod("getString");
-			} else if(Version.version == VersionType.v_20_1) {
-				m = c.getDeclaredMethod("y");
-				o = m.invoke(o);
-				m = o.getClass().getMethod("getString");
+				a ="x";
+			} else if(Version.version == VersionType.v_20_1
+					|| Version.version == VersionType.v_20_2
+					|| Version.version == VersionType.v_20_3) {
+				a = "y";
+			} else if(Version.version == VersionType.v_20_4) {
+				a = "x";
+			} else if(Version.version == VersionType.v_21_1) {
+				a = "w";
 			} else {
-				m = c.getDeclaredMethod("getName");
-				o = m.invoke(o);
-				m = o.getClass().getMethod("getText");
+				a = "getName";
+				b = "getText";
 			}
-			String name = (String) m.invoke(o);
-			if(name == null || name.isEmpty() == true) {
-				m = o.getClass().getMethod("getString");
-				name = (String) m.invoke(o);
-			}
-			return name;
+			
+			Object component = RF.direct(nms_item, a);
+			String name = RF.direct(component, b, String.class);
+			
+			if(name == null)
+				Bukkit.getLogger().warning("Null name got returned when trying to fetch item name");
+			
+			return ChatColor.stripColor(name);
 		} catch(Exception e) {
+			Bukkit.getLogger().warning("Cannot get item display name");
 			return "null";
 		}
 	}
