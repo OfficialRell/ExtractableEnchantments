@@ -86,12 +86,6 @@ public class ExtractableEnchantments extends JavaPlugin {
 		return plugin;
 	}
 	
-	public static void update(CommandSender sender) {
-		Configuration.initialize();
-		if(sender == null) return;
-		sender.sendMessage(ChatColor.DARK_AQUA + "[EE] " + ChatColor.AQUA + "Reloading plugin...");
-	}
-	
 	private void initializeMetrics() {
 		new Metrics(this, 8524);
 	}

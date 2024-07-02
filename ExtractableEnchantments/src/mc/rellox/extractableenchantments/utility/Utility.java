@@ -23,18 +23,18 @@ import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
 public final class Utility {
 	
-	private static final Random R = new Random();
+	private static final Random random = new Random();
 	
 	public static int random() {
-		return R.nextInt();
+		return random.nextInt();
 	}
 	
 	public static int random(int a) {
-		return R.nextInt(a);
+		return random.nextInt(a);
 	}
 	
 	public static int between(int a, int b) {
-		return R.nextInt(b - a + 1) + a;
+		return random.nextInt(b - a + 1) + a;
 	}
 
 	public static boolean isInteger(String s) {
@@ -74,58 +74,6 @@ public final class Utility {
 			}
 		}
 		Bukkit.addRecipe(recipe);
-	}
-	
-	public static Class<?> craft(String s) {
-		try {
-			return Class.forName("org.bukkit.craftbukkit." + Version.server + "." + s);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
-	
-	public static Class<?> nms(String s) {
-		try {
-			return Class.forName("net.minecraft.server." + Version.server + "." + s);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
-
-	public static Material getMaterial(String name, Material def) {
-		Material m = null;
-		try {
-			m = Material.valueOf(name);
-			if(m == Material.AIR) return null;
-		} catch(Exception e) {}
-		return m == null ? def : m;
-	}
-
-	public static Material material(String name) {
-		try {
-			return Material.valueOf(name);
-		} catch(Exception e) {}
-		return null;
-	}
-
-	public static ChatColor getColor(String name, ChatColor def) {
-		ChatColor m = null;
-		try {
-			m = ChatColor.valueOf(name);
-		} catch(Exception e) {}
-		return m == null ? def : m;
-	}
-
-	public static double round(double d) {
-		return (double) ((int) (d * 100) / 100.0);
-	}
-	
-	public static boolean isKey(String key) {
-		for(char c : key.toCharArray()) {
-			if(c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_') continue;
-			return false;
-		}
-		return true;
 	}
 	
 	public static String displayName(Material material) {
