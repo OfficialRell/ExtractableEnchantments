@@ -1,10 +1,58 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>10.0</version>
+  <version>11.0</version>
+  
   <name>ExtractableEnchantments</name>
   <description>Implements enchantment extraction from items</description>
+  
+  <properties>
+	  <java.version>17</java.version>
+  </properties>
+  
+  <repositories>
+  	<repository>
+	  <id>jitpack.io</id>
+	  <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>auxilor</id>
+      <url>https://repo.auxilor.io/repository/maven-public/</url>
+    </repository>
+  </repositories>
+  	
+  <dependencies>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.21-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.MilkBowl</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.7.1</version>
+      <scope>provided</scope>
+	</dependency>
+    <dependency>
+      <groupId>com.willfp</groupId>
+      <artifactId>eco</artifactId>
+      <version>6.67.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.willfp</groupId>
+      <artifactId>EcoEnchants</artifactId>
+      <version>11.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -13,7 +61,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>16</release>
+		   <source>17</source>
+		   <target>17</target>
         </configuration>
       </plugin>
     </plugins>

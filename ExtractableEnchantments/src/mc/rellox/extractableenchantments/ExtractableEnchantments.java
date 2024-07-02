@@ -15,34 +15,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import mc.rellox.extractableenchantments.commands.CommandRegistry;
 import mc.rellox.extractableenchantments.configuration.Configuration;
-import mc.rellox.extractableenchantments.configuration.Language;
-import mc.rellox.extractableenchantments.dust.DustRegistry;
-import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
-import mc.rellox.extractableenchantments.supplier.CustomEnchantsSupplier;
-import mc.rellox.extractableenchantments.supplier.ESupplier;
-import mc.rellox.extractableenchantments.supplier.ESupplier.HookType;
-import mc.rellox.extractableenchantments.supplier.EcoEnchantsSupplier;
-import mc.rellox.extractableenchantments.supplier.EconomySupplier;
-import mc.rellox.extractableenchantments.supplier.ExcellentEnchantsSupplier;
-import mc.rellox.extractableenchantments.utils.Metrics;
-import mc.rellox.extractableenchantments.utils.Utils;
-import mc.rellox.extractableenchantments.utils.Version;
+import mc.rellox.extractableenchantments.event.EventRegistry;
+import mc.rellox.extractableenchantments.hook.HookRegistry;
+import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
+import mc.rellox.extractableenchantments.utility.Keys;
+import mc.rellox.extractableenchantments.utility.Metrics;
+import mc.rellox.extractableenchantments.utility.Utility;
+import mc.rellox.extractableenchantments.utility.Version;
 
 public class ExtractableEnchantments extends JavaPlugin {
 	
 	private static Plugin plugin;
 	
-	private static final double VERSION_PLUGIN = 10.0;
-	
-	public static final EconomySupplier ECONOMY =
-			(EconomySupplier) ESupplier.of(HookType.economy);//new EconomySupplier();
-	
-	public static final ExcellentEnchantsSupplier EXCELLENT_ENCHANTS =
-			(ExcellentEnchantsSupplier) ESupplier.of(HookType.excellent_enchant);//new ExcellentEnchantsSupplier();
-	public static final CustomEnchantsSupplier CUSTOM_ENCHANTS =
-			(CustomEnchantsSupplier) ESupplier.of(HookType.custom_enchants);//new CustomEnchantsSupplier();
-	public static final EcoEnchantsSupplier ECO_ENCHANTS =
-			(EcoEnchantsSupplier) ESupplier.of(HookType.eco_enchants);//new EcoEnchantsSupplier();
+	public static final double PLUGIN_VERSION = 11.0;
     
 	private boolean loaded;
 	
@@ -55,40 +40,23 @@ public class ExtractableEnchantments extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		if(loaded == true) {
-			Utils.check(73954, s -> {
-				if(Utils.isDouble(s) == false) return; 
+			Utility.check(73954, s -> {
+				if(Utility.isDouble(s) == false) return; 
 				double v = Double.parseDouble(s);
-				if(v <= VERSION_PLUGIN) return;
+				if(v <= PLUGIN_VERSION) return;
 				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] " + ChatColor.YELLOW + "A newer version is available! "
 						+ ChatColor.GOLD + "To download visit: " + "https://www.spigotmc.org/resources/extractable-enchantments.73954/");
 				new UpdateAvailable();
 			});
 			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "Extractable Enchantments " + 
-					ChatColor.AQUA + "v" + VERSION_PLUGIN + ChatColor.GREEN + " enabled!");
-			if(ECONOMY != null) {
-				ECONOMY.load();
-				if(ECONOMY.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-						+ ChatColor.DARK_AQUA + "Vault has been found, economy enabled!");
-			}
-			if(EXCELLENT_ENCHANTS != null) {
-				EXCELLENT_ENCHANTS.load();
-				if(EXCELLENT_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-						+ ChatColor.DARK_BLUE + "ExcellentEnchants has been found!");
-			}
-			if(CUSTOM_ENCHANTS != null) {
-				CUSTOM_ENCHANTS.load();
-				if(CUSTOM_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-						+ ChatColor.DARK_BLUE + "Custom Enchantments has been found!");
-			}
-			if(ECO_ENCHANTS != null) {
-				ECO_ENCHANTS.load();
-				if(ECO_ENCHANTS.get() != null) Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
-						+ ChatColor.DARK_BLUE + "EcoEnchants has been found!");
-			}
+					ChatColor.AQUA + "v" + PLUGIN_VERSION + ChatColor.GREEN + " enabled!");
+			
+			Keys.initialize();
+			EnchantmentRegistry.initialize();
+			HookRegistry.initialize();
 			Configuration.initialize();
-			Language.initialize();
-			ExtractorRegistry.initialize();
-			DustRegistry.initialize();
+			EventRegistry.initialize();
+			
 			initializeMetrics();
 		} else {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
@@ -100,7 +68,7 @@ public class ExtractableEnchantments extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "Extractable Enchantments " + 
-				ChatColor.AQUA + "v" + VERSION_PLUGIN + ChatColor.GOLD + " disabled!");
+				ChatColor.AQUA + "v" + PLUGIN_VERSION + ChatColor.GOLD + " disabled!");
 	}
 	
 	@Override
@@ -120,9 +88,6 @@ public class ExtractableEnchantments extends JavaPlugin {
 	
 	public static void update(CommandSender sender) {
 		Configuration.initialize();
-		Language.initialize();
-		ExtractorRegistry.update();
-		DustRegistry.update();
 		if(sender == null) return;
 		sender.sendMessage(ChatColor.DARK_AQUA + "[EE] " + ChatColor.AQUA + "Reloading plugin...");
 	}
