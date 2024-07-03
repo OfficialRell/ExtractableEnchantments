@@ -1,0 +1,40 @@
+name: ExtractableEnchantments
+main: mc.rellox.extractableenchantments.ExtractableEnchantments
+softdepend: [Vault, eco, ExcellentEnchants, EcoEnchants, vane-core]
+api-version: 1.14
+version: 11.0
+author: Rellox
+commands:
+  extractableenchantments:
+    description: Extractable Enchantments provided command.
+    permission: ee.command
+    aliases: [ee]
+  splitdust:
+    description: Extractable Enchantments provided command to split dust.
+    permission: ee.splitdust
+    aliases: [sd, dustsplit]
+permissions:
+  ee.command:
+     description: Allow players to manipulate with this plugin
+     default: op
+  ee.splitdust:
+     description: Allow players to split dust
+     default: true
+  ee.use.default:
+     description: Allow players to use default extractor
+     default: true
+  ee.craft.default:
+     description: Allow players to craft default extractor
+     default: true
+  ee.books.apply:
+     description: Allow players to apply enchantment books
+     default: true
+  ee.dust.use.default:
+     description: Allow players to use default dust
+     default: true
+  ee.dust.split.default:
+     description: Allow players to split default dust
+     default: true
+  ee.dust.craft.default:
+     description: Allow players to craft default dust
+     default: true
