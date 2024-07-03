@@ -21,6 +21,10 @@ public interface IExtractorChance {
 		public boolean destroy() {return false;}
 	};
 	
+	/**
+	 * @return Is price enabled
+	 */
+	
 	boolean enabled();
 	
 	boolean destroy();
