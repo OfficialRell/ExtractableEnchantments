@@ -2,9 +2,11 @@ package mc.rellox.extractableenchantments.api.item.recipe;
 
 import java.util.List;
 
+import org.bukkit.Keyed;
 import org.bukkit.Material;
-import org.bukkit.inventory.CraftingRecipe;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
@@ -26,7 +28,7 @@ public interface IRecipe {
 		@Override
 		public void reduce(ItemStack[] matrix, int amount) {}
 		@Override
-		public CraftingRecipe recipe() {
+		public Recipe recipe() {
 			return null;
 		}
 		@Override
@@ -54,9 +56,13 @@ public interface IRecipe {
 	
 	void reduce(ItemStack[] matrix, int amount);
 	
-	CraftingRecipe recipe();
+	Recipe recipe();
 	
 	void update();
+	
+	default NamespacedKey namespace() {
+		return recipe() instanceof Keyed keyed ? keyed.getKey() : null;
+	}
 	
 	record RecipeItem(Material material, int value) {}
 

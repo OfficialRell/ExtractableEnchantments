@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Keyed;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +24,6 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -52,6 +53,7 @@ import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.LevelledEnchantment;
 import mc.rellox.extractableenchantments.utility.Utility;
+import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
 public final class EventRegistry implements Listener {
 	
@@ -66,15 +68,13 @@ public final class EventRegistry implements Listener {
 				.stream()
 				.map(IExtractor::recipe)
 				.filter(IRecipe::enabled)
-				.map(IRecipe::recipe)
-				.map(CraftingRecipe::getKey)
+				.map(IRecipe::namespace)
 				.collect(Collectors.toList()));
 		player.discoverRecipes(DustRegistry.all()
 				.stream()
 				.map(IDust::recipe)
 				.filter(IRecipe::enabled)
-				.map(IRecipe::recipe)
-				.map(CraftingRecipe::getKey)
+				.map(IRecipe::namespace)
 				.collect(Collectors.toList()));
 	}
 	
@@ -150,8 +150,7 @@ public final class EventRegistry implements Listener {
 			
 			if(extract_price.enabled() == true) extract_price.price().remove(player);
 			
-			ExtractorRegistry.extract(extractor, player, item_enchanted, to_remove,
-					extractor.chance().chance(item_extractor) == false);
+			ExtractorRegistry.extract(extractor, player, item_enchanted, item_extractor, to_remove);
 		} else {
 			new SelectionExtract(extractor, player, item_extractor, item_enchanted, enchantments);
 		}
@@ -185,8 +184,8 @@ public final class EventRegistry implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onCraftExtractor(CraftItemEvent event) {
-		if(!(event.getRecipe() instanceof CraftingRecipe crafting)) return;
-		String key = crafting.getKey().getKey();
+		if(!(event.getRecipe() instanceof Keyed keyed)) return;
+		String key = keyed.getKey().getKey();
 		
 		if(key.startsWith(prefix_extractor) == false) return;
 		String id = key.substring(prefix_extractor.length());
@@ -257,8 +256,8 @@ public final class EventRegistry implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onCraftDust(CraftItemEvent event) {
-		if(!(event.getRecipe() instanceof CraftingRecipe crafting)) return;
-		String key = crafting.getKey().getKey();
+		if(!(event.getRecipe() instanceof Keyed keyed)) return;
+		String key = keyed.getKey().getKey();
 		
 		if(key.startsWith(prefix_dust) == false) return;
 		String id = key.substring(prefix_dust.length());
@@ -505,6 +504,9 @@ public final class EventRegistry implements Listener {
 		
 		event.setCancelled(true);
 		anvil.setItem(1, null);
+		
+		player.spawnParticle(RF.enumerate(Particle.class, "SMOKE_NORMAL", "SMOKE"),
+				player.getLocation().add(0, 1, 0), 25, 0.1, 0.2, 0.1, 0.075);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
