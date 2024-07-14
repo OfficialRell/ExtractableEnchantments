@@ -106,8 +106,7 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 		
 		if(extractor.price().enabled() == true) extractor.price().price().remove(player);
 		
-		ExtractorRegistry.extract(extractor, player, item_enchanted, levelled,
-				extractor.chance().chance(item_extractor) == false);
+		ExtractorRegistry.extract(extractor, player, item_enchanted, item_extractor, levelled);
 	}
 	
 	@EventHandler
