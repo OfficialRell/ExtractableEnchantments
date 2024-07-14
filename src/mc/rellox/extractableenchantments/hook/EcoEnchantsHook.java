@@ -11,7 +11,9 @@ import com.willfp.ecoenchants.enchant.EcoEnchantLike;
 
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantmentReader;
+import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
+import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 
 public class EcoEnchantsHook implements IHook, IEnchantmentReader {
 
@@ -31,8 +33,10 @@ public class EcoEnchantsHook implements IHook, IEnchantmentReader {
 	@Override
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
-		if(ItemRegistry.nulled(item) == true) return map;
-		item.getEnchantments().forEach((e, level) -> {
+		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+		
+		IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
+		fetcher.enchantments().forEach((e, level) -> {
 			if(e instanceof EcoEnchantLike ee) {
 				String key = e.getKey().getKey();
 				String name = ChatColor.stripColor(ee.getRawDisplayName());

@@ -9,7 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantmentReader;
+import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
+import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
 public class VaneHook implements IHook, IEnchantmentReader {
@@ -30,9 +32,10 @@ public class VaneHook implements IHook, IEnchantmentReader {
 	@Override
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
-		if(ItemRegistry.nulled(item) == true) return map;
+		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
 		
-		item.getEnchantments().forEach((e, level) -> {
+		IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
+		fetcher.enchantments().forEach((e, level) -> {
 			if(is(e) == true) {
 				String key = e.getKey().getKey();
 				String name = ChatColor.stripColor(display(e));

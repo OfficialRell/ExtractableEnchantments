@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantmentReader;
 import mc.rellox.extractableenchantments.api.item.enchantment.ILevelledEnchantment;
+import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
+import mc.rellox.extractableenchantments.item.ItemRegistry;
 
 public final class EnchantmentRegistry {
 
@@ -76,10 +80,11 @@ public final class EnchantmentRegistry {
 			}
 			@Override
 			public Map<IEnchantment, Integer> enchantments(ItemStack item) {
-				if(item == null) return Map.of();
-				ItemMeta meta = item.getItemMeta();
 				Map<IEnchantment, Integer> map = new HashMap<>();
-				meta.getEnchants().forEach((e, l) -> {
+				if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+				
+				IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
+				fetcher.enchantments().forEach((e, l) -> {
 					IEnchantment enchantment = ENCHANTMENTS.get(e.getKey().getKey());
 					if(enchantment == null) return;
 					map.put(enchantment, l);
@@ -108,6 +113,31 @@ public final class EnchantmentRegistry {
 		return enchantments(item).stream()
 				.collect(Collectors.toMap(i -> i.enchantment().key(),
 						i -> i));
+	}
+	
+	public static IMetaFetcher fetcher(ItemMeta meta) {
+		if(meta instanceof EnchantmentStorageMeta storage) {
+			return new IMetaFetcher() {
+				@Override
+				public int level(Enchantment enchantment) {
+					return storage.getEnchantLevel(enchantment);
+				}
+				@Override
+				public Map<Enchantment, Integer> enchantments() {
+					return storage.getStoredEnchants();
+				}
+			};
+		}
+		return new IMetaFetcher() {
+			@Override
+			public int level(Enchantment enchantment) {
+				return meta.getEnchantLevel(enchantment);
+			}
+			@Override
+			public Map<Enchantment, Integer> enchantments() {
+				return meta.getEnchants();
+			}
+		};
 	}
 	
 }
