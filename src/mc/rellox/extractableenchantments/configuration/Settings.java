@@ -121,10 +121,13 @@ public final class Settings {
 			int model = file.getInteger(path + ".item.model");
 			ExtractorItem item = new ExtractorItem(material, name, info, glint, model);
 
-			boolean destroy = file.getBoolean(path + ".chance.destroy");
-			int minimum = file.getInteger(path + ".chance.minimum");
-			int maximum = file.getInteger(path + ".chance.maximum");
-			IExtractorChance chance = new ExtractorChance(destroy, minimum, maximum);
+			IExtractorChance chance;
+			if(file.getBoolean(path + ".chance.enabled") == true) {
+				boolean destroy = file.getBoolean(path + ".chance.destroy");
+				int minimum = file.getInteger(path + ".chance.minimum");
+				int maximum = file.getInteger(path + ".chance.maximum");
+				chance = new ExtractorChance(destroy, minimum, maximum);
+			} else chance = IExtractorChance.empty;
 
 			boolean clearing = file.getBoolean(path + ".clear-book");
 			
