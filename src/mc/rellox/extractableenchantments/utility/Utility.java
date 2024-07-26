@@ -12,12 +12,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
+import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
 import mc.rellox.extractableenchantments.utility.Version.VersionType;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
@@ -55,25 +56,25 @@ public final class Utility {
 		}
 	}
 	
-	public static void update(CraftingRecipe recipe) {
+	public static void update(IRecipe recipe) {
 		if(recipe == null) return;
 		boolean removed = false;
 		try {
 			removed = RF.order(Bukkit.getServer(), "removeRecipe", false, NamespacedKey.class).as(boolean.class)
-					.invoke(false, recipe.getKey());
+					.invoke(false, recipe.namespace());
 		} catch (Exception e) {}
 		if(removed == false) {
 			Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
 			while(it.hasNext() == true) {
 				Recipe r = it.next();
-				if(r instanceof CraftingRecipe craft) {
-					if(craft.getKey().equals(recipe.getKey()) == false) continue;
+				if(r instanceof ShapedRecipe shaped) {
+					if(shaped.getKey().equals(recipe.namespace()) == false) continue;
 					it.remove();
 					break;
 				}
 			}
 		}
-		Bukkit.addRecipe(recipe);
+		Bukkit.addRecipe(recipe.recipe());
 	}
 	
 	public static String displayName(Material material) {

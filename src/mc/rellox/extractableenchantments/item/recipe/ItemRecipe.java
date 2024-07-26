@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.CraftingRecipe;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
@@ -19,7 +19,7 @@ public class ItemRecipe implements IRecipe {
 	
 	private final List<RecipeItem> ingredients;
 	
-	private CraftingRecipe recipe;
+	private Recipe recipe;
 	
 	public ItemRecipe(List<RecipeItem> ingredients) {
 		this.ingredients = ingredients;
@@ -57,11 +57,11 @@ public class ItemRecipe implements IRecipe {
 	}
 
 	@Override
-	public CraftingRecipe recipe() {
+	public Recipe recipe() {
 		return recipe;
 	}
 
-	private CraftingRecipe recipe0() {
+	private Recipe recipe0() {
 		NamespacedKey key = new NamespacedKey(ExtractableEnchantments.instance(), object.prefix() + object.key());
 		ShapedRecipe shaped = new ShapedRecipe(key, object.result());
 		shaped.shape("abc", "def", "ghi");
@@ -75,7 +75,7 @@ public class ItemRecipe implements IRecipe {
 	@Override
 	public void update() {
 		this.recipe = recipe0();
-		Utility.update(recipe);
+		Utility.update(this);
 	}
 
 }
