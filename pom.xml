@@ -4,7 +4,7 @@
   
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>11.2</version>
+  <version>11.3</version>
   <packaging>jar</packaging>
   
   <name>ExtractableEnchantments</name>
