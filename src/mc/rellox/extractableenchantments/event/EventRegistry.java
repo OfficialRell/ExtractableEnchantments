@@ -53,6 +53,8 @@ import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.LevelledEnchantment;
 import mc.rellox.extractableenchantments.utility.Utility;
+import mc.rellox.extractableenchantments.utility.Version;
+import mc.rellox.extractableenchantments.utility.Version.VersionType;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
 public final class EventRegistry implements Listener {
@@ -495,7 +497,7 @@ public final class EventRegistry implements Listener {
 				|| ItemRegistry.chance(book) == true) return;
 		
 		int level = player.getLevel();
-		int cost = anvil.getRepairCost();
+		int cost = repair(player, anvil);
 		if(cost > level) return;
 		player.setLevel(level - cost);
 
@@ -507,6 +509,13 @@ public final class EventRegistry implements Listener {
 		
 		player.spawnParticle(RF.enumerate(Particle.class, "SMOKE_NORMAL", "SMOKE"),
 				player.getLocation().add(0, 1, 0), 25, 0.1, 0.2, 0.1, 0.075);
+	}
+	
+	private int repair(Player player, Inventory v) {
+		Object from;
+		if(Version.version.high(VersionType.v_21_1) == true) from = player.getOpenInventory();
+		else from = v;
+		return RF.order(from, "getRepairCost").as(int.class).invoke(0);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
