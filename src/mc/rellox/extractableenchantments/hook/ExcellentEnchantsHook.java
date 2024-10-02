@@ -15,8 +15,13 @@ import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
+import mc.rellox.extractableenchantments.utility.reflect.type.Invoker;
 
 public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
+	
+	private Class<?> registry_class;
+	private Invoker<Enchantment> get_enchantment;
+	private Invoker<String> get_name;
 
 	@Override
 	public String name() {
@@ -24,7 +29,23 @@ public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 	}
 
 	@Override
-	public void enable() {}
+	public void enable() {
+		try {
+			registry_class = RF.get("su.nightexpress.excellentenchants.registry.EnchantRegistry");
+			if(registry_class == null)
+				registry_class = RF.get("su.nightexpress.excellentenchants.enchantments.registry.EnchantRegistry");
+			
+			get_enchantment = RF.order(registry_class, "getBukkitEnchantment", false).as(Enchantment.class);
+			if(get_enchantment.valid() == false)
+				get_enchantment = RF.order(registry_class, "getEnchantment", false).as(Enchantment.class);
+			
+			get_name = RF.order(registry_class, "getDisplayName", false).as(String.class);
+			if(get_name.valid() == false)
+				get_name = RF.order(registry_class, "getName", false).as(String.class);
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+	}
 	
 	@Override
 	public String key() {
@@ -39,12 +60,11 @@ public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 		IMetaFetcher fetcher = EnchantmentRegistry.fetcher(meta);
 		
 		try {
-			Class<?> rc = RF.get("su.nightexpress.excellentenchants.enchantment.registry.EnchantRegistry");
 			@SuppressWarnings("unchecked")
-			Map<NamespacedKey, ?> by_key = RF.fetch(rc, "BY_KEY", Map.class);
+			Map<NamespacedKey, ?> by_key = RF.fetch(registry_class, "BY_KEY", Map.class);
 			by_key.forEach((key, data) -> {
-				Enchantment e = RF.direct(data, "getEnchantment", Enchantment.class);
-				String name = ChatColor.stripColor(RF.direct(data, "getName", String.class));
+				Enchantment e = get_enchantment.objected(data);
+				String name = ChatColor.stripColor(get_name.objected(data));
 				int max = e.getMaxLevel();
 				int level = fetcher.level(e);
 				if(level <= 0) return;
