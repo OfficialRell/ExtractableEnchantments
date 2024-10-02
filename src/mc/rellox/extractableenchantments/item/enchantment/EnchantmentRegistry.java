@@ -120,7 +120,7 @@ public final class EnchantmentRegistry {
 			return new IMetaFetcher() {
 				@Override
 				public int level(Enchantment enchantment) {
-					return storage.getEnchantLevel(enchantment);
+					return storage.getStoredEnchantLevel(enchantment);
 				}
 				@Override
 				public Map<Enchantment, Integer> enchantments() {
