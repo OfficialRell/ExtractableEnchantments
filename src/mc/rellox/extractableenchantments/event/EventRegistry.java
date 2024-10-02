@@ -101,6 +101,7 @@ public final class EventRegistry implements Listener {
 		Player player = (Player) event.getWhoClicked();
 		
 		List<ILevelledEnchantment> enchantments = EnchantmentRegistry.enchantments(item_enchanted);
+		
 		if(enchantments.isEmpty() == true) return;
 		IExtract extract = extractor.extract();
 		enchantments.removeIf(e -> extract.filter()
@@ -344,7 +345,16 @@ public final class EventRegistry implements Listener {
 					Settings.settings.sound_warning.play(player);
 					return;
 				}
+				
 				int perc_dust = DustRegistry.readPercent(item_dust);
+				
+				int amount = item_dust.getAmount();
+				if(amount > 1) {
+					perc_dust *= amount;
+					item_dust.setAmount(1);
+					DustRegistry.writePercent(item_dust, perc_dust);
+				}
+				
 				if(perc_dust <= 1) return;
 				int half = ((perc_dust - 1) >> 1) + 1;
 				perc_dust -= half;
@@ -373,8 +383,22 @@ public final class EventRegistry implements Listener {
 				int perc_dust = DustRegistry.readPercent(item_dust);
 				if(perc_dust < 0) return;
 				
+				int amount = item_dust.getAmount();
+				if(amount > 1) {
+					perc_dust *= amount;
+					item_dust.setAmount(1);
+					DustRegistry.writePercent(item_dust, perc_dust);
+				}
+				
 				int perc_other = DustRegistry.readPercent(item_other);
 				if(perc_dust < 0) return;
+				
+				amount = item_other.getAmount();
+				if(amount > 1) {
+					perc_other *= amount;
+					item_other.setAmount(1);
+					DustRegistry.writePercent(item_other, perc_other);
+				}
 				
 				int can = other.limit() - perc_other;
 				if(can <= 0) return;
@@ -418,6 +442,14 @@ public final class EventRegistry implements Listener {
 				return;
 			}
 			int perc_dust = DustRegistry.readPercent(item_dust);
+			
+			int amount = item_dust.getAmount();
+			if(amount > 1) {
+				perc_dust *= amount;
+				item_dust.setAmount(1);
+				DustRegistry.writePercent(item_dust, perc_dust);
+			}
+			
 			int remove = 100 - perc_hand;
 			if(perc_dust > remove) {
 				perc_hand = 100;
@@ -451,6 +483,14 @@ public final class EventRegistry implements Listener {
 				return;
 			}
 			int perc_dust = DustRegistry.readPercent(item_dust);
+			
+			int amount = item_dust.getAmount();
+			if(amount > 1) {
+				perc_dust *= amount;
+				item_dust.setAmount(1);
+				DustRegistry.writePercent(item_dust, perc_dust);
+			}
+			
 			if(perc_dust <= 1) return;
 			
 			int half = ((perc_dust - 1) >> 1) + 1;
