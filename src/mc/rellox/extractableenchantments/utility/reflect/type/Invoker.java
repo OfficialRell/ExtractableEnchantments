@@ -29,6 +29,10 @@ public interface Invoker<T> {
 			public Class<?>[] parameters() {
 				return null;
 			}
+			@Override
+			public boolean valid() {
+				return false;
+			}
 		};
 	}
 	
@@ -48,6 +52,10 @@ public interface Invoker<T> {
 	default T invoke(T def, Object... os) {
 		T r = invoke(os);
 		return r == null ? def : r;
+	}
+	
+	default boolean valid() {
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")

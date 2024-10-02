@@ -36,6 +36,7 @@ public class EcoEnchantsHook implements IHook, IEnchantmentReader {
 		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
 		
 		IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
+		
 		fetcher.enchantments().forEach((e, level) -> {
 			if(e instanceof EcoEnchantLike ee) {
 				String key = e.getKey().getKey();
