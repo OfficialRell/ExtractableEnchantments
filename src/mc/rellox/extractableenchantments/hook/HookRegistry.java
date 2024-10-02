@@ -17,12 +17,15 @@ public final class HookRegistry {
 	public static final EcoEnchantsHook eco_enchants = new EcoEnchantsHook();
 	public static final ExcellentEnchantsHook excellent_enchants = new ExcellentEnchantsHook();
 	public static final VaneHook vane = new VaneHook();
+	public static final EnchantmentPlusHook enchantments_plus = new EnchantmentPlusHook();
+	
 	
 	static {
 		HOOKS.put(economy.name(), economy);
 		HOOKS.put(eco_enchants.name(), eco_enchants);
 		HOOKS.put(excellent_enchants.name(), excellent_enchants);
 		HOOKS.put(vane.name(), vane);
+		HOOKS.put(enchantments_plus.name(), enchantments_plus);
 	}
 	
 	public static void initialize() {
