@@ -6,6 +6,10 @@ public interface ILevelledEnchantment {
 	
 	IEnchantment enchantment();
 	
+	default String key() {
+		return enchantment().key();
+	}
+	
 	int level();
 	
 	default boolean unsafe() {
