@@ -27,10 +27,13 @@ public class EnchantmentPlusHook implements IHook, IEnchantmentReader {
 	
 	@Override
 	public boolean load() {
-		return Bukkit.getDataPackManager().getDataPacks().stream()
-				.map(DataPack::getKey)
-				.map(NamespacedKey::getKey)
-				.anyMatch(key -> key.contains("enchantment-plus"));
+		try {
+			return Bukkit.getDataPackManager().getDataPacks().stream()
+					.map(DataPack::getKey)
+					.map(NamespacedKey::getKey)
+					.anyMatch(key -> key.contains("enchantment-plus"));
+		} catch (Exception e) {}
+		return false;
 	}
 	
 	@Override
