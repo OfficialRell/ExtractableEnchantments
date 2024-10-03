@@ -1,7 +1,6 @@
 package mc.rellox.extractableenchantments.configuration;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -19,6 +18,7 @@ import mc.rellox.extractableenchantments.api.extractor.constraint.IConstraint;
 import mc.rellox.extractableenchantments.api.extractor.extract.ExtractFilter;
 import mc.rellox.extractableenchantments.api.extractor.extract.ExtractType;
 import mc.rellox.extractableenchantments.api.extractor.extract.IAccepted;
+import mc.rellox.extractableenchantments.api.extractor.extract.IIgnoredEnchantment;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipe.RecipeItem;
 import mc.rellox.extractableenchantments.api.price.IPrice;
@@ -141,7 +141,35 @@ public final class Settings {
 			
 			List<String> strings = file.getStrings(path + ".extract.ignored.enchantments");
 			strings.replaceAll(String::toLowerCase);
-			Set<String> enchantments = new HashSet<>(strings);
+			
+			Set<IIgnoredEnchantment> enchantments = strings.stream().map(s -> {
+				if(s.indexOf(':') > 0) {
+					String[] ss = s.split(":");
+					String k = ss[0];
+					String v = ss[1];
+					if(s.matches(".+:\\d+") == true) {
+						int level = Integer.parseInt(v);
+						return IIgnoredEnchantment.of(k, level);
+					}
+					if(s.matches(".+:\\d+\\+") == true) {
+						int minumum = Integer.parseInt(v.replace("+", ""));
+						return IIgnoredEnchantment.of(k, minumum, Integer.MAX_VALUE);
+					}
+					if(s.matches(".+:-\\d+") == true) {
+						int maximum = Integer.parseInt(v.replace("-", ""));
+						return IIgnoredEnchantment.of(k, 0, maximum);
+					}
+					if(s.matches(".+:\\d+-\\d+") == true) {
+						String[] sss = v.split("-");
+						int minumum = Integer.parseInt(sss[0]);
+						int maximum = Integer.parseInt(sss[1]);
+						return IIgnoredEnchantment.of(k, minumum, maximum);
+					}
+				}
+				return IIgnoredEnchantment.of(s);
+			})
+			.collect(Collectors.toSet());
+			
 			boolean invert = file.getBoolean(path + ".extract.ignored.invert");
 			IAccepted accepted = new ExtractAccepted(enchantments, invert);
 			

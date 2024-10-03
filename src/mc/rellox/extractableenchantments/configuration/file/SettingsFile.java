@@ -205,7 +205,13 @@ public final class SettingsFile extends AbstractFile {
 	    			"- MINECRAFT (extracts only minecraft enchantments)",
 	    			"- CUSTOM (extracts only custom enchantments)");
 	    	c.comment("Extractors.default.extract.ignored.enchantments",
-	    			"List of enchantment keys that should not be extracted.");
+	    			"List of enchantment keys that should not be extracted.",
+	    			"Examples:",
+	    			"- 'sharpness' # will ignore sharpness",
+	    			"- 'sharpness:5' # will ignore sharpness of level 5 only",
+	    			"- 'sharpness:3+' # will ignore sharpness of level 3 and above",
+	    			"- 'sharpness:-3' # will ignore sharpness of level 3 and below",
+	    			"- 'sharpness:2-4' # will ignore sharpness of level 2 to 4");
 	    	c.comment("Extractors.default.extract.ignored.invert",
 	    			"Inverts the ignored enchantment list.",
 	    			"If true, the extractor will only allow to",

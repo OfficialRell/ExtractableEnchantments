@@ -121,7 +121,7 @@ public final class EventRegistry implements Listener {
 			}
 		}
 		enchantments.removeIf(e -> extract.accepted()
-				.accepted(e.enchantment()) == false);
+				.accepted(e) == false);
 		if(enchantments.isEmpty() == true) return;
 		
 		if(player.hasPermission("ee.use." + extractor.key()) == false) {
