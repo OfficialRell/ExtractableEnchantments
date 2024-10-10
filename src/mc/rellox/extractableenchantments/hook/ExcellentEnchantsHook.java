@@ -35,15 +35,17 @@ public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 			if(registry_class == null)
 				registry_class = RF.get("su.nightexpress.excellentenchants.enchantments.registry.EnchantRegistry");
 			
-			get_enchantment = RF.order(registry_class, "getBukkitEnchantment", false).as(Enchantment.class);
-			if(get_enchantment.valid() == false)
-				get_enchantment = RF.order(registry_class, "getEnchantment", false).as(Enchantment.class);
+			Class<?> enchantment_class = RF.get("su.nightexpress.excellentenchants.api.enchantment.CustomEnchantment");
 			
-			get_name = RF.order(registry_class, "getDisplayName", false).as(String.class);
+			get_enchantment = RF.order(enchantment_class, "getBukkitEnchantment", false).as(Enchantment.class);
+			if(get_enchantment.valid() == false)
+				get_enchantment = RF.order(enchantment_class, "getEnchantment", false).as(Enchantment.class);
+			
+			get_name = RF.order(enchantment_class, "getDisplayName", false).as(String.class);
 			if(get_name.valid() == false)
-				get_name = RF.order(registry_class, "getName", false).as(String.class);
+				get_name = RF.order(enchantment_class, "getName", false).as(String.class);
 		} catch (Exception x) {
-			x.printStackTrace();
+			RF.debug(x);
 		}
 	}
 	
@@ -71,12 +73,13 @@ public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 				map.put(new ExcellentEnchantment(e, key.getKey(), name, max, false), level);
 			});
 		} catch (Exception x) {
-			x.printStackTrace();
+			RF.debug(x);
 		}
 		return map;
 	}
 	
-	public record ExcellentEnchantment(Enchantment enchantment, String key, String name, int maximum, boolean curse) implements IEnchantment {
+	public record ExcellentEnchantment(Enchantment enchantment, String key, String name, int maximum, boolean curse)
+	implements IEnchantment {
 
 		@Override
 		public void remove(ItemStack item) {
