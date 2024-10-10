@@ -19,7 +19,6 @@ public final class HookRegistry {
 	public static final VaneHook vane = new VaneHook();
 	public static final EnchantmentPlusHook enchantments_plus = new EnchantmentPlusHook();
 	
-	
 	static {
 		HOOKS.put(economy.name(), economy);
 		HOOKS.put(eco_enchants.name(), eco_enchants);
@@ -29,7 +28,8 @@ public final class HookRegistry {
 	}
 	
 	public static void initialize() {
-		HOOKS.values().stream().filter(IHook::load)
+		HOOKS.values().stream()
+		.filter(IHook::load)
 		.peek(IHook::enable)
 		.forEach(hook -> {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] "
