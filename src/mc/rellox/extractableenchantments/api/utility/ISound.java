@@ -28,7 +28,7 @@ public interface ISound {
 	static ISound parse(String format) {
 		try {
 			String[] ss = format.split(":");
-			Sound sound = RF.enumerate(Sound.class, ss[0]);
+			Sound sound = RF.fielded(Sound.class, ss[0]);
 			float volume = (float) (ss.length > 1 ? Double.parseDouble(ss[1]) : 1);
 			float pitch = (float) (ss.length > 2 ? Double.parseDouble(ss[2]) : 1);
 			return sound == null ? null : of(sound, volume, pitch);
