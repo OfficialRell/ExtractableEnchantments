@@ -18,6 +18,9 @@ public final class HookRegistry {
 	public static final ExcellentEnchantsHook excellent_enchants = new ExcellentEnchantsHook();
 	public static final VaneHook vane = new VaneHook();
 	public static final EnchantmentPlusHook enchantments_plus = new EnchantmentPlusHook();
+	public static final AdvancedEnchantmentsHook advanced_enchantments = new AdvancedEnchantmentsHook();
+	public static final EnchantsSquaredHook enchants_squared = new EnchantsSquaredHook();
+	public static final CrazyEnchantmentsHook crazy_enchantments = new CrazyEnchantmentsHook();
 	
 	static {
 		HOOKS.put(economy.name(), economy);
@@ -25,6 +28,9 @@ public final class HookRegistry {
 		HOOKS.put(excellent_enchants.name(), excellent_enchants);
 		HOOKS.put(vane.name(), vane);
 		HOOKS.put(enchantments_plus.name(), enchantments_plus);
+		HOOKS.put(advanced_enchantments.name(), advanced_enchantments);
+		HOOKS.put(enchants_squared.name(), enchants_squared);
+		HOOKS.put(crazy_enchantments.name(), crazy_enchantments);
 	}
 	
 	public static void initialize() {

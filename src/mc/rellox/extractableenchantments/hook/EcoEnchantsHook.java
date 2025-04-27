@@ -30,6 +30,7 @@ public class EcoEnchantsHook implements IHook, IEnchantmentReader {
 		return name().toLowerCase();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
