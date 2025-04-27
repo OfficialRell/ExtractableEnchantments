@@ -126,6 +126,7 @@ public abstract class Constraint implements IConstraint {
 			this.model = model;
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public boolean ignored(ItemStack item) {
 			if(item == null || item.hasItemMeta() == false) return true;

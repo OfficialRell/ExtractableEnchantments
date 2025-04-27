@@ -10,8 +10,8 @@ import mc.rellox.extractableenchantments.api.price.PriceType;
 import mc.rellox.extractableenchantments.configuration.Language;
 import mc.rellox.extractableenchantments.hook.HookRegistry;
 import mc.rellox.extractableenchantments.hook.ICurrency;
+import mc.rellox.extractableenchantments.text.Text;
 import mc.rellox.extractableenchantments.text.content.Content;
-import mc.rellox.extractableenchantments.utility.Utility;
 
 public abstract class Price implements IPrice {
 	
@@ -40,7 +40,8 @@ public abstract class Price implements IPrice {
 
 	@Override
 	public Content text() {
-		return Language.get("Price." + type.key() + ".value", "price", value);
+		return Language.get("Price." + type.key() + ".value",
+				"price", value);
 	}
 	
 	public static class PricePoints extends Price {
@@ -118,7 +119,9 @@ public abstract class Price implements IPrice {
 		
 		@Override
 		public Content text() {
-			return Language.get("Price." + type.key() + ".value", "price", value, "material", Utility.displayName(item));
+			return Language.get("Price." + type.key() + ".value",
+					"price", value,
+					"material", Text.display(item));
 		}
 
 		@Override

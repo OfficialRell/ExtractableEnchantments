@@ -118,7 +118,6 @@ public interface Content {
 	
 	// Classes
 	
-	@FunctionalInterface
 	interface Variables {
 		
 		static final Variables empty = k -> k;

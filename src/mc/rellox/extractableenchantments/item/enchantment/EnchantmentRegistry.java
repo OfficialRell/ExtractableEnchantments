@@ -3,17 +3,24 @@ package mc.rellox.extractableenchantments.item.enchantment;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import mc.rellox.extractableenchantments.api.extractor.IExtractor;
+import mc.rellox.extractableenchantments.api.extractor.extract.ExtractFilter;
+import mc.rellox.extractableenchantments.api.extractor.extract.IExtract;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantmentReader;
 import mc.rellox.extractableenchantments.api.item.enchantment.ILevelledEnchantment;
 import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
+import mc.rellox.extractableenchantments.configuration.Language;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
 
 public final class EnchantmentRegistry {
@@ -85,7 +92,10 @@ public final class EnchantmentRegistry {
 				
 				IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
 				fetcher.enchantments().forEach((e, l) -> {
-					IEnchantment enchantment = ENCHANTMENTS.get(e.getKey().getKey());
+					@SuppressWarnings("deprecation")
+					NamespacedKey key = e.getKey();
+					if(key == null) return;
+					IEnchantment enchantment = ENCHANTMENTS.get(key.getKey());
 					if(enchantment == null) return;
 					map.put(enchantment, l);
 				});
@@ -111,8 +121,36 @@ public final class EnchantmentRegistry {
 	
 	public static Map<String, ILevelledEnchantment> keyed(ItemStack item) {
 		return enchantments(item).stream()
-				.collect(Collectors.toMap(i -> i.enchantment().key(),
-						i -> i));
+				.collect(Collectors.toMap(i -> i.enchantment().key(), Function.identity()));
+	}
+
+	public static List<ILevelledEnchantment> enchantments(IExtractor extractor, Player player, ItemStack item) {
+		List<ILevelledEnchantment> enchantments = EnchantmentRegistry.enchantments(item);
+		
+		if(enchantments.isEmpty() == true) return enchantments;
+		
+		IExtract extract = extractor.extract();
+		enchantments.removeIf(e -> extract.filter()
+				.accepts(e.enchantment()) == false);
+		
+		if(enchantments.isEmpty() == true) {
+			if(extract.filter() == ExtractFilter.MINECRAFT)
+				Language.get("Extraction.filter.minecraft").send(player);
+			else if(extract.filter() == ExtractFilter.CUSTOM)
+				Language.get("Extraction.filter.custom").send(player);
+			return enchantments;
+		}
+		if(extract.unsafe() == false) {
+			enchantments.removeIf(ILevelledEnchantment::unsafe);
+			if(enchantments.isEmpty() == true) {
+				Language.get("Extraction.unsafe").send(player);
+				return enchantments;
+			}
+		}
+		enchantments.removeIf(e -> extract.accepted()
+				.accepted(e) == false);
+		
+		return enchantments;
 	}
 	
 	public static IMetaFetcher fetcher(ItemMeta meta) {

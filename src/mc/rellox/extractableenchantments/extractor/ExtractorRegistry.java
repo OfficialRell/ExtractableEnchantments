@@ -60,12 +60,17 @@ public final class ExtractorRegistry {
 	
 	public static void extract(IExtractor extractor, Player player, ItemStack item_enchanted,
 			ItemStack item_extractor, ILevelledEnchantment to_remove) {
+		extract(extractor, player, item_enchanted, item_extractor, to_remove, extractor.extract().type());
+	}
+	
+	public static void extract(IExtractor extractor, Player player, ItemStack item_enchanted,
+			ItemStack item_extractor, ILevelledEnchantment to_remove, ExtractType extraction) {
 		IEnchantment enchantment = to_remove.enchantment();
 		
 		boolean success = extractor.chance().chance(item_extractor);
 		
 		if(success == false) {
-			if(extractor.extract().type() == ExtractType.RANDOM) player.setItemOnCursor(null);
+			if(extraction == ExtractType.RANDOM) player.setItemOnCursor(null);
 			String l;
 			if(extractor.chance().destroy() == true) {
 				enchantment.remove(item_enchanted);
@@ -99,14 +104,14 @@ public final class ExtractorRegistry {
 				book.setItemMeta(meta);
 			}
 			
-			if(extractor.extract().type() == ExtractType.RANDOM) {
+			if(extraction == ExtractType.RANDOM) {
 				if(player.getGameMode() == GameMode.CREATIVE) player.getInventory().addItem(book);
 				else player.setItemOnCursor(book);
 			} else {
 				if(ItemRegistry.free(player) <= 0) player.getWorld().dropItem(player.getLocation(), book);
 				else player.getInventory().addItem(book);
 			}
-		} else if(extractor.extract().type() == ExtractType.RANDOM) player.setItemOnCursor(null);
+		} else if(extraction == ExtractType.RANDOM) player.setItemOnCursor(null);
 		
 		Language.get("Extraction.success",
 				"enchantment", enchantment.name(),

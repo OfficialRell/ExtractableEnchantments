@@ -7,9 +7,14 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.text.content.Content;
+import mc.rellox.extractableenchantments.utility.Version;
+import mc.rellox.extractableenchantments.utility.Version.VersionType;
+import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
 public final class Text {
 	
@@ -94,6 +99,56 @@ public final class Text {
 	private static int r(StringBuilder sb, String s, int i) {
 		sb.append(s);
 		return i;
+	}
+	
+	public static String display(Material material) {
+		return display(new ItemStack(material));
+	}
+	
+	public static String display(ItemStack item) {
+		try {
+			Class<?> clazz = RF.craft("inventory.CraftItemStack");
+			Object nms_item = RF.order(clazz, "asNMSCopy", ItemStack.class).invoke(item);
+			String a, b = "getString";
+			
+			if(Version.version == VersionType.v_18_1) {
+				a = "v";
+				b = "a";
+			} else if(Version.version == VersionType.v_18_2) {
+				a = "w";
+				b = "a";
+			} else if(Version.version == VersionType.v_19_1
+					|| Version.version == VersionType.v_19_2
+					|| Version.version == VersionType.v_19_3) {
+				a ="x";
+			} else if(Version.version == VersionType.v_20_1
+					|| Version.version == VersionType.v_20_2
+					|| Version.version == VersionType.v_20_3) {
+				a = "y";
+			} else if(Version.version == VersionType.v_20_4) {
+				a = "x";
+			} else if(Version.version == VersionType.v_21_1) {
+				a = "w";
+			} else if(Version.version == VersionType.v_21_2
+					|| Version.version == VersionType.v_21_3
+					|| Version.version == VersionType.v_21_4) {
+				a = "y";
+			} else {
+				a = "getName";
+				b = "getText";
+			}
+			
+			Object component = RF.direct(nms_item, a);
+			String name = RF.direct(component, b, String.class);
+			
+			if(name == null)
+				Bukkit.getLogger().warning("Null name got returned when trying to fetch item name");
+			
+			return ChatColor.stripColor(name);
+		} catch(Exception e) {
+			Bukkit.getLogger().warning("Cannot get item display name");
+			return "null";
+		}
 	}
 	
 	private static final Pattern key_pattern = Pattern.compile("[a-z_\\d]*");

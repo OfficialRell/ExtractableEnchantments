@@ -35,9 +35,7 @@ import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.api.dust.IDust;
 import mc.rellox.extractableenchantments.api.extractor.IExtractPrice;
 import mc.rellox.extractableenchantments.api.extractor.IExtractor;
-import mc.rellox.extractableenchantments.api.extractor.extract.ExtractFilter;
 import mc.rellox.extractableenchantments.api.extractor.extract.ExtractType;
-import mc.rellox.extractableenchantments.api.extractor.extract.IExtract;
 import mc.rellox.extractableenchantments.api.item.IDustItem;
 import mc.rellox.extractableenchantments.api.item.IExtractorItem;
 import mc.rellox.extractableenchantments.api.item.enchantment.ILevelledEnchantment;
@@ -48,7 +46,7 @@ import mc.rellox.extractableenchantments.configuration.Language;
 import mc.rellox.extractableenchantments.configuration.Settings;
 import mc.rellox.extractableenchantments.dust.DustRegistry;
 import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
-import mc.rellox.extractableenchantments.extractor.SelectionExtract;
+import mc.rellox.extractableenchantments.extractor.selection.SelectionExtract;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.LevelledEnchantment;
@@ -100,29 +98,7 @@ public final class EventRegistry implements Listener {
 		
 		Player player = (Player) event.getWhoClicked();
 		
-		List<ILevelledEnchantment> enchantments = EnchantmentRegistry.enchantments(item_enchanted);
-		
-		if(enchantments.isEmpty() == true) return;
-		IExtract extract = extractor.extract();
-		enchantments.removeIf(e -> extract.filter()
-				.accepts(e.enchantment()) == false);
-		if(enchantments.isEmpty() == true) {
-			if(extract.filter() == ExtractFilter.MINECRAFT)
-				Language.get("Extraction.filter.minecraft").send(player);
-			else if(extract.filter() == ExtractFilter.CUSTOM)
-				Language.get("Extraction.filter.custom").send(player);
-			return;
-		}
-		if(extract.unsafe() == false) {
-			enchantments.removeIf(ILevelledEnchantment::unsafe);
-			if(enchantments.isEmpty() == true) {
-				Language.get("Extraction.unsafe").send(player);
-				return;
-			}
-		}
-		enchantments.removeIf(e -> extract.accepted()
-				.accepted(e) == false);
-		if(enchantments.isEmpty() == true) return;
+		List<ILevelledEnchantment> enchantments = EnchantmentRegistry.enchantments(extractor, player, item_enchanted);
 		
 		if(player.hasPermission("ee.use." + extractor.key()) == false) {
 			Language.get("Permission.warning.use-extractor").send(player);
@@ -147,7 +123,7 @@ public final class EventRegistry implements Listener {
 			return;
 		}
 		
-		if(extract.type() == ExtractType.RANDOM) {
+		if(extractor.extract().type() == ExtractType.RANDOM) {
 			int r = Utility.random(enchantments.size());
 			ILevelledEnchantment to_remove = enchantments.get(r);
 			
