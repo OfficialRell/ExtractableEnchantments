@@ -8,11 +8,29 @@ import mc.rellox.extractableenchantments.api.item.enchantment.ILevelledEnchantme
 
 public interface ISelectionExtract {
 	
+	/**
+	 * @return Selection inventory
+	 */
+	
 	Inventory inventory();
+	
+	/**
+	 * @return Used extractor
+	 */
 	
 	IExtractor extractor();
 	
+	/**
+	 * After any changes to this list you should call {@link #update()}.
+	 * 
+	 * @return Modifiable list of extractable enchantments
+	 */
+	
 	List<ILevelledEnchantment> enchantments();
+	
+	/**
+	 * Updates the inventory.
+	 */
 	
 	void update();
 
