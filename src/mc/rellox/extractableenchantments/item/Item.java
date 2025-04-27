@@ -14,14 +14,16 @@ public abstract class Item implements IItem {
 	protected final List<Content> info;
 	protected final boolean glint;
 	protected final int model;
+	protected final String tooltip;
 	
 	public Item(Material material, List<Content> name, List<Content> info,
-			boolean glint, int model) {
+			boolean glint, int model, String tooltip) {
 		this.material = material;
 		this.name = name;
 		this.info = info;
 		this.glint = glint;
 		this.model = model;
+		this.tooltip = tooltip;
 	}
 
 	@Override
@@ -47,6 +49,11 @@ public abstract class Item implements IItem {
 	@Override
 	public int model() {
 		return model;
+	}
+
+	@Override
+	public String tooltip() {
+		return tooltip;
 	}
 
 }

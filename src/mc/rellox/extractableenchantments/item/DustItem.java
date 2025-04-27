@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -23,8 +22,8 @@ public class DustItem extends Item implements IDustItem {
 	
 	public IDust dust;
 
-	public DustItem(Material material, List<Content> name, List<Content> info, boolean glint, int model) {
-		super(material, name, info, glint, model);
+	public DustItem(Material material, List<Content> name, List<Content> info, boolean glint, int model, String tooltip) {
+		super(material, name, info, glint, model, tooltip);
 	}
 
 	@Override
@@ -38,12 +37,8 @@ public class DustItem extends Item implements IDustItem {
 
 	@Override
 	public ItemStack constant() {
-		ItemStack item = new ItemStack(material);
+		ItemStack item = generic();
 		ItemMeta meta = item.getItemMeta();
-		meta.addItemFlags(ItemFlag.values());
-		
-		if(glint == true) ItemRegistry.glint(meta);
-		if(model > 0) meta.setCustomModelData(model);
 		
 		List<Content> name = new ArrayList<>(this.name);
 		name.replaceAll(c -> c.modified(Variables.with("percent", dust.percent())));
@@ -53,7 +48,7 @@ public class DustItem extends Item implements IDustItem {
 		
 		order.named(name);
 		
-		order.submit("INFO", () -> info);
+		order.submit("INFO", this::info);
 		
 		meta.setLore(order.build());
 
@@ -63,12 +58,8 @@ public class DustItem extends Item implements IDustItem {
 
 	@Override
 	public ItemStack item(int percent) {
-		ItemStack item = new ItemStack(material);
+		ItemStack item = generic();
 		ItemMeta meta = item.getItemMeta();
-		meta.addItemFlags(ItemFlag.values());
-		
-		if(glint == true) ItemRegistry.glint(meta);
-		if(model > 0) meta.setCustomModelData(model);
 		
 		List<Content> name = new ArrayList<>(this.name);
 		name.replaceAll(c -> c.modified(Variables.with("percent", percent)));
@@ -78,7 +69,7 @@ public class DustItem extends Item implements IDustItem {
 		
 		order.named(name);
 		
-		order.submit("INFO", () -> info);
+		order.submit("INFO", this::info);
 		
 		meta.setLore(order.build());
 

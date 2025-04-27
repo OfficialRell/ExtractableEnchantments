@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -25,18 +24,15 @@ public class ExtractorItem extends Item implements IExtractorItem {
 	
 	public IExtractor extractor;
 
-	public ExtractorItem(Material material, List<Content> name, List<Content> info, boolean glint, int model) {
-		super(material, name, info, glint, model);
+	public ExtractorItem(Material material, List<Content> name, List<Content> info, boolean glint,
+			int model, String tooltip) {
+		super(material, name, info, glint, model, tooltip);
 	}
 
 	@Override
 	public ItemStack constant() {
-		ItemStack item = new ItemStack(material);
+		ItemStack item = generic();
 		ItemMeta meta = item.getItemMeta();
-		meta.addItemFlags(ItemFlag.values());
-		
-		if(glint == true) ItemRegistry.glint(meta);
-		if(model > 0) meta.setCustomModelData(model);
 		
 		List<Content> name = new ArrayList<>(this.name);
 		if(name.size() > 0) meta.setDisplayName(name.remove(0).text());
@@ -45,7 +41,7 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		
 		order.named(name);
 		
-		order.submit("INFO", () -> info);
+		order.submit("INFO", this::info);
 		
 		IExtractorChance chance = extractor.chance();
 		if(chance.enabled() == true) {
@@ -68,12 +64,8 @@ public class ExtractorItem extends Item implements IExtractorItem {
 
 	@Override
 	public ItemStack item() {
-		ItemStack item = new ItemStack(material);
+		ItemStack item = generic();
 		ItemMeta meta = item.getItemMeta();
-		meta.addItemFlags(ItemFlag.values());
-		
-		if(glint == true) ItemRegistry.glint(meta);
-		if(model > 0) meta.setCustomModelData(model);
 		
 		List<Content> name = new ArrayList<>(this.name);
 		if(name.size() > 0) meta.setDisplayName(name.remove(0).text());
@@ -82,7 +74,7 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		
 		order.named(name);
 		
-		order.submit("INFO", () -> info);
+		order.submit("INFO", this::info);
 		
 		int chance_value;
 		IExtractorChance chance = extractor.chance();
