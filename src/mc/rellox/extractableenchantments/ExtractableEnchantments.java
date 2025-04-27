@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import mc.rellox.extractableenchantments.commands.CommandRegistry;
+import mc.rellox.extractableenchantments.command.CommandRegistry;
 import mc.rellox.extractableenchantments.configuration.Configuration;
 import mc.rellox.extractableenchantments.event.EventRegistry;
 import mc.rellox.extractableenchantments.hook.HookRegistry;
@@ -25,7 +25,7 @@ import mc.rellox.extractableenchantments.utility.Version;
 
 public class ExtractableEnchantments extends JavaPlugin {
 	
-	public static final double PLUGIN_VERSION = 11.7;
+	public static final double PLUGIN_VERSION = 11.9;
     
 	private static Plugin plugin;
 	

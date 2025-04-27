@@ -4,7 +4,7 @@
   
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>11.7</version>
+  <version>11.9</version>
   <packaging>jar</packaging>
   
   <name>ExtractableEnchantments</name>
@@ -27,13 +27,17 @@
       <id>auxilor</id>
       <url>https://repo.auxilor.io/repository/maven-public/</url>
     </repository>
+    <repository>
+      <id>crazycrew-releases</id>
+      <url>https://repo.crazycrew.us/releases</url>
+    </repository>
   </repositories>
   	
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.21.3-R0.1-SNAPSHOT</version>
+      <version>1.21.5-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -52,6 +56,12 @@
       <groupId>com.willfp</groupId>
       <artifactId>EcoEnchants</artifactId>
       <version>11.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.badbones69.crazyenchantments</groupId>
+      <artifactId>crazyenchantments-paper-api</artifactId>
+      <version>2.5</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

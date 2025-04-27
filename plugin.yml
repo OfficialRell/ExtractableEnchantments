@@ -1,8 +1,8 @@
 name: ExtractableEnchantments
 main: mc.rellox.extractableenchantments.ExtractableEnchantments
-softdepend: [Vault, eco, ExcellentEnchants, EcoEnchants, vane-core]
+softdepend: [Vault, eco, ExcellentEnchants, EcoEnchants, vane-core, AdvancedEnchantments, EnchantsSquared, CrazyEnchantments]
 api-version: 1.14
-version: 11.7
+version: 11.9
 author: Rellox
 commands:
   extractableenchantments:
