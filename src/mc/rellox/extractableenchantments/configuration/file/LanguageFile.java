@@ -36,7 +36,7 @@ public final class LanguageFile extends AbstractFile {
 	@Override
 	protected void initialize() {
 		convert();
-		
+
 		put("Price.experience-points.not-enough", "<#800000>(!) <#ff8000>Not enough experience points!");
 		put("Price.experience-points.value", "%price% Experience Points");
 		put("Price.experience-levels.not-enough", "<#800000>(!) <#ff8000>Not enough experience levels!");
@@ -45,19 +45,19 @@ public final class LanguageFile extends AbstractFile {
 		put("Price.materials.value", "%price% × %material%");
 		put("Price.economy.not-enough", "<#800000>(!) <#ff8000>Insufficient funds!");
 		put("Price.economy.value", "$%price%");
-		
+
 		put("Permission.warning.craft-extractor", "<#800000>(!) <#ff8000>You do not have the permission to craft this!");
 		put("Permission.warning.craft-dust", "<#800000>(!) <#ff8000>You do not have the permission to craft this!");
 		put("Permission.warning.use-extractor", "<#800000>(!) <#ff8000>You do not have the permission to use this!");
 		put("Permission.warning.apply-book", "<#800000>(!) <#ff8000>You do not have the permission to apply this!");
 		put("Permission.warning.use-dust", "<#800000>(!) <#ff8000>You do not have the permission to apply this!");
 		put("Permission.warning.split-dust", "<#800000>(!) <#ff8000>You do not have the permission to split this!");
-		
+
 		put("Extractor.info.chance", "<#a6a6a6>Extraction chance: <#6699ff>%chance%%");
 		put("Extractor.info.price", "<#a6a6a6>Extraction price: <#66ff66>%price%");
 		put("Extractor.info.destroy", "<#bf0000><!italic>Destroys enchantment on failure!");
 		put("Extractor.info.unknown-chance", "???");
-		
+
 		put("Extraction.success", "<#008000>(!) <#00ff00>Successfully extracted %enchantment%");
 		put("Extraction.fail", "<#800000>(!) <#ff8000>Extraction Failed!");
 		put("Extraction.unsafe", "<#800000>(!) <#ff8000>Unable to extract unsafe enchantments!");
@@ -65,22 +65,22 @@ public final class LanguageFile extends AbstractFile {
 		put("Extraction.filter.minecraft", "<#800000>(!) <#ff8000>Unable to extract non-minecraft enchantments!");
 		put("Extraction.filter.custom", "<#800000>(!) <#ff8000>Unable to extract minecraft enchantments!");
 		put("Extraction.destroy", "<#800000>(!) <#ff8000>Extraction Failed! <#ff0000>Enchantment %enchantment% was destroyed!");
-		
+
 		put("Extraction.selection.name", "Select an enchantment");
 		put("Extraction.selection.enchantment.name", "<#0080ff>Enchantment: %enchantment%");
 		put("Extraction.selection.enchantment.info", "  <#808080><!italic>Click to extract");
 		defaulted("Extraction.selection.color.minecraft", "#00ffff");
 		defaulted("Extraction.selection.color.custom", "#00ffff");
 		defaulted("Extraction.selection.color.curse", "#ff0000");
-		
+
 		put("Dust.split.held", "<#800000>(!) <#ff8000>Cannot split from held item!");
 		put("Dust.split.invalid", "<#800000>(!) <#ff8000>Invalid amount (%amount%)!");
 		put("Dust.split.too-large", "<#800000>(!) <#ff8000>Cannot split more than or equal to %value%%!");
 		put("Dust.split.too-small", "<#800000>(!) <#ff8000>Cannot split from this dust!");
-		
+
 		put("Book.info.chance", "<#a6a6a6>Applying chance: <#6699ff>%chance%%");
 		put("Book.apply.fail", "<#800000>(!) <#ff8000>Enchantment book failed to apply!");
-		
+
 		EnchantmentRegistry.ENCHANTMENTS.forEach((key, enchantment) -> {
 			put("Enchantments." + key, enchantment.name());
 		});
@@ -114,11 +114,11 @@ public final class LanguageFile extends AbstractFile {
 				  incorrectly then be sure to report it.
 
 				""");
-		
+
 		save();
-		
+
 		read();
-		
+
 		color_minecraft = Text.color(getString("Extraction.selection.color.minecraft"));
 		color_custom = Text.color(getString("Extraction.selection.color.custom"));
 		color_curse = Text.color(getString("Extraction.selection.color.curse"));
@@ -155,11 +155,11 @@ public final class LanguageFile extends AbstractFile {
 	private void convert() {
 		File old_file = new File(ExtractableEnchantments.instance().getDataFolder(), "lang.yml");
 		if(old_file.exists() == false) return;
-		
+
 		FileConfiguration old = YamlConfiguration.loadConfiguration(old_file);
-		
+
 		Mover m = new Mover(this, old);
-		
+
 		m.move("Cost.ExperiencePoints.NotEnough", "Price.experience-points.not-enough");
 		m.move("Cost.ExperiencePoints.Amount", "Price.experience-points.value", Mover.price);
 		m.move("Cost.ExperienceLevels.NotEnough", "Price.experience-levels.not-enough");
@@ -168,18 +168,18 @@ public final class LanguageFile extends AbstractFile {
 		m.move("Cost.Material.Amount", "Price.materials.value", Mover.price.andThen(Mover.material));
 		m.move("Cost.Economy.NotEnough", "Price.economy.not-enough");
 		m.move("Cost.Economy.Amount", "Price.economy.value", Mover.price);
-		
+
 		m.move("Permission.Warn.Craft", "Permission.warning.craft-extractor");
 		m.move("Permission.Warn.Craft", "Permission.warning.craft-dust");
 		m.move("Permission.Warn.Use", "Permission.warning.use-extractor");
 		m.move("Permission.Warn.Apply", "Permission.warning.apply-book");
 		m.move("Permission.Warn.Dust", "Permission.warning.use-dust");
 		m.move("Permission.Warn.Split", "Permission.warning.split-dust");
-		
+
 		m.move("Extractor.Lore.Chance", "Extractor.info.chance");
 		m.move("Extractor.Lore.Cost", "Extractor.info.price", Mover.price);
 		m.move("Extractor.Lore.Destroy", "Extractor.info.destroy");
-		
+
 		m.move("Extraction.Succeed", "Extraction.success", Mover.enchantment);
 		m.move("Extraction.Fail", "Extraction.fail");
 		m.move("Extraction.Unsafe", "Extraction.unsafe");
@@ -187,25 +187,25 @@ public final class LanguageFile extends AbstractFile {
 		m.move("Extraction.Extract.Minecraft", "Extraction.filter.minecraft");
 		m.move("Extraction.Extract.Custom", "Extraction.filter.custom");
 		m.move("Extraction.Destroy", "Extraction.destroy", Mover.enchantment);
-		
+
 		m.move("Extration.Selection.Name", "Extraction.selection.name");
 		m.move("Extration.Selection.Enchantment.Name", "Extraction.selection.enchantment.name", Mover.enchantment);
 		m.move("Extration.Selection.Enchantment.Info", "Extraction.selection.enchantment.info");
 		m.move("Enchantment.Color.Normal", "Extraction.selection.color.minecraft");
 		m.move("Enchantment.Color.Normal", "Extraction.selection.color.custom");
 		m.move("Enchantment.Color.Curse", "Extraction.selection.color.curse");
-		
+
 		m.move("Dust.Split.Held", "Dust.split.held");
 		m.move("Dust.Split.Amount", "Dust.split.invalid");
 		m.move("Dust.Split.Less", "Dust.split.too-large", Mover.value);
 		m.move("Dust.Split.Small", "Dust.split.too-small");
-		
+
 		EnchantmentRegistry.ENCHANTMENTS.forEach((key, enchantment) -> {
 			m.move("Enchantments." + key.toUpperCase(), "Enchantments." + key);
 		});
-		
+
 		m.layout("Item.Layout", "Items.extractor-layout");
-		
+
 		old_file.delete();
 	}
 	
@@ -220,7 +220,7 @@ public final class LanguageFile extends AbstractFile {
 		void move(String from, String to, Function<String, String> replacer) {
 			Object o = old.get(from);
 			if(o instanceof String s) file.hold(to, Text.fromLegacy(replacer.apply(s)));
-			else if(o instanceof List l) {
+			else if(o instanceof List) {
 				file.hold(to, old.getStringList(from)
 						.stream()
 						.map(replacer)
