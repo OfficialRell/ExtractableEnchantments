@@ -77,6 +77,8 @@ public final class Settings {
 	
 	public OrderList order_extractor, order_dust;
 	
+	public int extraction_selection_rows;
+	
 	private Settings() {
 		this.anvils_apply_restrictions = new ArrayList<>();
 	}
@@ -105,6 +107,8 @@ public final class Settings {
 		order_extractor = new OrderList(file.getStrings("Items.extractor-layout"));
 		order_dust = new OrderList(file.getStrings("Items.dust-layout"));
 		
+		extraction_selection_rows = file.getInteger("Extraction.selection.rows", 1, 5);
+		
 		file.keys("Extractors").forEach(key -> extractor(file, key));
 		file.keys("Dust").forEach(key -> dust(file, key));
 	}
@@ -119,7 +123,9 @@ public final class Settings {
 			List<Content> info = ContentParser.parse(file.getStringsAll(path + ".item.info"));
 			boolean glint = file.getBoolean(path + ".item.glint");
 			int model = file.getInteger(path + ".item.model");
-			ExtractorItem item = new ExtractorItem(material, name, info, glint, model);
+			String tooltip = file.getString(path + ".item.tooltip");
+			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			ExtractorItem item = new ExtractorItem(material, name, info, glint, model, tooltip);
 
 			IExtractorChance chance;
 			if(file.getBoolean(path + ".chance.enabled") == true) {
@@ -233,7 +239,9 @@ public final class Settings {
 			List<Content> info = ContentParser.parse(file.getStringsAll(path + ".item.info"));
 			boolean glint = file.getBoolean(path + ".item.glint");
 			int model = file.getInteger(path + ".item.model");
-			DustItem item = new DustItem(material, name, info, glint, model);
+			String tooltip = file.getString(path + ".item.tooltip");
+			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			DustItem item = new DustItem(material, name, info, glint, model, tooltip);
 			
 			Set<IExtractor> extractors = file.getStrings(path + ".applicable-to.extractors").stream()
 					.map(ExtractorRegistry::get)

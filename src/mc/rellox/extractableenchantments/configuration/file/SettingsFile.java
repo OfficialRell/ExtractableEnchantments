@@ -49,6 +49,7 @@ public final class SettingsFile extends AbstractFile {
 				"<#74a6a6><!italic>to remove a random enchantment!"));
 		defaulted(path + ".item.glint", true);
 		defaulted(path + ".item.model", 0);
+		defaulted(path + ".item.tooltip", "");
 		
 		defaulted(path + ".chance.enabled", false);
 	    defaulted(path + ".chance.destroy", false);
@@ -91,6 +92,7 @@ public final class SettingsFile extends AbstractFile {
 				"  <#bf7373><!italic>Shift-right-click to split in half."));
 		defaulted(path + ".item.glint", true);
 		defaulted(path + ".item.model", 0);
+		defaulted(path + ".item.tooltip", "");
 		
 		defaulted(path + ".applicable-to.extractors", List.of("default"));
 		defaulted(path + ".applicable-to.books", false);
@@ -111,6 +113,8 @@ public final class SettingsFile extends AbstractFile {
 	    defaulted("Anvils.apply-books", true);
 	    defaulted("Anvils.apply-unsafe", false);
 	    defaulted("Anvils.apply-restrictions", new ArrayList<>());
+	    
+	    defaulted("Extraction.selection.rows", 3);
 	    
 	    defaulted("Items.extractor-layout", List.of(
 	    		"INFO",
@@ -156,6 +160,9 @@ public final class SettingsFile extends AbstractFile {
 	    			"Does this extractor item has glint.");
 	    	c.comment("Extractors.default.item.model",
 	    			"Model data for this extractor item.",
+	    			"Useful if you are using a resource pack.");
+	    	c.comment("Extractors.default.item.tooltip",
+	    			"Tooltip stype for this extractor item.",
 	    			"Useful if you are using a resource pack.");
 
 	    	c.comment("Extractors.default.chance.enabled",
@@ -269,15 +276,18 @@ public final class SettingsFile extends AbstractFile {
 	    			"  dust to your liking.");
 	    	
 	    	c.comment("Dust.default.item.material",
-	    			"Material type for this extractor item.");
+	    			"Material type for this dust item.");
 	    	c.comment("Dust.default.item.name",
-	    			"Name for this extractor item.");
+	    			"Name for this dust item.");
 	    	c.comment("Dust.default.item.info",
-	    			"Info for this extractor item.");
+	    			"Info for this dust item.");
 	    	c.comment("Dust.default.item.glint",
-	    			"Does this extractor item has glint.");
+	    			"Does this dust item has glint.");
 	    	c.comment("Dust.default.item.model",
-	    			"Model data for this extractor item.",
+	    			"Model data for this dust item.",
+	    			"Useful if you are using a resource pack.");
+	    	c.comment("Dust.default.item.tooltip",
+	    			"Tooltip stype for this dust item.",
 	    			"Useful if you are using a resource pack.");
 	    	
 	    	c.comment("Dust.default.applicable-to.extractors",
@@ -292,12 +302,12 @@ public final class SettingsFile extends AbstractFile {
 	    			"The percent set to the dust when crafting.");
 	    	
 	    	c.comment("Dust.default.recipe.enabled",
-	    			"Does this extractor has a recipe.");
+	    			"Does this dust has a recipe.");
 	    	c.comment("Dust.default.recipe.ingredients",
 	    			"List of ingredients.",
 	    			"This list cannot have less or more than 9 materials.",
 	    			"Empty spaces must be replaced with 'empty'.",
-	    			"For the recipe to use multiple items for a single extractor",
+	    			"For the recipe to use multiple items for a single dust",
 	    			"  you can use: <material>:<amount>",
 	    			"  (e.g. BOOK:16)");
 	    	
@@ -327,6 +337,17 @@ public final class SettingsFile extends AbstractFile {
 	    			"- SWORD_TO_SWORD",
 	    			"- TOOL_TO_TOOL",
 	    			"- MISC_TO_MISC");
+	    	
+	    	c.comment("Extraction.selection.rows",
+	    			"The number of rows the extraction selection",
+	    			"  inventory will have. (1-5)",
+	    			"This does not include the top row displaying",
+	    			"  the extractor and the item.",
+	    			"Each row can display 9 enchantments but if",
+	    			"  the item has more enchantments than slots",
+	    			"  then they will not be displayed.",
+	    			"This option only applies to the inventory",
+	    			"  opened using /ee open");
 	    	
 	    	c.comment("Items.extractor-layout",
 	    			"The layout for an extractor.",
