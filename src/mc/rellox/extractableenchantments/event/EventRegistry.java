@@ -106,6 +106,10 @@ public final class EventRegistry implements Listener {
 			return;
 		}
 		
+		if(enchantments.size() == 1 && item_enchanted.getType() == Material.ENCHANTED_BOOK) {
+			return;
+		}
+		
 		event.setCancelled(true);
 		
 		IExtractPrice extract_price = extractor.price();
