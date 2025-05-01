@@ -42,7 +42,7 @@ public class AdvancedEnchantmentsHook implements IHook, IEnchantmentReader {
 		
 		enchantments.forEach((e, level) -> {
 			Object ae = RF.order(AEAPI, "getEnchantmentInstance", String.class)
-					.invoke(item);
+					.invoke(e);
 			if(ae == null) return;
 			
 			String name = RF.direct(ae, "getDisplay", String.class);
