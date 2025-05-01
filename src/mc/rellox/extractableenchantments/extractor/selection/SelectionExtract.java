@@ -1,10 +1,8 @@
 package mc.rellox.extractableenchantments.extractor.selection;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -13,7 +11,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -24,8 +21,9 @@ import mc.rellox.extractableenchantments.api.extractor.ISelectionExtract;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
 import mc.rellox.extractableenchantments.api.item.enchantment.ILevelledEnchantment;
 import mc.rellox.extractableenchantments.configuration.Configuration.CF;
-import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.configuration.Language;
+import mc.rellox.extractableenchantments.configuration.Settings;
+import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.text.Text;
 
@@ -98,7 +96,7 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 	private final void onClick(InventoryClickEvent event) {
 		if(v.equals(event.getInventory()) == false) return;
 		event.setCancelled(true);
-		if(v.equals(event.getClickedInventory()) == true) return;
+		if(v.equals(event.getClickedInventory()) == false) return;
 		
 		int s = event.getSlot() - 9;
 		if(s < 0 || s >= enchantments.size()) return;
@@ -140,7 +138,8 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 	private ItemStack item_book(ILevelledEnchantment levelled) {
 		IEnchantment enchantment = levelled.enchantment();
 		
-		ItemStack item = new ItemStack(Material.BOOK);
+		ItemStack item = Settings.settings.extraction_selection_item_book.generic();
+		
 		ItemMeta meta = item.getItemMeta();
 		
 		String color;
@@ -153,21 +152,12 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 		
 		meta.setLore(Text.toText(Language.list("Extraction.selection.enchantment.info")));
 		
-		meta.addItemFlags(Stream.of(ItemFlag.values())
-				.filter(i -> i.ordinal() < 8)
-				.toArray(ItemFlag[]::new));
-		ItemRegistry.glint(meta);
-		
 		item.setItemMeta(meta);
 		return item;
 	}
 	
 	private ItemStack item_background() {
-		ItemStack item = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(" ");
-		item.setItemMeta(meta);
-		return item;
+		return Settings.settings.extraction_selection_item_background.generic();
 	}
 	
 }

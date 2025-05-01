@@ -2,7 +2,6 @@ package mc.rellox.extractableenchantments.extractor.selection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,7 +13,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -132,6 +130,7 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 			ExtractorRegistry.extract(extractor, player, item_enchanted, item_extractor,
 					levelled, ExtractType.SELECTION);
 			
+			read();
 			update();
 		} else if(player.getInventory().equals(clicked) == true) {
 			ItemStack item = event.getCurrentItem();
@@ -139,7 +138,8 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 			if(ItemRegistry.nulled(item) == true) return;
 
 			List<ILevelledEnchantment> list = EnchantmentRegistry.enchantments(extractor, player, item);
-			if(list.isEmpty() == true) return;
+			boolean single = list.size() == 1 && item.getType() == Material.ENCHANTED_BOOK;
+			if(list.isEmpty() == true || single == true) return;
 			
 			item_enchanted = item;
 			enchantments.clear();
@@ -148,26 +148,32 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 		}
 	}
 	
+	private void read() {
+		if(item_enchanted == null) return;
+		
+		List<ILevelledEnchantment> list = EnchantmentRegistry.enchantments(extractor, player, item_enchanted);
+		boolean single = list.size() == 1 && item_enchanted.getType() == Material.ENCHANTED_BOOK;
+		if(list.isEmpty() == true || single == true) {
+			item_enchanted = null;
+			enchantments.clear();
+			return;
+		}
+		
+		enchantments.clear();
+		enchantments.addAll(list);
+	}
+	
 	@EventHandler
 	private final void onClose(InventoryCloseEvent event) {
 		Inventory i = event.getInventory();
 		if(v.equals(i) == false) return;
 		unregister();
-		
-//		if(item_enchanted == null) return;
-//		if(player.isOnline() == true && ItemRegistry.free(player) > 0)
-//			player.getInventory().addItem(item_enchanted);
-//		else
-//			player.getWorld().dropItem(player.getLocation(), item_enchanted);
 	}
 
 	@EventHandler
 	private final void onQuit(PlayerQuitEvent event) {
 		if(event.getPlayer().equals(player) == false) return;
 		unregister();
-		
-//		if(item_enchanted == null) return;
-//		player.getWorld().dropItem(player.getLocation(), item_enchanted);
 	}
 	
 	private void unregister() {
@@ -177,7 +183,8 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 	private ItemStack item_book(ILevelledEnchantment levelled) {
 		IEnchantment enchantment = levelled.enchantment();
 		
-		ItemStack item = new ItemStack(Material.BOOK);
+		ItemStack item = Settings.settings.extraction_selection_item_book.generic();
+		
 		ItemMeta meta = item.getItemMeta();
 		
 		String color;
@@ -190,21 +197,12 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 		
 		meta.setLore(Text.toText(Language.list("Extraction.selection.enchantment.info")));
 		
-		meta.addItemFlags(Stream.of(ItemFlag.values())
-				.filter(i -> i.ordinal() < 8)
-				.toArray(ItemFlag[]::new));
-		ItemRegistry.glint(meta);
-		
 		item.setItemMeta(meta);
 		return item;
 	}
 	
 	private ItemStack item_background() {
-		ItemStack item = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(" ");
-		item.setItemMeta(meta);
-		return item;
+		return Settings.settings.extraction_selection_item_background.generic();
 	}
 	
 }

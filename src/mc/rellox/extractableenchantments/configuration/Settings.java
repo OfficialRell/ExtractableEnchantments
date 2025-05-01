@@ -19,6 +19,7 @@ import mc.rellox.extractableenchantments.api.extractor.extract.ExtractFilter;
 import mc.rellox.extractableenchantments.api.extractor.extract.ExtractType;
 import mc.rellox.extractableenchantments.api.extractor.extract.IAccepted;
 import mc.rellox.extractableenchantments.api.extractor.extract.IIgnoredEnchantment;
+import mc.rellox.extractableenchantments.api.item.IItem;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipe.RecipeItem;
 import mc.rellox.extractableenchantments.api.price.IPrice;
@@ -36,8 +37,10 @@ import mc.rellox.extractableenchantments.extractor.ExtractorRegistry;
 import mc.rellox.extractableenchantments.extractor.constraint.Constraint;
 import mc.rellox.extractableenchantments.extractor.extract.Extract;
 import mc.rellox.extractableenchantments.extractor.extract.ExtractAccepted;
+import mc.rellox.extractableenchantments.item.BackgroundItem;
 import mc.rellox.extractableenchantments.item.DustItem;
 import mc.rellox.extractableenchantments.item.ExtractorItem;
+import mc.rellox.extractableenchantments.item.GenericItem;
 import mc.rellox.extractableenchantments.item.order.OrderList;
 import mc.rellox.extractableenchantments.item.recipe.ItemRecipe;
 import mc.rellox.extractableenchantments.price.Price.PriceEconomy;
@@ -78,6 +81,8 @@ public final class Settings {
 	public OrderList order_extractor, order_dust;
 	
 	public int extraction_selection_rows;
+	public IItem extraction_selection_item_book;
+	public IItem extraction_selection_item_background;
 	
 	private Settings() {
 		this.anvils_apply_restrictions = new ArrayList<>();
@@ -109,11 +114,13 @@ public final class Settings {
 		
 		extraction_selection_rows = file.getInteger("Extraction.selection.rows", 1, 5);
 		
+		selection(file);
+		
 		file.keys("Extractors").forEach(key -> extractor(file, key));
 		file.keys("Dust").forEach(key -> dust(file, key));
 	}
 	
-	private static void extractor(IFile file, String key) {
+	private void extractor(IFile file, String key) {
 		if(Text.key(key) == false) Text.logFail("Invalid extractor key: " + key);
 		String path = "Extractors." + key;
 		
@@ -229,7 +236,7 @@ public final class Settings {
 		}
 	}
 	
-	private static void dust(IFile file, String key) {
+	private void dust(IFile file, String key) {
 		if(Text.key(key) == false) Text.logFail("Invalid dust key: " + key);
 		String path = "Dust." + key;
 		
@@ -274,6 +281,34 @@ public final class Settings {
 			DustRegistry.add(dust);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void selection(IFile file) {
+		try {
+			String path = "Extraction.selection.item.";
+			
+			Material material = RF.enumerate(Material.class, file.getString(path + "book.material"));
+			boolean glint = file.getBoolean(path + "book.glint");
+			int model = file.getInteger(path + "book.model");
+			String tooltip = file.getString(path + "book.tooltip");
+			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			
+			extraction_selection_item_book = new GenericItem(material, glint, model, tooltip);
+			
+			material = RF.enumerate(Material.class, file.getString(path + "background.material"));
+			model = file.getInteger(path + "background.model");
+			tooltip = file.getString(path + "background.tooltip");
+			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			extraction_selection_item_background = material == null || material == Material.AIR
+							? BackgroundItem.nulled
+							: new BackgroundItem(material, model, tooltip);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			extraction_selection_item_book = new GenericItem(Material.BOOK, true, 0, "");
+			extraction_selection_item_background = new BackgroundItem(Material.PURPLE_STAINED_GLASS_PANE, 0, "");
 		}
 	}
 	

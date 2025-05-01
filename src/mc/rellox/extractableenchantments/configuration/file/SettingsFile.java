@@ -116,6 +116,15 @@ public final class SettingsFile extends AbstractFile {
 	    
 	    defaulted("Extraction.selection.rows", 3);
 	    
+	    defaulted("Extraction.selection.item.book.material", "BOOK");
+	    defaulted("Extraction.selection.item.book.glint", true);
+	    defaulted("Extraction.selection.item.book.model", 0);
+	    defaulted("Extraction.selection.item.book.tooltip", "");
+	    
+	    defaulted("Extraction.selection.item.background.material", "PURPLE_STAINED_GLASS_PANE");
+	    defaulted("Extraction.selection.item.background.model", 0);
+	    defaulted("Extraction.selection.item.background.tooltip", "");
+	    
 	    defaulted("Items.extractor-layout", List.of(
 	    		"INFO",
 	    		"!",
@@ -348,6 +357,10 @@ public final class SettingsFile extends AbstractFile {
 	    			"  then they will not be displayed.",
 	    			"This option only applies to the inventory",
 	    			"  opened using /ee open");
+	    	c.comment("Extraction.selection.item.book",
+	    			"Book item settings.");
+	    	c.comment("Extraction.selection.item.background",
+	    			"Background item settings.");
 	    	
 	    	c.comment("Items.extractor-layout",
 	    			"The layout for an extractor.",
