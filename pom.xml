@@ -4,7 +4,7 @@
   
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>12.1</version>
+  <version>12.2</version>
   <packaging>jar</packaging>
   
   <name>ExtractableEnchantments</name>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.21.5-R0.1-SNAPSHOT</version>
+      <version>1.21.7-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

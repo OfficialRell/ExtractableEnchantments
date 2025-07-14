@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="mc/rellox/extractableenchantments/configuration/ExtractorEdit.java|mc/rellox/extractableenchantments/usage/|mc/rellox/extractableenchantments/extractor/ExtractorRegistry2.java|mc/rellox/extractableenchantments/extractor/EnchantmentSelection.java|mc/rellox/extractableenchantments/extractor/Extractor2.java|mc/rellox/extractableenchantments/configuration/Language2.java|mc/rellox/extractableenchantments/configuration/Configuration2.java|mc/rellox/extractableenchantments/dust/DustRegistry2.java|mc/rellox/extractableenchantments/dust/Dust2.java|mc/rellox/extractableenchantments/supplier/EcoEnchantsVersionNew.java|mc/rellox/extractableenchantments/supplier/EcoEnchantsVersionOld.java|mc/rellox/extractableenchantments/supplier/CustomEnchantsSupplier.java|mc/rellox/extractableenchantments/supplier/EcoEnchantsSupplier.java|mc/rellox/extractableenchantments/supplier/ESupplier.java|mc/rellox/extractableenchantments/supplier/ExcellentEnchantsSupplier.java|mc/rellox/extractableenchantments/supplier/VaneSupplier.java|mc/rellox/extractableenchantments/supplier/EconomySupplier.java|mc/rellox/extractableenchantments/supplier/HookInstance.java|mc/rellox/extractableenchantments/supplier/|mc/rellox/extractableenchantments/extractor/ExtractorLayout.java" including="**/*.java" kind="src" output="target/classes" path="src">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-16">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -17,6 +13,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/rudol/Desktop/Rudolfs/Servers/plugins/AdvancedEnchantments-9.18.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
