@@ -41,6 +41,8 @@ import mc.rellox.extractableenchantments.item.BackgroundItem;
 import mc.rellox.extractableenchantments.item.DustItem;
 import mc.rellox.extractableenchantments.item.ExtractorItem;
 import mc.rellox.extractableenchantments.item.GenericItem;
+import mc.rellox.extractableenchantments.item.enchantment.DatapackEnchantmentReader;
+import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.item.order.OrderList;
 import mc.rellox.extractableenchantments.item.recipe.ItemRecipe;
 import mc.rellox.extractableenchantments.price.Price.PriceEconomy;
@@ -114,6 +116,14 @@ public final class Settings {
 		
 		extraction_selection_rows = file.getInteger("Extraction.selection.rows", 1, 5);
 		
+		EnchantmentRegistry.remove(e -> e instanceof DatapackEnchantmentReader);
+		var list = file.getStrings("Datapacks.enchantment-namespaces");
+		if(list.isEmpty() == false) {
+			list.stream()
+			.map(DatapackEnchantmentReader::new)
+			.forEach(EnchantmentRegistry::submit);
+		}
+
 		selection(file);
 		
 		file.keys("Extractors").forEach(key -> extractor(file, key));

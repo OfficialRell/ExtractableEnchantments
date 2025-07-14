@@ -18,7 +18,8 @@ import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 
 public final class Text {
 	
-	public static final String infinity = "" + '\u221E';
+	public static final String symbol_multiplier = "" + '\u00D7';
+	public static final char color_code = ChatColor.COLOR_CHAR;
 	
 	public static void logLoad() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "ExtractableEnchantments " + ChatColor.AQUA + "v"
@@ -68,8 +69,8 @@ public final class Text {
 	public static String color(String hex) {
 		if(hex == null || hex.isEmpty() == true) return "";
 		if(hex.charAt(0) == '#') hex = hex.substring(1);
-		String s = "§x";
-		for(char c : hex.toCharArray()) s += "§" + c;
+		String s = color_code + "x";
+		for(char c : hex.toCharArray()) s += color_code + "" + c;
 		return s;
 	}
 	
@@ -131,7 +132,8 @@ public final class Text {
 				a = "w";
 			} else if(Version.version == VersionType.v_21_2
 					|| Version.version == VersionType.v_21_3
-					|| Version.version == VersionType.v_21_4) {
+					|| Version.version == VersionType.v_21_4
+					|| Version.version == VersionType.v_21_5) {
 				a = "y";
 			} else {
 				a = "getName";

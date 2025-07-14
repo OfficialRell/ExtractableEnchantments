@@ -152,7 +152,7 @@ public final class CommandRegistry {
 			if(player == null) return;
 			ItemStack[] items = di.items(p, amount);
 			player.getInventory().addItem(items);
-			success(sender, "Got #0 × #1", Text.display(items[0]), amount);
+			success(sender, "Got #0 " + Text.symbol_multiplier + " #1", Text.display(items[0]), amount);
 			player.playSound(player.getEyeLocation(), Sound.ENTITY_ITEM_PICKUP, 2f, 1.5f);
 		} else {
 			Player getter = Bukkit.getPlayer(args[4]);
@@ -239,7 +239,7 @@ public final class CommandRegistry {
 			if(player == null) return;
 			ItemStack[] items = ei.items(amount);
 			player.getInventory().addItem(items);
-			success(sender, "Got #0 × #1", Text.display(items[0]), amount);
+			success(sender, "Got #0 " + Text.symbol_multiplier + " #1", Text.display(items[0]), amount);
 			player.playSound(player.getEyeLocation(), Sound.ENTITY_ITEM_PICKUP, 2f, 1.5f);
 		} else {
 			Player getter = Bukkit.getPlayer(args[3]);

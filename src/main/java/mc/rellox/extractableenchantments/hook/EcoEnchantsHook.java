@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
+import com.willfp.eco.util.StringUtils;
 import com.willfp.ecoenchants.enchant.EcoEnchantLike;
 
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
@@ -41,7 +42,7 @@ public class EcoEnchantsHook implements IHook, IEnchantmentReader {
 		fetcher.enchantments().forEach((e, level) -> {
 			if(e instanceof EcoEnchantLike ee) {
 				String key = e.getKey().getKey();
-				String name = ChatColor.stripColor(ee.getRawDisplayName());
+				String name = ChatColor.stripColor(StringUtils.format(ee.getRawDisplayName()));
 				int max = ee.getMaximumLevel();
 				map.put(new EcoEnchantment(e, key, name, max), level);
 			}

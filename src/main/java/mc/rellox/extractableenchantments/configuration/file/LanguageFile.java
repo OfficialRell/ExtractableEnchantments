@@ -23,10 +23,10 @@ import mc.rellox.extractableenchantments.text.content.Content;
 import mc.rellox.extractableenchantments.text.content.ContentParser;
 
 public final class LanguageFile extends AbstractFile {
-	
+
 	private final Map<String, List<Content>> text = new HashMap<>();
 	private final List<String> keys = new ArrayList<>();
-	
+
 	public String color_minecraft, color_custom, color_curse;
 
 	public LanguageFile() {
@@ -42,7 +42,7 @@ public final class LanguageFile extends AbstractFile {
 		put("Price.experience-levels.not-enough", "<#800000>(!) <#ff8000>Not enough experience levels!");
 		put("Price.experience-levels.value", "%price% Experience Levels");
 		put("Price.materials.not-enough", "<#800000>(!) <#ff8000>Not enough materials!");
-		put("Price.materials.value", "%price% × %material%");
+		put("Price.materials.value", "%price% " + Text.symbol_multiplier + " %material%");
 		put("Price.economy.not-enough", "<#800000>(!) <#ff8000>Insufficient funds!");
 		put("Price.economy.value", "$%price%");
 
@@ -123,7 +123,7 @@ public final class LanguageFile extends AbstractFile {
 		color_custom = Text.color(getString("Extraction.selection.color.custom"));
 		color_curse = Text.color(getString("Extraction.selection.color.curse"));
 	}
-	
+
 	private void put(String path, Object value) {
 		file.addDefault(path, value);
 		keys.add(path);
@@ -142,16 +142,16 @@ public final class LanguageFile extends AbstractFile {
 		});
 		keys.clear();
 	}
-	
+
 	private static List<Content> of(Content... cs) {
 		return cs == null ? new ArrayList<>()
 				: Stream.of(cs).collect(Collectors.toList());
 	}
-	
+
 	public List<Content> get(String key) {
 		return text.get(key);
 	}
-	
+
 	private void convert() {
 		File old_file = new File(ExtractableEnchantments.instance().getDataFolder(), "lang.yml");
 		if(old_file.exists() == false) return;
@@ -208,7 +208,7 @@ public final class LanguageFile extends AbstractFile {
 
 		old_file.delete();
 	}
-	
+
 	private record Mover(IFile file, FileConfiguration old) {
 		static final UnaryOperator<String> price = s -> s.replace("%amount%", "%price%").replace("%cost%", "%price%");
 		static final UnaryOperator<String> material = s -> s.replace("%material_name%", "%material%");

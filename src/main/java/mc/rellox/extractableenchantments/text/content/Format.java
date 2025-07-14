@@ -4,14 +4,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import mc.rellox.extractableenchantments.text.Text;
+
 public final class Format {
 	
 	public static final Format none = new Format("");
-	public static final Format bold = new Format("§l");
-	public static final Format italic = new Format("§o");
-	public static final Format underline = new Format("§n");
-	public static final Format strikethrough = new Format("§m");
-	public static final Format obfuscated = new Format("§k");
+	public static final Format bold = new Format(Text.color_code + "l");
+	public static final Format italic = new Format(Text.color_code + "o");
+	public static final Format underline = new Format(Text.color_code + "n");
+	public static final Format strikethrough = new Format(Text.color_code + "m");
+	public static final Format obfuscated = new Format(Text.color_code + "k");
 	
 	public static Format of(Format... fs) {
 		return new Format(Stream.of(fs)

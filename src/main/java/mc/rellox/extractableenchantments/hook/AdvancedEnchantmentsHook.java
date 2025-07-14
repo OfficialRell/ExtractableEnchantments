@@ -3,6 +3,7 @@ package mc.rellox.extractableenchantments.hook;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
@@ -68,6 +69,14 @@ public class AdvancedEnchantmentsHook implements IHook, IEnchantmentReader {
 		public void apply(ItemStack item, int level) {
 			RF.order(hook.AEAPI, "applyEnchant", String.class, int.class, ItemStack.class)
 				.invoke(enchantment, level, item);
+		}
+		
+		@Override
+		public ItemStack book(int level) {
+			return RF.order(hook.AEAPI, "createEnchantmentBook",
+					String.class, int.class, int.class, int.class, Player.class)
+					.as(ItemStack.class)
+					.invoke(enchantment, level, 100, 0, null);
 		}
 
 		@Override

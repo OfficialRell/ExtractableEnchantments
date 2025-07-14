@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import mc.rellox.extractableenchantments.configuration.Configuration.CF;
+import mc.rellox.extractableenchantments.text.Text;
 import mc.rellox.extractableenchantments.text.content.Content;
 import mc.rellox.extractableenchantments.text.content.Content.Variables;
 
 public interface Language {
 	
-	public static final String prefix_chance = "§#§0§#";
+	public static final String prefix_chance = Text.color_code + "#" + Text.color_code + "0" + Text.color_code + "#";
 
 	public static Content get(String key) {
 		List<Content> list = CF.l.get(key);

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.bukkit.NamespacedKey;
@@ -109,6 +110,13 @@ public final class EnchantmentRegistry {
 		if(READERS.containsKey(key) == true)
 			throw new IllegalArgumentException("Duplicate enchantment reader with key: " + key);
 		READERS.put(key, reader);
+	}
+
+	public static void remove(Predicate<IEnchantmentReader> filter) {
+		var it = READERS.values().iterator();
+		if(it.hasNext() == true)
+			if(filter.test(it.next()) == true)
+				it.remove();
 	}
 	
 	public static List<ILevelledEnchantment> enchantments(ItemStack item) {
