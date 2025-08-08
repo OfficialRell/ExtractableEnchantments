@@ -15,7 +15,7 @@ public interface IAccepted {
 				.filter(i -> i.enchantment().equals(enchantment.key()))
 				.findFirst()
 				.orElse(null);
-		if(ignored == null) return true;
+		if(ignored == null) return !invert();
 		return ignored.ignore(enchantment.level()) == invert();
 	}
 
