@@ -10,20 +10,22 @@ public final class Version {
 	static {
 		String s = Bukkit.getServer().getClass().getPackage().getName();
 		server = s.substring(s.lastIndexOf('.') + 1);
+		var bukkit = Bukkit.getBukkitVersion();
 		if(server.contains("v1_21_R5") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21.6-R0.1") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21.7-R0.1") == true) version = VersionType.v_21_5;
+				|| bukkit.startsWith("1.21.6-R0.1") == true
+				|| bukkit.startsWith("1.21.7-R0.1") == true
+				|| bukkit.startsWith("1.21.8-R0.1") == true) version = VersionType.v_21_5;
 		else if(server.contains("v1_21_R4") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21.5-R0.1") == true) version = VersionType.v_21_4;
+				|| bukkit.startsWith("1.21.5-R0.1") == true) version = VersionType.v_21_4;
 		else if(server.contains("v1_21_R3") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21.4-R0.1") == true) version = VersionType.v_21_3;
+				|| bukkit.startsWith("1.21.4-R0.1") == true) version = VersionType.v_21_3;
 		else if(server.contains("v1_21_R2") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21.3-R0.1") == true) version = VersionType.v_21_2;
+				|| bukkit.startsWith("1.21.3-R0.1") == true) version = VersionType.v_21_2;
 		else if(server.contains("v1_21_R1") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21-R0.1") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.21.1-R0.1") == true) version = VersionType.v_21_1;
+				|| bukkit.startsWith("1.21-R0.1") == true
+				|| bukkit.startsWith("1.21.1-R0.1") == true) version = VersionType.v_21_1;
 		else if(server.contains("v1_20_R4") == true
-				|| Bukkit.getBukkitVersion().startsWith("1.20.6-R0.1") == true) version = VersionType.v_20_4;
+				|| bukkit.startsWith("1.20.6-R0.1") == true) version = VersionType.v_20_4;
 		else if(server.contains("v1_20_R3") == true) version = VersionType.v_20_3;
 		else if(server.contains("v1_20_R2") == true) version = VersionType.v_20_2;
 		else if(server.contains("v1_20_R1") == true) version = VersionType.v_20_1;
