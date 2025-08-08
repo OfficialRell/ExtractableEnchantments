@@ -198,7 +198,7 @@ public final class CommandRegistry {
 			return;
 		}
 		
-		new SelectionExtractChangeable(extractor, player);
+		new SelectionExtractChangeable(extractor, getter);
 	}
 
 	private static void reload(CommandSender sender, final Player player) {
