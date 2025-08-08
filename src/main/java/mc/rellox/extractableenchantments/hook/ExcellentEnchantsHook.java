@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,13 +14,9 @@ import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
-import mc.rellox.extractableenchantments.utility.reflect.type.Invoker;
+import su.nightexpress.excellentenchants.api.EnchantRegistry;
 
 public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
-	
-	private Class<?> registry_class;
-	private Invoker<Enchantment> get_enchantment;
-	private Invoker<String> get_name;
 
 	@Override
 	public String name() {
@@ -29,25 +24,7 @@ public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 	}
 
 	@Override
-	public void enable() {
-		try {
-			registry_class = RF.get("su.nightexpress.excellentenchants.registry.EnchantRegistry");
-			if(registry_class == null)
-				registry_class = RF.get("su.nightexpress.excellentenchants.enchantments.registry.EnchantRegistry");
-			
-			Class<?> enchantment_class = RF.get("su.nightexpress.excellentenchants.api.enchantment.CustomEnchantment");
-			
-			get_enchantment = RF.order(enchantment_class, "getBukkitEnchantment", false).as(Enchantment.class);
-			if(get_enchantment.valid() == false)
-				get_enchantment = RF.order(enchantment_class, "getEnchantment", false).as(Enchantment.class);
-			
-			get_name = RF.order(enchantment_class, "getDisplayName", false).as(String.class);
-			if(get_name.valid() == false)
-				get_name = RF.order(enchantment_class, "getName", false).as(String.class);
-		} catch (Exception x) {
-			RF.debug(x);
-		}
-	}
+	public void enable() {}
 	
 	@Override
 	public String key() {
@@ -58,19 +35,20 @@ public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
 		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+		
 		ItemMeta meta = item.getItemMeta();
 		IMetaFetcher fetcher = EnchantmentRegistry.fetcher(meta);
 		
 		try {
-			@SuppressWarnings("unchecked")
-			Map<NamespacedKey, ?> by_key = RF.fetch(registry_class, "BY_KEY", Map.class);
-			by_key.forEach((key, data) -> {
-				Enchantment e = get_enchantment.objected(data);
-				String name = ChatColor.stripColor(get_name.objected(data));
-				int max = e.getMaxLevel();
-				int level = fetcher.level(e);
-				if(level <= 0) return;
-				map.put(new ExcellentEnchantment(e, key.getKey(), name, max, false), level);
+			fetcher.enchantments().forEach((enchantment, level) -> {
+				var custom = EnchantRegistry.getByBukkit(enchantment);
+				if(custom == null) return;
+				var name = ChatColor.stripColor(custom.getDisplayName());
+				var key = custom.getId();
+				enchantment = custom.getBukkitEnchantment();
+				var maximum = enchantment.getMaxLevel();
+				var curse = custom.isCurse();
+				map.put(new ExcellentEnchantment(enchantment, key, name, maximum, curse), level);
 			});
 		} catch (Exception x) {
 			RF.debug(x);

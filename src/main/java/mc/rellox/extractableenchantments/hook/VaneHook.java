@@ -47,12 +47,13 @@ public class VaneHook implements IHook, IEnchantmentReader {
 		return map;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean is(Enchantment e) {
 		try {
-			Object o = RF.direct(e, "getHandle");
-			Class<?> c = RF.get("org.oddlama.vane.core.enchantments.NativeEnchantmentWrapper");
-			return c.isInstance(o);
-		} catch (Exception x) {}
+			return e.getKey().getNamespace().equalsIgnoreCase("vane_enchantments");
+		} catch (Exception x) {
+			RF.debug(x);
+		}
 		return false;
 	}
 	
@@ -62,7 +63,9 @@ public class VaneHook implements IHook, IEnchantmentReader {
 			Object custom = RF.direct(o, "custom_enchantment");
 			Object name = RF.order(custom, "display_name", int.class).invoke(1);
 			return RF.direct(name, "content", String.class);
-		} catch (Exception x) {}
+		} catch (Exception x) {
+			RF.debug(x);
+		}
 		return "";
 	}
 	
