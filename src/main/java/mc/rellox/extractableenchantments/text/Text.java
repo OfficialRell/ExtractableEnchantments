@@ -133,7 +133,8 @@ public final class Text {
 			} else if(Version.version == VersionType.v_21_2
 					|| Version.version == VersionType.v_21_3
 					|| Version.version == VersionType.v_21_4
-					|| Version.version == VersionType.v_21_5) {
+					|| Version.version == VersionType.v_21_5
+					|| Version.version == VersionType.v_21_6) {
 				a = "y";
 			} else {
 				a = "getName";
