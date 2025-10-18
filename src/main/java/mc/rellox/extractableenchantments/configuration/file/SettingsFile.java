@@ -70,6 +70,7 @@ public final class SettingsFile extends AbstractFile {
 		defaulted(path + ".extract.filter", "ALL");
 		defaulted(path + ".extract.ignored.enchantments", List.of());
 		defaulted(path + ".extract.ignored.invert", false);
+		defaulted(path + ".extract.hidden", false);
 
 		defaulted(path + ".constraints", List.of());
 		defaulted(path + ".stackable", false);
@@ -239,6 +240,8 @@ public final class SettingsFile extends AbstractFile {
 					"If true, the extractor will only allow to",
 					"  extract enchantments that are contained",
 					"  in the list.");
+			c.comment("Extractors.default.extract.hidden",
+					"Can hidden enchantments be extracted.");
 
 			c.comment("Extractors.default.constraints",
 					"Extractor item constaints.",

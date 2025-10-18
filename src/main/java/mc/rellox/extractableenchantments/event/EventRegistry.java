@@ -90,11 +90,12 @@ public final class EventRegistry implements Listener {
 		
 		if(item_extractor.getAmount() > 1) return;
 		
-		ItemMeta meta = item_enchanted.getItemMeta();
-		if(meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS) == true) return;
-		
 		IExtractor extractor = ExtractorRegistry.get(item_extractor);
 		if(extractor == null) return;
+		
+		ItemMeta meta = item_enchanted.getItemMeta();
+		if(meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS) == true
+				&& extractor.extract().hidden() == false) return;
 		
 		Player player = (Player) event.getWhoClicked();
 		

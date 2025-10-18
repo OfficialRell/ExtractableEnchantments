@@ -196,7 +196,9 @@ public final class Settings {
 			boolean invert = file.getBoolean(path + ".extract.ignored.invert");
 			IAccepted accepted = new ExtractAccepted(enchantments, invert);
 			
-			Extract extract = new Extract(unsafe, extract_type, filter, accepted);
+			boolean hidden = file.getBoolean(path + ".extract.hidden");
+			
+			Extract extract = new Extract(unsafe, extract_type, filter, accepted, hidden);
 			
 			List<IConstraint> constraints = file.getStrings(path + ".constraints").stream()
 					.map(Constraint::of)

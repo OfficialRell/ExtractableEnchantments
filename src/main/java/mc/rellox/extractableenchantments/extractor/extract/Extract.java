@@ -6,4 +6,4 @@ import mc.rellox.extractableenchantments.api.extractor.extract.IAccepted;
 import mc.rellox.extractableenchantments.api.extractor.extract.IExtract;
 
 public record Extract(boolean unsafe, ExtractType type, ExtractFilter filter,
-		IAccepted accepted) implements IExtract {}
+		IAccepted accepted, boolean hidden) implements IExtract {}
