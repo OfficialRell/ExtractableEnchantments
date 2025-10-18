@@ -25,7 +25,7 @@ import mc.rellox.extractableenchantments.utility.Version;
 
 public class ExtractableEnchantments extends JavaPlugin {
 	
-	public static final double PLUGIN_VERSION = 12.4;
+	public static final double PLUGIN_VERSION = 12.5;
     
 	private static Plugin plugin;
 	
