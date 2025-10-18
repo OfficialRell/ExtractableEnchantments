@@ -9,7 +9,15 @@ public interface IChanceOverride {
 		public int value() {return 0;}
 	};
 	
+	/**
+	 * @return Is chance override enabled
+	 */
+	
 	boolean enabled();
+	
+	/**
+	 * @return Chance override value
+	 */
 	
 	int value();
 

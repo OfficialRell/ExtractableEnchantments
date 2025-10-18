@@ -51,6 +51,12 @@ public interface ISound {
 	
 	static ISound empty = player -> {};
 	
+	/**
+	 * Plays the sound for the player.
+	 * 
+	 * @param player - player
+	 */
+	
 	void play(Player player);
 
 }

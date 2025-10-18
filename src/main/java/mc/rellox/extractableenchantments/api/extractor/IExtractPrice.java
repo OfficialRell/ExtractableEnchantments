@@ -11,7 +11,15 @@ public interface IExtractPrice {
 		public boolean enabled() {return false;}
 	};
 	
+	/**
+	 * @return Whether the extraction price is enabled
+	 */
+	
 	boolean enabled();
+	
+	/**
+	 * @return The price for extracting an enchantment
+	 */
 	
 	IPrice price();
 

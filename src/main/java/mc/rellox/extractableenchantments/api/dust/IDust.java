@@ -3,12 +3,9 @@ package mc.rellox.extractableenchantments.api.dust;
 import org.bukkit.inventory.ItemStack;
 
 import mc.rellox.extractableenchantments.api.item.IDustItem;
-import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipeObject;
 
 public interface IDust extends IRecipeObject {
-	
-	String key();
 	
 	/**
 	 * @return Dust item
@@ -21,8 +18,6 @@ public interface IDust extends IRecipeObject {
 	 */
 	
 	IApplicable applicable();
-	
-	IRecipe recipe();
 	
 	/**
 	 * @return Dust percentage limit

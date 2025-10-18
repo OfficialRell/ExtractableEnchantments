@@ -27,15 +27,38 @@ public interface IExtractorChance {
 	
 	boolean enabled();
 	
+	/**
+	 * @return Should enchantment be destroyed on failure
+	 */
+	
 	boolean destroy();
+	
+	/**
+	 * @return Minimum chance percentage
+	 */
 	
 	int minimum();
 	
+	/**
+	 * @return Maximum chance percentage
+	 */
+	
 	int maximum();
+	
+	/**
+	 * @return Roll a random chance between minimum and maximum
+	 */
 	
 	default int roll() {
 		return Utility.between(minimum(), maximum());
 	}
+	
+	/**
+	 * If disabled, always return true.
+	 * 
+	 * @param item - item
+	 * @return Did the chance on the item succeed
+	 */
 	
 	default boolean chance(ItemStack item) {
 		if(enabled() == false) return true;

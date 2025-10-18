@@ -7,12 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import mc.rellox.extractableenchantments.api.extractor.constraint.IConstraint;
 import mc.rellox.extractableenchantments.api.extractor.extract.IExtract;
 import mc.rellox.extractableenchantments.api.item.IExtractorItem;
-import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipeObject;
 
 public interface IExtractor extends IRecipeObject {
-	
-	String key();
 	
 	/**
 	 * @return Extractor item
@@ -61,8 +58,6 @@ public interface IExtractor extends IRecipeObject {
 	 */
 	
 	List<IConstraint> constraints();
-	
-	IRecipe recipe();
 	
 	/**
 	 * @return Can this extractor be stacked

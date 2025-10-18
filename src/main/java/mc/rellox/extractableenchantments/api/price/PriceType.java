@@ -7,6 +7,10 @@ public enum PriceType {
 	MATERIALS,
 	ECONOMY;
 	
+	/**
+	 * @return Price type key
+	 */
+	
 	public String key() {
 		return name().replace('_', '-').toLowerCase();
 	}

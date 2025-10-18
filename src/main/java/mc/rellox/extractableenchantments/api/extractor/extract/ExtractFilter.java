@@ -3,6 +3,7 @@ package mc.rellox.extractableenchantments.api.extractor.extract;
 import mc.rellox.extractableenchantments.api.item.enchantment.IEnchantment;
 
 public enum ExtractFilter {
+	
 	ALL {
 		@Override
 		public boolean accepts(IEnchantment enchantment) {
@@ -21,6 +22,11 @@ public enum ExtractFilter {
 			return !enchantment.minecraft();
 		}
 	};
+	
+	/**
+	 * @param enchantment - enchantment
+	 * @return Whether the enchantment is accepted
+	 */
 	
 	public abstract boolean accepts(IEnchantment enchantment);
 }

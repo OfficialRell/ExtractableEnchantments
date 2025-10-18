@@ -6,9 +6,25 @@ import mc.rellox.extractableenchantments.api.item.enchantment.ILevelledEnchantme
 
 public interface IAccepted {
 	
+	/**
+	 * @return List of ignored enchantments
+	 */
+	
 	Set<IIgnoredEnchantment> ignored();
 	
+	/**
+	 * When {@code true} - whitelist;<br>
+	 * When {@code false} - blacklist.
+	 * 
+	 * @return Whether the ignored list is inverted
+	 */
+	
 	boolean invert();
+	
+	/**
+	 * @param enchantment - enchantment
+	 * @return Whether the enchantment is accepted
+	 */
 	
 	default boolean accepted(ILevelledEnchantment enchantment) {
 		IIgnoredEnchantment ignored = ignored().stream()

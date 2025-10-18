@@ -48,17 +48,49 @@ public interface IRecipe {
 		}
 	}
 	
+	/**
+	 * @return If the recipe is enabled
+	 */
+	
 	boolean enabled();
+	
+	/**
+	 * @return The ingredients of the recipe
+	 */
 	
 	List<RecipeItem> ingredients();
 	
+	/**
+	 * @param matrix - crafting matrix
+	 * @return How many items can be crafted with the given matrix
+	 */
+	
 	int matching(ItemStack[] matrix);
+	
+	/**
+	 * Reduces the given amount of ingredients from the crafting matrix.
+	 * 
+	 * @param matrix - crafting matrix
+	 * @param amount - amount to reduce
+	 */
 	
 	void reduce(ItemStack[] matrix, int amount);
 	
+	/**
+	 * @return Bukkit recipe
+	 */
+	
 	Recipe recipe();
 	
+	/**
+	 * Updates the internal Bukkit recipe.
+	 */
+	
 	void update();
+	
+	/**
+	 * @return Namespace key of the recipe, can be {@code null}
+	 */
 	
 	default NamespacedKey namespace() {
 		return recipe() instanceof Keyed keyed ? keyed.getKey() : null;
