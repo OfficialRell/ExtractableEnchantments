@@ -2,6 +2,7 @@ package mc.rellox.extractableenchantments;
 
 import java.util.List;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -19,13 +20,12 @@ import mc.rellox.extractableenchantments.event.EventRegistry;
 import mc.rellox.extractableenchantments.hook.HookRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.utility.Keys;
-import mc.rellox.extractableenchantments.utility.Metrics;
 import mc.rellox.extractableenchantments.utility.Utility;
 import mc.rellox.extractableenchantments.utility.Version;
 
 public class ExtractableEnchantments extends JavaPlugin {
 	
-	public static final double PLUGIN_VERSION = 12.5;
+	public static final double PLUGIN_VERSION = 12.6;
     
 	private static Plugin plugin;
 	
