@@ -44,13 +44,15 @@ public class EcoEnchantsHook implements IHook, IEnchantmentReader {
 				String key = e.getKey().getKey();
 				String name = ChatColor.stripColor(StringUtils.format(ee.getRawDisplayName()));
 				int max = ee.getMaximumLevel();
-				map.put(new EcoEnchantment(e, key, name, max), level);
+				boolean curse = e.isCursed();
+				map.put(new EcoEnchantment(e, key, name, max, curse), level);
 			}
 		});
 		return map;
 	}
 	
-	public record EcoEnchantment(Enchantment enchantment, String key, String name, int maximum) implements IEnchantment {
+	public record EcoEnchantment(Enchantment enchantment, String key, String name, int maximum, boolean curse)
+		implements IEnchantment {
 
 		@Override
 		public void remove(ItemStack item) {
