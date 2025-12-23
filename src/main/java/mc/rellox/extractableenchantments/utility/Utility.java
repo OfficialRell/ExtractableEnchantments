@@ -1,8 +1,7 @@
 package mc.rellox.extractableenchantments.utility;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -76,7 +75,7 @@ public final class Utility {
 	}
 	
 	public static void tooltip(ItemMeta meta, String tooltip) {
-		if(tooltip == null || Version.version.high(VersionType.v_21_2) == false) return;
+		if(tooltip == null || Version.version.atleast(VersionType.v_21_2) == false) return;
 		meta.setTooltipStyle(NamespacedKey.minecraft(tooltip));
 	}
 
@@ -84,10 +83,10 @@ public final class Utility {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				try(InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + id).openStream();
+				try(InputStream is = new URI("https://api.spigotmc.org/legacy/update.php?resource=" + id).toURL().openStream();
 						Scanner sc = new Scanner(is)) {
 					if(sc.hasNext() == true) action.accept(sc.next());
-				} catch(IOException x) {}
+				} catch(Exception x) {}
 			}
 		}.runTaskLaterAsynchronously(ExtractableEnchantments.instance(), 50);
 	}
