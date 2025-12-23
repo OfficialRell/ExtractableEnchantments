@@ -14,7 +14,7 @@ import mc.rellox.extractableenchantments.api.item.enchantment.IMetaFetcher;
 import mc.rellox.extractableenchantments.item.ItemRegistry;
 import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
-import su.nightexpress.excellentenchants.api.EnchantRegistry;
+import su.nightexpress.excellentenchants.enchantment.EnchantRegistry;
 
 public class ExcellentEnchantsHook implements IHook, IEnchantmentReader {
 
