@@ -535,7 +535,7 @@ public final class EventRegistry implements Listener {
 	
 	private int repair(Player player, Inventory v) {
 		Object from;
-		if(Version.version.high(VersionType.v_21_1) == true) from = player.getOpenInventory();
+		if(Version.version.atleast(VersionType.v_21_1) == true) from = player.getOpenInventory();
 		else from = v;
 		return RF.order(from, "getRepairCost").as(int.class).invoke(0);
 	}

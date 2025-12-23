@@ -11,7 +11,9 @@ public final class Version {
 		String s = Bukkit.getServer().getClass().getPackage().getName();
 		server = s.substring(s.lastIndexOf('.') + 1);
 		var bukkit = Bukkit.getBukkitVersion();
-		if(server.contains("v1_21_R6") == true
+		if(server.contains("v1_21_R7") == true
+				|| bukkit.startsWith("1.21.11-R0.1") == true) version = VersionType.v_21_7;
+		else if(server.contains("v1_21_R6") == true
 				|| bukkit.startsWith("1.21.9-R0.1") == true
 				|| bukkit.startsWith("1.21.10-R0.1") == true) version = VersionType.v_21_6;
 		else if(server.contains("v1_21_R5") == true
@@ -55,10 +57,15 @@ public final class Version {
 		v_18_1, v_18_2,
 		v_19_1, v_19_2, v_19_3,
 		v_20_1, v_20_2, v_20_3, v_20_4,
-		v_21_1, v_21_2, v_21_3, v_21_4, v_21_5, v_21_6;
+		v_21_1, v_21_2, v_21_3, v_21_4, v_21_5, v_21_6, v_21_7;
 		
-		public boolean high(VersionType type) {
+		public boolean atleast(VersionType type) {
 			return ordinal() >= type.ordinal();
+		}
+		
+		@Deprecated(since = "12.6", forRemoval = true)
+		public boolean high(VersionType type) {
+			return atleast(type);
 		}
 		
 	}
