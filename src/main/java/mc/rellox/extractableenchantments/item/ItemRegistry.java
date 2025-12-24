@@ -26,7 +26,7 @@ public final class ItemRegistry {
 	
 	@SuppressWarnings("deprecation")
 	public static void glint(ItemMeta meta) {
-		if(Version.version.atleast(VersionType.v_20_4) == true) {
+		if(Version.version.atleast(VersionType.v_20_4)) {
 			RF.order(meta, "setEnchantmentGlintOverride", Boolean.class).invoke(true);
 		} else {
 			meta.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft("power")), 0, true);
@@ -53,13 +53,13 @@ public final class ItemRegistry {
 	}
 	
 	public static boolean chance(ItemStack item) {
-		if(nulled(item) == true) return false;
+		if(nulled(item)) return false;
 		PersistentDataContainer p = item.getItemMeta().getPersistentDataContainer();
 		return Utility.random(100) <= p.getOrDefault(Keys.chance(), PersistentDataType.INTEGER, 100);
 	}
 	
 	public static void replace(ItemStack item, List<Content> list) {
-		if(item == null || item.hasItemMeta() == false) return;
+		if(item == null || !item.hasItemMeta()) return;
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
 		if(lore == null) return;
@@ -67,7 +67,7 @@ public final class ItemRegistry {
 		int s = -1;
 		for(int i = lore.size() - 1; i >= 0; i--) {
 			String line = lore.get(i);
-			if(line.startsWith(Language.prefix_chance) == false) continue;
+			if(!line.startsWith(Language.prefix_chance)) continue;
 			lore.remove(i);
 			s = i;
 		}

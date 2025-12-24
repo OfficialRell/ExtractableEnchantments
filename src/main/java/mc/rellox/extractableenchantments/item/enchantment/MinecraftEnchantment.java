@@ -17,7 +17,7 @@ public record MinecraftEnchantment(Enchantment enchantment, String key, String n
 	@Override
 	public String name() {
 		String text = Language.get("Enchantments." + key).text();
-		if(text.isEmpty() == true) return name;
+		if(text.isEmpty()) return name;
 		return text;
 	}
 	

@@ -105,11 +105,11 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 	
 	@EventHandler
 	private final void onClick(InventoryClickEvent event) {
-		if(v.equals(event.getInventory()) == false) return;
+		if(!v.equals(event.getInventory())) return;
 		event.setCancelled(true);
 		
 		Inventory clicked = event.getClickedInventory();
-		if(v.equals(clicked) == true) {
+		if(v.equals(clicked)) {
 			int slot = event.getSlot();
 			if(slot == 5) {
 				if(item_enchanted == null) return;
@@ -125,21 +125,21 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 			ILevelledEnchantment levelled = enchantments.get(s);
 
 			IExtractPrice price = extractor.price();
-			if(price.enabled() == true) price.price().remove(player);
+			if(price.enabled()) price.price().remove(player);
 
 			ExtractorRegistry.extract(extractor, player, item_enchanted, item_extractor,
 					levelled, ExtractType.SELECTION);
 			
 			read();
 			update();
-		} else if(player.getInventory().equals(clicked) == true) {
+		} else if(player.getInventory().equals(clicked)) {
 			ItemStack item = event.getCurrentItem();
 			
-			if(ItemRegistry.nulled(item) == true) return;
+			if(ItemRegistry.nulled(item)) return;
 
 			List<ILevelledEnchantment> list = EnchantmentRegistry.enchantments(extractor, player, item);
 			boolean single = list.size() == 1 && item.getType() == Material.ENCHANTED_BOOK;
-			if(list.isEmpty() == true || single == true) return;
+			if(list.isEmpty() || single) return;
 			
 			item_enchanted = item;
 			enchantments.clear();
@@ -153,7 +153,7 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 		
 		List<ILevelledEnchantment> list = EnchantmentRegistry.enchantments(extractor, player, item_enchanted);
 		boolean single = list.size() == 1 && item_enchanted.getType() == Material.ENCHANTED_BOOK;
-		if(list.isEmpty() == true || single == true) {
+		if(list.isEmpty() || single) {
 			item_enchanted = null;
 			enchantments.clear();
 			return;
@@ -166,13 +166,13 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 	@EventHandler
 	private final void onClose(InventoryCloseEvent event) {
 		Inventory i = event.getInventory();
-		if(v.equals(i) == false) return;
+		if(!v.equals(i)) return;
 		unregister();
 	}
 
 	@EventHandler
 	private final void onQuit(PlayerQuitEvent event) {
-		if(event.getPlayer().equals(player) == false) return;
+		if(!event.getPlayer().equals(player)) return;
 		unregister();
 	}
 	
@@ -188,8 +188,8 @@ public class SelectionExtractChangeable implements ISelectionExtractChangeable, 
 		ItemMeta meta = item.getItemMeta();
 		
 		String color;
-		if(enchantment.curse() == true) color = CF.l.color_curse;
-		else if(enchantment.minecraft() == true) color = CF.l.color_minecraft;
+		if(enchantment.curse()) color = CF.l.color_curse;
+		else if(enchantment.minecraft()) color = CF.l.color_minecraft;
 		else color = CF.l.color_custom;
 		
 		meta.setDisplayName(Language.get("Extraction.selection.enchantment.name",

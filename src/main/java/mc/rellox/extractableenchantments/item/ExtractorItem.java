@@ -44,15 +44,15 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		order.submit("INFO", this::info);
 		
 		IExtractorChance chance = extractor.chance();
-		if(chance.enabled() == true) {
+		if(chance.enabled()) {
 			order.submit("CHANCE", () -> Language.list("Extractor.info.chance",
 					"chance", Language.get("Extractor.info.unknown-chance")));
-			if(chance.destroy() == true)
+			if(chance.destroy())
 				order.submit("DESTROY", () -> Language.list("Extractor.info.destroy"));
 		}
 		
 		IExtractPrice price = extractor.price();
-		if(price.enabled() == true)
+		if(price.enabled())
 			order.submit("PRICE", () -> Language.list("Extractor.info.price",
 					"price", price.price().text()));
 		
@@ -78,19 +78,19 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		
 		int chance_value;
 		IExtractorChance chance = extractor.chance();
-		if(chance.enabled() == true) {
+		if(chance.enabled()) {
 			chance_value = chance.roll();
 			order.submit("CHANCE", () -> {
 				List<Content> list = Language.list("Extractor.info.chance", "chance", chance_value);
 				list.replaceAll(c -> Content.of(Content.of(Language.prefix_chance), c));
 				return list;
 			});
-			if(chance.destroy() == true)
+			if(chance.destroy())
 				order.submit("DESTROY", () -> Language.list("Extractor.info.destroy"));
 		} else chance_value = 100;
 		
 		IExtractPrice price = extractor.price();
-		if(price.enabled() == true)
+		if(price.enabled())
 			order.submit("PRICE", () -> Language.list("Extractor.info.price",
 					"price", price.price().text()));
 		
@@ -100,7 +100,7 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		data.set(Keys.extractor(), PersistentDataType.STRING, extractor.key());
 		data.set(Keys.chance(), PersistentDataType.INTEGER, chance_value);
 		
-		if(extractor.stackable() == false || chance.enabled() == true)
+		if(!extractor.stackable() || chance.enabled())
 			data.set(Keys.random(), PersistentDataType.INTEGER, Utility.random());
 		
 		item.setItemMeta(meta);
@@ -109,11 +109,11 @@ public class ExtractorItem extends Item implements IExtractorItem {
 
 	@Override
 	public boolean match(ItemStack item) {
-		if(item == null || item.hasItemMeta() == false) return false;
+		if(item == null || !item.hasItemMeta()) return false;
 		ItemMeta meta = item.getItemMeta();
 		PersistentDataContainer data = meta.getPersistentDataContainer();
 		String saved = data.get(Keys.extractor(), PersistentDataType.STRING);
-		return extractor.key().equalsIgnoreCase(saved) == true;
+		return extractor.key().equalsIgnoreCase(saved);
 	}
 
 }

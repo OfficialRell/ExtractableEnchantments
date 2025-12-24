@@ -33,7 +33,7 @@ public class VaneHook implements IHook, IEnchantmentReader {
 	@Override
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
-		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+		if(ItemRegistry.nulled(item) || !item.hasItemMeta()) return map;
 		
 		IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
 		fetcher.enchantments().forEach((e, level) -> {

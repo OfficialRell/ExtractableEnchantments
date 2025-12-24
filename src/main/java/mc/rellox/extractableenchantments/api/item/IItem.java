@@ -69,7 +69,7 @@ public interface IItem {
 				.filter(i -> i.ordinal() < 8)
 				.toArray(ItemFlag[]::new));
 		
-		if(glint() == true) ItemRegistry.glint(meta);
+		if(glint()) ItemRegistry.glint(meta);
 		if(model() > 0) meta.setCustomModelData(model());
 		
 		Utility.tooltip(meta, tooltip());

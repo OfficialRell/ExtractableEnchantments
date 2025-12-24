@@ -66,7 +66,7 @@ public final class Text {
 	}
 
 	public static String color(String hex) {
-		if(hex == null || hex.isEmpty() == true) return "";
+		if(hex == null || hex.isEmpty()) return "";
 		if(hex.charAt(0) == '#') hex = hex.substring(1);
 		String s = color_code + "x";
 		for(char c : hex.toCharArray()) s += color_code + "" + c;
@@ -143,15 +143,15 @@ public final class Text {
 	public static void clean(List<String> list) {
 		boolean n = false;
 		Iterator<String> it = list.iterator();
-		while(it.hasNext() == true) {
-			if(it.next().isEmpty() == true) {
-				if(n == true) it.remove();
+		while(it.hasNext()) {
+			if(it.next().isEmpty()) {
+				if(n) it.remove();
 				n = true;
 			} else n = false;
 		}
-		if(list.isEmpty() == false) {
+		if(!list.isEmpty()) {
 			int last = list.size() - 1;
-			if(list.get(last).isEmpty() == true)
+			if(list.get(last).isEmpty())
 				list.remove(last);
 		}
 	}
@@ -171,7 +171,7 @@ public final class Text {
 			else if(c == '&') l = true;
 			else if(c == '#') h = true;
 			else {
-				if(l == true) {
+				if(l) {
 					String o = switch (c) {
 					case 'a' -> "<#00ff00>"; case 'b' -> "<#00ffff>";
 					case 'c' -> "<#ff0000>"; case 'd' -> "<#ff00ff>";
@@ -187,7 +187,7 @@ public final class Text {
 					};
 					sb.append(o);
 					l = false;
-				} else if(h == true) {
+				} else if(h) {
 					x += "" + c;
 					if(x.length() >= 6) {
 						sb.append("<#").append(x).append('>');
@@ -196,7 +196,7 @@ public final class Text {
 					}
 				} else sb.append(c);
 			}
-			if(i == true && l == true || h == true) return s;
+			if(i && l || h) return s;
 			i = false;
 		}
 		return sb.toString();

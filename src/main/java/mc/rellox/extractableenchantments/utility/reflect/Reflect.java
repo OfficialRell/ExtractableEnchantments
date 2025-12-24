@@ -34,7 +34,7 @@ public final class Reflect {
 		 */
 		
 		public static void debug(Exception e) {
-			//if(Settings.settings.debug == true) e.printStackTrace();
+			//if(Settings.settings.debug) e.printStackTrace();
 		}
 		
 		/**
@@ -44,11 +44,11 @@ public final class Reflect {
 		 */
 		
 		public static void debug(Exception e, boolean warn) {
-			//if(Settings.settings.debug == true && warn == true) e.printStackTrace();
+			//if(Settings.settings.debug && warn) e.printStackTrace();
 		}
 		
 		public static Class<?> craft(String s) {
-			if(SERVER_VERSION.equalsIgnoreCase("craftbukkit") == true)
+			if(SERVER_VERSION.equalsIgnoreCase("craftbukkit"))
 				return RF.get("org.bukkit.craftbukkit." + s);
 			return RF.get("org.bukkit.craftbukkit." + SERVER_VERSION + "." + s);
 		}
@@ -125,7 +125,7 @@ public final class Reflect {
 		
 		public static <E extends Enum<E>> E enumerate(Class<E> c, String... ss) {
 			var a = enumerates(c, List.of(ss));
-			return a.isEmpty() == true ? null : a.get(0);
+			return a.isEmpty() ? null : a.get(0);
 		}
 		
 		/**
@@ -139,7 +139,7 @@ public final class Reflect {
 		
 		public static <E> E enumerate(Function<String, E> mapper, String... ss) {
 			var a = enumerates(mapper, List.of(ss));
-			return a.isEmpty() == true ? null : a.get(0);
+			return a.isEmpty() ? null : a.get(0);
 		}
 		
 		/**
@@ -265,12 +265,12 @@ public final class Reflect {
 			try {
 				String path = c.getCanonicalName() + "." + n;
 				for(Class<?> d : c.getClasses()) {
-					if(d.getCanonicalName().equals(path) == true) {
+					if(d.getCanonicalName().equals(path)) {
 						return d;
 					}
 				}
 				for(Class<?> d : c.getDeclaredClasses()) {
-					if(d.getCanonicalName().equals(path) == true) {
+					if(d.getCanonicalName().equals(path)) {
 						return d;
 					}
 				}

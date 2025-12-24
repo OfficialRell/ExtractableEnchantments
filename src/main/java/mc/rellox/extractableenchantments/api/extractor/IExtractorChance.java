@@ -61,7 +61,7 @@ public interface IExtractorChance {
 	 */
 	
 	default boolean chance(ItemStack item) {
-		if(enabled() == false) return true;
+		if(!enabled()) return true;
 		ItemMeta meta = item.getItemMeta();
 		PersistentDataContainer p = meta.getPersistentDataContainer();
 		return Utility.random(100) <= p.getOrDefault(Keys.chance(), PersistentDataType.INTEGER, 100);

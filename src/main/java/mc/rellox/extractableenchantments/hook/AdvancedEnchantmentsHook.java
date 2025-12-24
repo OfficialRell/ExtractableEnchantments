@@ -33,13 +33,13 @@ public class AdvancedEnchantmentsHook implements IHook, IEnchantmentReader {
 	@Override
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
-		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+		if(ItemRegistry.nulled(item) || !item.hasItemMeta()) return map;
 		
 		@SuppressWarnings("unchecked")
 		Map<String, Integer> enchantments = RF.order(AEAPI, "getEnchantmentsOnItem", ItemStack.class)
 				.as(Map.class)
 				.invoke(item);
-		if(enchantments == null || enchantments.isEmpty() == true) return map;
+		if(enchantments == null || enchantments.isEmpty()) return map;
 		
 		enchantments.forEach((e, level) -> {
 			Object ae = RF.order(AEAPI, "getEnchantmentInstance", String.class)

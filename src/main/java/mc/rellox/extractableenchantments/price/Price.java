@@ -143,7 +143,7 @@ public abstract class Price implements IPrice {
 			int h = 0;
 			for(int i = 0; i < 36; i++) {
 				if((slot = v.getItem(i)) == null) continue;
-				if(slot.isSimilar(item) == false) continue;
+				if(!slot.isSimilar(item)) continue;
 				h += slot.getAmount();
 			}
 			return h;

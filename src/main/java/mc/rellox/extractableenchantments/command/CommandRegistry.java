@@ -33,19 +33,19 @@ public final class CommandRegistry {
 	
 	public static void onCommand(CommandSender sender, Command command, String[] args) {
 		final Player player = sender instanceof Player p ? p : null;
-		if(extactable_enchantments != null && extactable_enchantments.equals(command) == true) {
+		if(extactable_enchantments != null && extactable_enchantments.equals(command)) {
 			String help0 = help(command, null, "reload", "extractor", "dust", "open");
 			if(args.length < 1) sender.sendMessage(help0);
-			else if(args[0].equalsIgnoreCase("reload") == true) {
+			else if(args[0].equalsIgnoreCase("reload")) {
 				reload(sender, player);
-			} else if(args[0].equalsIgnoreCase("extractor") == true) {
+			} else if(args[0].equalsIgnoreCase("extractor")) {
 				extractor(sender, command, args, player);
-			} else if(args[0].equalsIgnoreCase("dust") == true) {
+			} else if(args[0].equalsIgnoreCase("dust")) {
 				dust(sender, command, args, player);
-			} else if(args[0].equalsIgnoreCase("open") == true) {
+			} else if(args[0].equalsIgnoreCase("open")) {
 				open(sender, command, args, player);
 			} else sender.sendMessage(help0);
-		} else if(split_dust != null && split_dust.equals(command) == true) {
+		} else if(split_dust != null && split_dust.equals(command)) {
 			split(sender, command, args, player);
 		}
 	}
@@ -64,18 +64,18 @@ public final class CommandRegistry {
 
 		ItemStack hand = player.getInventory().getItemInMainHand();
 		IDust dust;
-		if(ItemRegistry.nulled(hand) == true || (dust = DustRegistry.get(hand)) == null) {
+		if(ItemRegistry.nulled(hand) || (dust = DustRegistry.get(hand)) == null) {
 			Language.get("Dust.split.held").send(player);
 			return;
 		}
-		if(player.hasPermission("ee.dust.split." + dust.key()) == false) {
+		if(!player.hasPermission("ee.dust.split." + dust.key())) {
 			Language.get("Permission.warning.split-dust").send(player);
 			Settings.settings.sound_warning.play(player);
 			return;
 		}
 		int perc = DustRegistry.readPercent(hand);
 		if(perc <= 1) Language.get("Dust.split.too-small").send(player);
-		else if(Utility.isInteger(args[0]) == true) {
+		else if(Utility.isInteger(args[0])) {
 			int amount = Integer.parseInt(args[0]);
 			if(amount < 1) Language.get("Dust.split.invalid", "amount", amount).send(player);
 			else if(amount >= perc) Language.get("Dust.split.too-large", "value", perc).send(player);
@@ -115,7 +115,7 @@ public final class CommandRegistry {
 		}
 
 		String pa = args[2];
-		if(pa.matches("\\d+(?:-\\d+)?") == false) {
+		if(!pa.matches("\\d+(?:-\\d+)?")) {
 			warn(sender, "Invalid percentage (#0)!", pa);
 			return;
 		}
@@ -138,7 +138,7 @@ public final class CommandRegistry {
 		int amount;
 		if(args.length < 4) amount = 1;
 		else {
-			if(Utility.isInteger(args[3]) == false) return;
+			if(!Utility.isInteger(args[3])) return;
 			amount = Integer.parseInt(args[3]);
 			if(amount <= 0) {
 				warn(sender, "Invalid amount (#0)!", amount);
@@ -226,7 +226,7 @@ public final class CommandRegistry {
 		int amount;
 		if(args.length < 3) amount = 1;
 		else {
-			if(Utility.isInteger(args[2]) == false) return;
+			if(!Utility.isInteger(args[2])) return;
 			amount = Integer.parseInt(args[2]);
 			if(amount <= 0 || amount > 128) {
 				warn(sender, "Invalid amount (#0)!", amount);
@@ -262,25 +262,25 @@ public final class CommandRegistry {
 	
 	public static List<String> onTabComplete(CommandSender sender, Command command, String[] args) {
 		List<String> l = new ArrayList<>();
-		if(extactable_enchantments.equals(command) == true) {
+		if(extactable_enchantments.equals(command)) {
 			if(args.length < 1) return l;
 			else if(args.length < 2) return tab_options(args[0]);
-			else if(args[0].equalsIgnoreCase("extractor") == true) {
+			else if(args[0].equalsIgnoreCase("extractor")) {
 				if(args.length < 3) return tab_extractors(args[1]);
 				else if(args.length < 4) return l;
 				else if(args.length < 5) return tab_players(args[3]);
 				else return l;
-			} else if(args[0].equalsIgnoreCase("dust") == true) {
+			} else if(args[0].equalsIgnoreCase("dust")) {
 				if(args.length < 3) return tab_dusts(args[1]);
 				else if(args.length < 5) return l;
 				else if(args.length < 6) return tab_players(args[4]);
 				else return l;
-			} else if(args[0].equalsIgnoreCase("open") == true) {
+			} else if(args[0].equalsIgnoreCase("open")) {
 				if(args.length < 3) return tab_extractors(args[1]);
 				else if(args.length < 4) return tab_players(args[2]);
 				else return l;
 			} else return l;
-		} else if(split_dust.equals(command) == true) return l;
+		} else if(split_dust.equals(command)) return l;
 		return null;
 	}
 	
@@ -347,7 +347,7 @@ public final class CommandRegistry {
 	}
 
 	private static List<String> reduce(List<String> l, String s) {
-		if(s.isEmpty() == true) return l;
+		if(s.isEmpty()) return l;
 		String t = s.toLowerCase();
 		return l.stream()
 				.filter(a -> a.toLowerCase().contains(t))

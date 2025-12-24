@@ -131,7 +131,7 @@ public interface Content {
 			return v -> {
 				int i = 0, m = vs.length;
 				do {
-					if(v.equals(vs[i]) == true)
+					if(v.equals(vs[i]))
 						return convert(vs[i + 1]);
 				} while((i += 2) < m);
 				return v;

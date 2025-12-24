@@ -37,7 +37,7 @@ public interface IRecipe {
 	
 	static RecipeItem of(String item) {
 		try {
-			if(item.equalsIgnoreCase("empty") == true) return null;
+			if(item.equalsIgnoreCase("empty")) return null;
 			if(item.indexOf(':') < 0)
 				return new RecipeItem(RF.enumerate(Material.class, item), 1);
 			String[] ss = item.split(":");

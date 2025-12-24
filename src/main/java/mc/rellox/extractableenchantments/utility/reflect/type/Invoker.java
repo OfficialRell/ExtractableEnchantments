@@ -89,7 +89,7 @@ public interface Invoker<T> {
 				Class<?>[] ps = m.getParameterTypes();
 				if(ps == null || ps.length <= 0) return params == null;
 				for(int i = 0; i < ps.length && i < params.length; i++)
-					if(ps[i].equals(params[i]) == false) return false;
+					if(!ps[i].equals(params[i])) return false;
 				return true;
 			});
 			Method method = stream
@@ -146,8 +146,8 @@ public interface Invoker<T> {
 	}
 	
 	private static Method method0(Class<?> clazz, String name, Class<?>...params) {
-		if(clazz.equals(Object.class) == true
-				|| clazz.getName().equals("java.lang.Object") == true)
+		if(clazz.equals(Object.class)
+				|| clazz.getName().equals("java.lang.Object"))
 			return null;
 		try {
 			return clazz.getDeclaredMethod(name, params);
@@ -165,8 +165,8 @@ public interface Invoker<T> {
 	}
 	
 	private static void methods0(Set<Method> set, Class<?> clazz) {
-		if(clazz.equals(Object.class) == true
-				|| clazz.getName().equals("java.lang.Object") == true)
+		if(clazz.equals(Object.class)
+				|| clazz.getName().equals("java.lang.Object"))
 			return;
 		Stream.of(clazz.getMethods()).forEach(set::add);
 		Stream.of(clazz.getDeclaredMethods()).forEach(set::add);

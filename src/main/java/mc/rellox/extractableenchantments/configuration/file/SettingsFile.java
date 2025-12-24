@@ -402,7 +402,7 @@ public final class SettingsFile extends AbstractFile {
 
 	private void convert() {
 		File old_file = new File(ExtractableEnchantments.instance().getDataFolder(), "config.yml");
-		if(old_file.exists() == false) return;
+		if(!old_file.exists()) return;
 
 		FileConfiguration old = YamlConfiguration.loadConfiguration(old_file);
 
@@ -493,11 +493,11 @@ public final class SettingsFile extends AbstractFile {
 			if(world == null) return false;
 			File folder = world.getWorldFolder();
 			File datapacks = new File(folder, "datapacks");
-			if(datapacks.exists() == false || datapacks.isDirectory() == false) return false;
+			if(!datapacks.exists() || !datapacks.isDirectory()) return false;
 			File[] files = datapacks.listFiles();
 			if(files == null || files.length <= 0) return false;
 			for(File file : files)
-				if(file.getName().contains("enchantment-plus") == true)
+				if(file.getName().contains("enchantment-plus"))
 					return true;
 		} catch (Exception e) {}
 		return false;
@@ -521,7 +521,7 @@ public final class SettingsFile extends AbstractFile {
 				@SuppressWarnings("unchecked")
 				List<String> s = list;
 				for(int i = 0; i < s.size(); i++) {
-					if(s.get(i).equalsIgnoreCase("EMPTY") == false) continue;
+					if(!s.get(i).equalsIgnoreCase("EMPTY")) continue;
 					s.set(i, "empty");
 				}
 				return s;
@@ -536,7 +536,7 @@ public final class SettingsFile extends AbstractFile {
 						.map(String::valueOf)
 						.collect(Collectors.toList());
 				l.replaceAll(s -> {
-					if(s.equalsIgnoreCase("ITEM_WITH_FLAGS") == true)
+					if(s.equalsIgnoreCase("ITEM_WITH_FLAGS"))
 						return "ITEM_WITH_FLAG";
 					return s;
 				});

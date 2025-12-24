@@ -94,9 +94,9 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 	
 	@EventHandler
 	private final void onClick(InventoryClickEvent event) {
-		if(v.equals(event.getInventory()) == false) return;
+		if(!v.equals(event.getInventory())) return;
 		event.setCancelled(true);
-		if(v.equals(event.getClickedInventory()) == false) return;
+		if(!v.equals(event.getClickedInventory())) return;
 		
 		int s = event.getSlot() - 9;
 		if(s < 0 || s >= enchantments.size()) return;
@@ -106,7 +106,7 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 		player.closeInventory();
 		
 		IExtractPrice price = extractor.price();
-		if(price.enabled() == true) price.price().remove(player);
+		if(price.enabled()) price.price().remove(player);
 		
 		ExtractorRegistry.extract(extractor, player, item_enchanted, item_extractor, levelled);
 	}
@@ -114,10 +114,10 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 	@EventHandler
 	private final void onClose(InventoryCloseEvent event) {
 		Inventory i = event.getInventory();
-		if(v.equals(i) == false) return;
+		if(!v.equals(i)) return;
 		unregister();
 		
-		if(player.isOnline() == true) {
+		if(player.isOnline()) {
 			if(ItemRegistry.free(player) <= 0)
 				player.getWorld().dropItem(player.getLocation(), item_extractor);
 			else player.getInventory().addItem(item_extractor);
@@ -126,7 +126,7 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 
 	@EventHandler
 	private final void onQuit(PlayerQuitEvent event) {
-		if(event.getPlayer().equals(player) == false) return;
+		if(!event.getPlayer().equals(player)) return;
 		unregister();
 		player.getWorld().dropItem(player.getLocation(), item_extractor);
 	}
@@ -143,8 +143,8 @@ public class SelectionExtract implements ISelectionExtract, Listener {
 		ItemMeta meta = item.getItemMeta();
 		
 		String color;
-		if(enchantment.curse() == true) color = CF.l.color_curse;
-		else if(enchantment.minecraft() == true) color = CF.l.color_minecraft;
+		if(enchantment.curse()) color = CF.l.color_curse;
+		else if(enchantment.minecraft()) color = CF.l.color_minecraft;
 		else color = CF.l.color_custom;
 		
 		meta.setDisplayName(Language.get("Extraction.selection.enchantment.name",

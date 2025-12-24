@@ -28,11 +28,11 @@ public class DustItem extends Item implements IDustItem {
 
 	@Override
 	public boolean match(ItemStack item) {
-		if(item == null || item.hasItemMeta() == false) return false;
+		if(item == null || !item.hasItemMeta()) return false;
 		ItemMeta meta = item.getItemMeta();
 		PersistentDataContainer data = meta.getPersistentDataContainer();
 		String saved = data.get(Keys.dust(), PersistentDataType.STRING);
-		return dust.key().equalsIgnoreCase(saved) == true;
+		return dust.key().equalsIgnoreCase(saved);
 	}
 
 	@Override

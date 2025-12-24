@@ -96,7 +96,7 @@ public interface Accessor<R> {
 		if(clazz == null) return List.of(empty());
 		try {
 			Set<Field> set = fields(clazz);
-			if(set.isEmpty() == true) {
+			if(set.isEmpty()) {
 				RF.debug(new NoSuchFieldException("No fields with return type of "
 						+ returns.getName()), warn);
 				return List.of(empty());
@@ -164,8 +164,8 @@ public interface Accessor<R> {
 	}
 	
 	private static Field field0(Class<?> clazz, String name) {
-		if(clazz.equals(Object.class) == true
-				|| clazz.getName().equals("java.lang.Object") == true)
+		if(clazz.equals(Object.class)
+				|| clazz.getName().equals("java.lang.Object"))
 			return null;
 		try {
 			return clazz.getDeclaredField(name);
@@ -183,8 +183,8 @@ public interface Accessor<R> {
 	}
 	
 	private static void fields0(Set<Field> set, Class<?> c) {
-		if(c.equals(Object.class) == true
-				|| c.getName().equals("java.lang.Object") == true)
+		if(c.equals(Object.class)
+				|| c.getName().equals("java.lang.Object"))
 			return;
 		Stream.of(c.getFields()).forEach(set::add);
 		Stream.of(c.getDeclaredFields()).forEach(set::add);

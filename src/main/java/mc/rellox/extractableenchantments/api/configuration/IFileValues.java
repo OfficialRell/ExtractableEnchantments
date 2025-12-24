@@ -75,7 +75,7 @@ public interface IFileValues {
 	
 	@SuppressWarnings("serial")
 	default List<String> getStringsAll(String path) {
-		if(file().isString(path) == true)
+		if(file().isString(path))
 			return new ArrayList<>() {{add(file().getString(path));}};
 		return file().getStringList(path);
 	}

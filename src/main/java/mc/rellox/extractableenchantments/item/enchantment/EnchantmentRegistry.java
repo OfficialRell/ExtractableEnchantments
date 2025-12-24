@@ -89,7 +89,7 @@ public final class EnchantmentRegistry {
 			@Override
 			public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 				Map<IEnchantment, Integer> map = new HashMap<>();
-				if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+				if(ItemRegistry.nulled(item) || !item.hasItemMeta()) return map;
 				
 				IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
 				fetcher.enchantments().forEach((e, l) -> {
@@ -107,15 +107,15 @@ public final class EnchantmentRegistry {
 
 	public static void submit(IEnchantmentReader reader) {
 		String key = reader.key();
-		if(READERS.containsKey(key) == true)
+		if(READERS.containsKey(key))
 			throw new IllegalArgumentException("Duplicate enchantment reader with key: " + key);
 		READERS.put(key, reader);
 	}
 
 	public static void remove(Predicate<IEnchantmentReader> filter) {
 		var it = READERS.values().iterator();
-		if(it.hasNext() == true)
-			if(filter.test(it.next()) == true)
+		if(it.hasNext())
+			if(filter.test(it.next()))
 				it.remove();
 	}
 	
@@ -135,28 +135,26 @@ public final class EnchantmentRegistry {
 	public static List<ILevelledEnchantment> enchantments(IExtractor extractor, Player player, ItemStack item) {
 		List<ILevelledEnchantment> enchantments = EnchantmentRegistry.enchantments(item);
 		
-		if(enchantments.isEmpty() == true) return enchantments;
+		if(enchantments.isEmpty()) return enchantments;
 		
 		IExtract extract = extractor.extract();
-		enchantments.removeIf(e -> extract.filter()
-				.accepts(e.enchantment()) == false);
+		enchantments.removeIf(e -> !extract.filter().accepts(e.enchantment()));
 		
-		if(enchantments.isEmpty() == true) {
+		if(enchantments.isEmpty()) {
 			if(extract.filter() == ExtractFilter.MINECRAFT)
 				Language.get("Extraction.filter.minecraft").send(player);
 			else if(extract.filter() == ExtractFilter.CUSTOM)
 				Language.get("Extraction.filter.custom").send(player);
 			return enchantments;
 		}
-		if(extract.unsafe() == false) {
+		if(!extract.unsafe()) {
 			enchantments.removeIf(ILevelledEnchantment::unsafe);
-			if(enchantments.isEmpty() == true) {
+			if(enchantments.isEmpty()) {
 				Language.get("Extraction.unsafe").send(player);
 				return enchantments;
 			}
 		}
-		enchantments.removeIf(e -> extract.accepted()
-				.accepted(e) == false);
+		enchantments.removeIf(e -> !extract.accepted().accepted(e));
 		
 		return enchantments;
 	}

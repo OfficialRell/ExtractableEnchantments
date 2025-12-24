@@ -86,7 +86,7 @@ public abstract class Constraint implements IConstraint {
 
 		@Override
 		public boolean ignored(ItemStack item) {
-			if(item == null || item.hasItemMeta() == false) return true;
+			if(item == null || !item.hasItemMeta()) return true;
 			ItemMeta meta = item.getItemMeta();
 			if(name == null) return meta.hasDisplayName();
 			String display = meta.getDisplayName();
@@ -106,7 +106,7 @@ public abstract class Constraint implements IConstraint {
 
 		@Override
 		public boolean ignored(ItemStack item) {
-			if(item == null || item.hasItemMeta() == false) return true;
+			if(item == null || !item.hasItemMeta()) return true;
 			ItemMeta meta = item.getItemMeta();
 			if(lore == null) return meta.hasLore();
 			List<String> lores = meta.getLore();
@@ -129,7 +129,7 @@ public abstract class Constraint implements IConstraint {
 		@SuppressWarnings("deprecation")
 		@Override
 		public boolean ignored(ItemStack item) {
-			if(item == null || item.hasItemMeta() == false) return true;
+			if(item == null || !item.hasItemMeta()) return true;
 			ItemMeta meta = item.getItemMeta();
 			if(model == 0) return meta.hasCustomModelData();
 			return meta.getCustomModelData() == model;
@@ -148,9 +148,9 @@ public abstract class Constraint implements IConstraint {
 
 		@Override
 		public boolean ignored(ItemStack item) {
-			if(item == null || item.hasItemMeta() == false) return true;
+			if(item == null || !item.hasItemMeta()) return true;
 			ItemMeta meta = item.getItemMeta();
-			if(flag == null) return meta.getItemFlags().isEmpty() == false;
+			if(flag == null) return !meta.getItemFlags().isEmpty();
 			return meta.hasItemFlag(flag);
 		}
 		
@@ -164,7 +164,7 @@ public abstract class Constraint implements IConstraint {
 
 		@Override
 		public boolean ignored(ItemStack item) {
-			if(item == null || item.hasItemMeta() == false) return true;
+			if(item == null || !item.hasItemMeta()) return true;
 			return item.getItemMeta().isUnbreakable();
 		}
 		

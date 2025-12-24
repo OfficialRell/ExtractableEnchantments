@@ -60,12 +60,12 @@ public final class Utility {
 			removed = RF.order(Bukkit.getServer(), "removeRecipe", false, NamespacedKey.class).as(boolean.class)
 					.invoke(false, recipe.namespace());
 		} catch (Exception e) {}
-		if(removed == false) {
+		if(!removed) {
 			Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
-			while(it.hasNext() == true) {
+			while(it.hasNext()) {
 				Recipe r = it.next();
 				if(r instanceof ShapedRecipe shaped) {
-					if(shaped.getKey().equals(recipe.namespace()) == false) continue;
+					if(!shaped.getKey().equals(recipe.namespace())) continue;
 					it.remove();
 					break;
 				}
@@ -75,7 +75,7 @@ public final class Utility {
 	}
 	
 	public static void tooltip(ItemMeta meta, String tooltip) {
-		if(tooltip == null || Version.version.atleast(VersionType.v_21_2) == false) return;
+		if(tooltip == null || !Version.version.atleast(VersionType.v_21_2)) return;
 		meta.setTooltipStyle(NamespacedKey.minecraft(tooltip));
 	}
 
@@ -85,7 +85,7 @@ public final class Utility {
 			public void run() {
 				try(InputStream is = new URI("https://api.spigotmc.org/legacy/update.php?resource=" + id).toURL().openStream();
 						Scanner sc = new Scanner(is)) {
-					if(sc.hasNext() == true) action.accept(sc.next());
+					if(sc.hasNext()) action.accept(sc.next());
 				} catch(Exception x) {}
 			}
 		}.runTaskLaterAsynchronously(ExtractableEnchantments.instance(), 50);

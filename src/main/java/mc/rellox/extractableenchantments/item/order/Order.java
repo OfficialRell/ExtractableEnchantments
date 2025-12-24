@@ -28,7 +28,7 @@ public class Order implements IOrder {
 	
 	@Override
 	public void named(List<Content> name) {
-		if(name.isEmpty() == true) return;
+		if(name.isEmpty()) return;
 		map.put("NAMED", () -> name);
 	}
 
@@ -36,14 +36,14 @@ public class Order implements IOrder {
 	public List<String> build() {
 		List<String> build = new ArrayList<>();
 		list.keys().forEach(key -> {
-			if(key.equals("!") == true) build.add("");
+			if(key.equals("!")) build.add("");
 			else {
 				Supplier<List<Content>> supplier = map.get(key);
 				if(supplier == null) return;
 				List<Content> contents = supplier.get();
-				if(contents == null || contents.isEmpty() == true) return;
+				if(contents == null || contents.isEmpty()) return;
 				List<String> text = Text.toText(contents);
-				if(text.isEmpty() == true) return;
+				if(text.isEmpty()) return;
 				build.addAll(text);
 			}
 		});

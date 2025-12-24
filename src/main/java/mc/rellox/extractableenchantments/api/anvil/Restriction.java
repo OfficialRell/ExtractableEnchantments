@@ -14,78 +14,78 @@ public enum Restriction {
 		@Override
 		public boolean restricted(Material what, Material to) {
 			if(what != Material.ENCHANTED_BOOK) return false;
-			return isArmor(to) == true;
+			return isArmor(to);
 		}
 	},
 	BOOK_TO_WEAPON() {
 		@Override
 		public boolean restricted(Material what, Material to) {
 			if(what != Material.ENCHANTED_BOOK) return false;
-			return isWeapon(to) == true;
+			return isWeapon(to);
 		}
 	},
 	BOOK_TO_SWORD() {
 		@Override
 		public boolean restricted(Material what, Material to) {
 			if(what != Material.ENCHANTED_BOOK) return false;
-			return isSword(to) == true;
+			return isSword(to);
 		}
 	},
 	BOOK_TO_ARCHERY() {
 		@Override
 		public boolean restricted(Material what, Material to) {
 			if(what != Material.ENCHANTED_BOOK) return false;
-			return isArchery(to) == true;
+			return isArchery(to);
 		}
 	},
 	BOOK_TO_TOOL() {
 		@Override
 		public boolean restricted(Material what, Material to) {
 			if(what != Material.ENCHANTED_BOOK) return false;
-			return isTool(to) == true;
+			return isTool(to);
 		}
 	},
 	BOOK_TO_MISC() {
 		@Override
 		public boolean restricted(Material what, Material to) {
 			if(what != Material.ENCHANTED_BOOK) return false;
-			return isMisc(to) == true;
+			return isMisc(to);
 		}
 	},
 	ARMOR_TO_ARMOR() {
 		@Override
 		public boolean restricted(Material what, Material to) {
-			return isArmor(what) == true && what == to;
+			return isArmor(what) && what == to;
 		}
 	},
 	WEAPON_TO_WEAPON() {
 		@Override
 		public boolean restricted(Material what, Material to) {
-			return isWeapon(what) == true && what == to;
+			return isWeapon(what) && what == to;
 		}
 	},
 	ARCHERY_TO_ARCHERY() {
 		@Override
 		public boolean restricted(Material what, Material to) {
-			return isArchery(what) == true && what == to;
+			return isArchery(what) && what == to;
 		}
 	},
 	SWORD_TO_SWORD() {
 		@Override
 		public boolean restricted(Material what, Material to) {
-			return isSword(what) == true && what == to;
+			return isSword(what) && what == to;
 		}
 	},
 	TOOL_TO_TOOL() {
 		@Override
 		public boolean restricted(Material what, Material to) {
-			return isTool(what) == true && what == to;
+			return isTool(what) && what == to;
 		}
 	},
 	MISC_TO_MISC() {
 		@Override
 		public boolean restricted(Material what, Material to) {
-			return isMisc(what) == true && what == to;
+			return isMisc(what) && what == to;
 		}
 	};
 	
@@ -105,7 +105,7 @@ public enum Restriction {
 	}
 	
 	private static boolean isWeapon(Material m) {
-		return isSword(m) == true
+		return isSword(m)
 				|| switch(m.name()) {
 				case "BOW", "CROSSBOW", "TRIDENT"
 				-> true;

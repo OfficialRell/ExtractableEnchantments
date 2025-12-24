@@ -40,10 +40,10 @@ public class CrazyEnchantmentsHook implements IHook, IEnchantmentReader {
 	@Override
 	public Map<IEnchantment, Integer> enchantments(ItemStack item) {
 		Map<IEnchantment, Integer> map = new HashMap<>();
-		if(ItemRegistry.nulled(item) == true || item.hasItemMeta() == false) return map;
+		if(ItemRegistry.nulled(item) || !item.hasItemMeta()) return map;
 		
 		Map<CEnchantment, Integer> enchantments = settings.getEnchantments(item);
-		if(enchantments == null || enchantments.isEmpty() == true) return map;
+		if(enchantments == null || enchantments.isEmpty()) return map;
 		
 		enchantments.forEach((ce, level) -> {
 			String name = ce.getCustomName();

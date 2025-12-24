@@ -20,7 +20,7 @@ public final class ContentParser {
 	}
 	
 	public static Content parse(String text) {
-		return text == null || text.isEmpty() == true
+		return text == null || text.isEmpty()
 				? Content.empty() : new ContentParser(text).parse();
 	}
 	
@@ -38,7 +38,7 @@ public final class ContentParser {
 	}
 	
 	public Content parse() {
-		if(text == null || text.isEmpty() == true) return Content.empty();
+		if(text == null || text.isEmpty()) return Content.empty();
 		List<Text> list = text();
 		List<Content> result = new ArrayList<>();
 		ContentBuilder builder = new ContentBuilder();
@@ -51,7 +51,7 @@ public final class ContentParser {
 			else if(t.type == Type.gradient) builder.gradient(t.text);
 			else builder.format(t.text);
 		}
-		return result.isEmpty() == true ? Content.empty()
+		return result.isEmpty() ? Content.empty()
 				: result.size() == 1 ? result.get(0) : Content.of(result);
 	}
 	
@@ -59,7 +59,7 @@ public final class ContentParser {
 		List<Text> list = new ArrayList<>();
 		Matcher m = colors.matcher(text);
 		int e = 0, s;
-		while(m.find() == true) {
+		while(m.find()) {
 			s = m.start();
 			if(s > e) list.add(new Text(text.substring(e, s), Type.text));
 			e = m.end();
@@ -74,11 +74,11 @@ public final class ContentParser {
 	}
 	
 	private Content variabled(String t) {
-		if(t.isEmpty() == true) return Content.empty();
+		if(t.isEmpty()) return Content.empty();
 		List<Content> list = new ArrayList<>();
 		Matcher m = variables.matcher(t);
 		int e = 0, s;
-		while(m.find() == true) {
+		while(m.find()) {
 			s = m.start();
 			if(s > e) list.add(Content.of(t.substring(e, s)));
 			e = m.end();
@@ -123,13 +123,13 @@ public final class ContentParser {
 			Colorer color;
 			if(is != null) {
 				if(is.length == 1) {
-					if(fs.isEmpty() == true) color = Colorer.of(is[0]);
+					if(fs.isEmpty()) color = Colorer.of(is[0]);
 					else color = Colorer.of(is[0], Format.of(fs));
 				} else {
-					if(fs.isEmpty() == true) color = Colorer.of(Colors.of(is));
+					if(fs.isEmpty()) color = Colorer.of(Colors.of(is));
 					else color = Colorer.of(Colors.of(is), Format.of(fs));
 				}
-			} else if(fs.isEmpty() == false) color = Colorer.of(Colors.white, Format.of(fs));
+			} else if(!fs.isEmpty()) color = Colorer.of(Colors.white, Format.of(fs));
 			else color = null;
 			return color == null ? input : Content.of(color, input);
 		}

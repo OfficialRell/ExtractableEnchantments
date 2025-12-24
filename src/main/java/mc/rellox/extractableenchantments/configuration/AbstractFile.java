@@ -32,8 +32,8 @@ public abstract class AbstractFile implements IFile {
 	@Override
 	public final void create() {
 		f = new File(parent, name + ".yml");
-		if(f.getParentFile().exists() == false) f.getParentFile().mkdirs();
-		if(f.exists() == false) {
+		if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
+		if(!f.exists()) {
 			try {
 				first = true;
 				f.createNewFile();

@@ -118,7 +118,7 @@ public final class Settings {
 		
 		EnchantmentRegistry.remove(e -> e instanceof DatapackEnchantmentReader);
 		var list = file.getStrings("Datapacks.enchantment-namespaces");
-		if(list.isEmpty() == false) {
+		if(!list.isEmpty()) {
 			list.stream()
 			.map(DatapackEnchantmentReader::new)
 			.forEach(EnchantmentRegistry::submit);
@@ -131,7 +131,7 @@ public final class Settings {
 	}
 	
 	private void extractor(IFile file, String key) {
-		if(Text.key(key) == false) Text.logFail("Invalid extractor key: " + key);
+		if(!Text.key(key)) Text.logFail("Invalid extractor key: " + key);
 		String path = "Extractors." + key;
 		
 		try {
@@ -141,11 +141,11 @@ public final class Settings {
 			boolean glint = file.getBoolean(path + ".item.glint");
 			int model = file.getInteger(path + ".item.model");
 			String tooltip = file.getString(path + ".item.tooltip");
-			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			if(tooltip != null && tooltip.isEmpty()) tooltip = null;
 			ExtractorItem item = new ExtractorItem(material, name, info, glint, model, tooltip);
 
 			IExtractorChance chance;
-			if(file.getBoolean(path + ".chance.enabled") == true) {
+			if(file.getBoolean(path + ".chance.enabled")) {
 				boolean destroy = file.getBoolean(path + ".chance.destroy");
 				int minimum = file.getInteger(path + ".chance.minimum");
 				int maximum = file.getInteger(path + ".chance.maximum");
@@ -170,19 +170,19 @@ public final class Settings {
 					String[] ss = s.split(":");
 					String k = ss[0];
 					String v = ss[1];
-					if(s.matches(".+:\\d+") == true) {
+					if(s.matches(".+:\\d+")) {
 						int level = Integer.parseInt(v);
 						return IIgnoredEnchantment.of(k, level);
 					}
-					if(s.matches(".+:\\d+\\+") == true) {
+					if(s.matches(".+:\\d+\\+")) {
 						int minumum = Integer.parseInt(v.replace("+", ""));
 						return IIgnoredEnchantment.of(k, minumum, Integer.MAX_VALUE);
 					}
-					if(s.matches(".+:-\\d+") == true) {
+					if(s.matches(".+:-\\d+")) {
 						int maximum = Integer.parseInt(v.replace("-", ""));
 						return IIgnoredEnchantment.of(k, 0, maximum);
 					}
-					if(s.matches(".+:\\d+-\\d+") == true) {
+					if(s.matches(".+:\\d+-\\d+")) {
 						String[] sss = v.split("-");
 						int minumum = Integer.parseInt(sss[0]);
 						int maximum = Integer.parseInt(sss[1]);
@@ -206,7 +206,7 @@ public final class Settings {
 					.collect(Collectors.toList());
 			
 			IExtractPrice extract_price;
-			if(file.getBoolean(path + ".price.enabled") == true) {
+			if(file.getBoolean(path + ".price.enabled")) {
 				PriceType price_type = RF.enumerate(PriceType.class,
 						file.getString(path + ".price.type"), PriceType.EXPERIENCE_POINTS);
 				int price_value = file.getInteger(path + ".price.value");
@@ -226,7 +226,7 @@ public final class Settings {
 			} else extract_price = IExtractPrice.empty;
 			
 			IRecipe recipe;
-			if(file.getBoolean(path + ".recipe.enabled") == true) {
+			if(file.getBoolean(path + ".recipe.enabled")) {
 				List<RecipeItem> ingredients = file.getStrings(path + ".recipe.ingredients")
 						.stream()
 						.map(IRecipe::of)
@@ -249,7 +249,7 @@ public final class Settings {
 	}
 	
 	private void dust(IFile file, String key) {
-		if(Text.key(key) == false) Text.logFail("Invalid dust key: " + key);
+		if(!Text.key(key)) Text.logFail("Invalid dust key: " + key);
 		String path = "Dust." + key;
 		
 		try {
@@ -259,7 +259,7 @@ public final class Settings {
 			boolean glint = file.getBoolean(path + ".item.glint");
 			int model = file.getInteger(path + ".item.model");
 			String tooltip = file.getString(path + ".item.tooltip");
-			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			if(tooltip != null && tooltip.isEmpty()) tooltip = null;
 			DustItem item = new DustItem(material, name, info, glint, model, tooltip);
 			
 			Set<IExtractor> extractors = file.getStrings(path + ".applicable-to.extractors").stream()
@@ -274,7 +274,7 @@ public final class Settings {
 			if(limit <= 0) limit = Integer.MAX_VALUE;
 			
 			IRecipe recipe;
-			if(file.getBoolean(path + ".recipe.enabled") == true) {
+			if(file.getBoolean(path + ".recipe.enabled")) {
 				List<RecipeItem> ingredients = file.getStrings(path + ".recipe.ingredients")
 						.stream()
 						.map(IRecipe::of)
@@ -304,14 +304,14 @@ public final class Settings {
 			boolean glint = file.getBoolean(path + "book.glint");
 			int model = file.getInteger(path + "book.model");
 			String tooltip = file.getString(path + "book.tooltip");
-			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			if(tooltip != null && tooltip.isEmpty()) tooltip = null;
 			
 			extraction_selection_item_book = new GenericItem(material, glint, model, tooltip);
 			
 			material = RF.enumerate(Material.class, file.getString(path + "background.material"));
 			model = file.getInteger(path + "background.model");
 			tooltip = file.getString(path + "background.tooltip");
-			if(tooltip != null && tooltip.isEmpty() == true) tooltip = null;
+			if(tooltip != null && tooltip.isEmpty()) tooltip = null;
 			extraction_selection_item_background = material == null || material == Material.AIR
 							? BackgroundItem.nulled
 							: new BackgroundItem(material, model, tooltip);

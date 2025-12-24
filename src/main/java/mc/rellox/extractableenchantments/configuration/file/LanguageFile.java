@@ -132,12 +132,12 @@ public final class LanguageFile extends AbstractFile {
 	private void read() {
 		keys.forEach(key -> {
 			List<Content> list;
-			if(file.isString(key) == true) {
+			if(file.isString(key)) {
 				String s = file.getString(key);
-				if(s == null || s.isEmpty() == true) list = of();
+				if(s == null || s.isEmpty()) list = of();
 				else list = of(ContentParser.parse(s));
 			} else list = ContentParser.parse(file.getStringList(key));
-			if(list == null || list.isEmpty() == true) return; 
+			if(list == null || list.isEmpty()) return; 
 			text.put(key, list);
 		});
 		keys.clear();
@@ -154,7 +154,7 @@ public final class LanguageFile extends AbstractFile {
 
 	private void convert() {
 		File old_file = new File(ExtractableEnchantments.instance().getDataFolder(), "lang.yml");
-		if(old_file.exists() == false) return;
+		if(!old_file.exists()) return;
 
 		FileConfiguration old = YamlConfiguration.loadConfiguration(old_file);
 
@@ -231,9 +231,9 @@ public final class LanguageFile extends AbstractFile {
 		void layout(String from, String to) {
 			List<String> list = old.getStringList(from);
 			for(int i = 0; i < list.size(); i++) {
-				if(list.get(i).equalsIgnoreCase("EMPTY") == true)
+				if(list.get(i).equalsIgnoreCase("EMPTY"))
 					list.set(i, "!");
-				else if(list.get(i).equalsIgnoreCase("COST") == true)
+				else if(list.get(i).equalsIgnoreCase("COST"))
 					list.set(i, "PRICE");
 			}
 			CF.s.hold(to, list);

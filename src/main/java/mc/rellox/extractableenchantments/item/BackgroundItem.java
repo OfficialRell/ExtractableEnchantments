@@ -34,7 +34,7 @@ public class BackgroundItem extends Item {
 		
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(" ");
-		if(Version.version.atleast(VersionType.v_20_4) == true)
+		if(Version.version.atleast(VersionType.v_20_4))
 			RF.order(meta, "setHideTooltip", boolean.class).invoke(true);
 		item.setItemMeta(meta);
 		

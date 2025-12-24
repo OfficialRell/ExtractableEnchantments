@@ -82,11 +82,13 @@ public final class EventRegistry implements Listener {
 	private void onUseExtractor(InventoryClickEvent event) {
 		Inventory clicked = event.getClickedInventory();
 		if(clicked == null || clicked.getType() != InventoryType.PLAYER) return;
-		if(event.isLeftClick() == false && event.isRightClick() == false) return;
+		if(!event.isLeftClick() && !event.isRightClick()) return;
 		
 		ItemStack item_enchanted = event.getCurrentItem(), item_extractor = event.getCursor();
-		if(item_extractor == null || item_extractor.hasItemMeta() == false
-				|| item_enchanted == null || item_enchanted.hasItemMeta() == false) return;
+		if(item_extractor == null
+				|| !item_extractor.hasItemMeta()
+				|| item_enchanted == null
+				|| !item_enchanted.hasItemMeta()) return;
 		
 		if(item_extractor.getAmount() > 1) return;
 		
@@ -94,20 +96,20 @@ public final class EventRegistry implements Listener {
 		if(extractor == null) return;
 		
 		ItemMeta meta = item_enchanted.getItemMeta();
-		if(meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS) == true
-				&& extractor.extract().hidden() == false) return;
+		if(meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)
+				&& !extractor.extract().hidden()) return;
 		
 		Player player = (Player) event.getWhoClicked();
 		
 		List<ILevelledEnchantment> enchantments = EnchantmentRegistry.enchantments(extractor, player, item_enchanted);
 		
-		if(player.hasPermission("ee.use." + extractor.key()) == false) {
+		if(!player.hasPermission("ee.use." + extractor.key())) {
 			Language.get("Permission.warning.use-extractor").send(player);
 			Settings.settings.sound_warning.play(player);
 			return;
 		}
 		
-		if(enchantments.isEmpty() == true || 
+		if(enchantments.isEmpty() || 
 				(enchantments.size() == 1 && item_enchanted.getType() == Material.ENCHANTED_BOOK)) {
 			return;
 		}
@@ -115,15 +117,15 @@ public final class EventRegistry implements Listener {
 		event.setCancelled(true);
 		
 		IExtractPrice extract_price = extractor.price();
-		if(extract_price.enabled() == true) {
+		if(extract_price.enabled()) {
 			IPrice price = extract_price.price();
-			if(price.has(player) == false) {
+			if(!price.has(player)) {
 				price.insufficient().send(player);
 				Settings.settings.sound_warning.play(player);
 				return;
 			}
 		}
-		if(extractor.ignored(item_enchanted) == true) {
+		if(extractor.ignored(item_enchanted)) {
 			Language.get("Extraction.constraint").send(player);
 			Settings.settings.sound_warning.play(player);
 			return;
@@ -133,7 +135,7 @@ public final class EventRegistry implements Listener {
 			int r = Utility.random(enchantments.size());
 			ILevelledEnchantment to_remove = enchantments.get(r);
 			
-			if(extract_price.enabled() == true) extract_price.price().remove(player);
+			if(extract_price.enabled()) extract_price.price().remove(player);
 			
 			ExtractorRegistry.extract(extractor, player, item_enchanted, item_extractor, to_remove);
 		} else {
@@ -155,7 +157,7 @@ public final class EventRegistry implements Listener {
 		if(!(event.getRecipe() instanceof ShapedRecipe recipe)) return;
 		String key = recipe.getKey().getKey();
 		
-		if(key.startsWith(prefix) == false) return;
+		if(!key.startsWith(prefix)) return;
 		String id = key.substring(prefix.length());
 
 		IRecipeObject object = f.apply(id);
@@ -172,7 +174,7 @@ public final class EventRegistry implements Listener {
 		if(!(event.getRecipe() instanceof Keyed keyed)) return;
 		String key = keyed.getKey().getKey();
 		
-		if(key.startsWith(prefix_extractor) == false) return;
+		if(!key.startsWith(prefix_extractor)) return;
 		String id = key.substring(prefix_extractor.length());
 
 		IExtractor extractor = ExtractorRegistry.get(id);
@@ -182,14 +184,14 @@ public final class EventRegistry implements Listener {
 		
 		CraftingInventory v = event.getInventory();
 		ItemStack[] matrix = v.getMatrix();
-		if(ExtractorRegistry.contains(matrix) == true
-				|| DustRegistry.contains(matrix) == true) {
+		if(ExtractorRegistry.contains(matrix)
+				|| DustRegistry.contains(matrix)) {
 			v.setResult(null);
 			return;
 		}
 
 		Player player = (Player) event.getWhoClicked();
-		if(player.hasPermission("ee.craft." + extractor.key()) == false) {
+		if(!player.hasPermission("ee.craft." + extractor.key())) {
 			Language.get("Permission.warning.craft-extractor").send(player);
 			Settings.settings.sound_warning.play(player);
 			v.setResult(null);
@@ -206,21 +208,21 @@ public final class EventRegistry implements Listener {
 		
 		IExtractorItem item = extractor.item();
 		
-		if(event.isShiftClick() == false) {
+		if(!event.isShiftClick()) {
 			if(event.getClick() == ClickType.NUMBER_KEY) {
 				int button = event.getHotbarButton();
 				PlayerInventory pi = player.getInventory();
 				
-				if(ItemRegistry.nulled(pi.getItem(button)) == false) return;
+				if(!ItemRegistry.nulled(pi.getItem(button))) return;
 				pi.setItem(button, item.item());
 				recipe.reduce(matrix, 1);
 			} else {
 				ItemStack cursor = player.getItemOnCursor();
-				if(extractor.chance().enabled() == true) {
-					if(ItemRegistry.nulled(cursor) == false) return;
+				if(extractor.chance().enabled()) {
+					if(!ItemRegistry.nulled(cursor)) return;
 					player.setItemOnCursor(item.item());
 					recipe.reduce(matrix, 1);
-				} else if(ItemRegistry.nulled(cursor) == true) {
+				} else if(ItemRegistry.nulled(cursor)) {
 					player.setItemOnCursor(item.item());
 					recipe.reduce(matrix, 1);
 				} else return;
@@ -244,7 +246,7 @@ public final class EventRegistry implements Listener {
 		if(!(event.getRecipe() instanceof Keyed keyed)) return;
 		String key = keyed.getKey().getKey();
 		
-		if(key.startsWith(prefix_dust) == false) return;
+		if(!key.startsWith(prefix_dust)) return;
 		String id = key.substring(prefix_dust.length());
 
 		IDust dust = DustRegistry.get(id);
@@ -254,14 +256,14 @@ public final class EventRegistry implements Listener {
 		
 		CraftingInventory v = event.getInventory();
 		ItemStack[] matrix = v.getMatrix();
-		if(ExtractorRegistry.contains(matrix) == true
-				|| DustRegistry.contains(matrix) == true) {
+		if(ExtractorRegistry.contains(matrix)
+				|| DustRegistry.contains(matrix)) {
 			v.setResult(null);
 			return;
 		}
 
 		Player player = (Player) event.getWhoClicked();
-		if(player.hasPermission("ee.dust.craft." + dust.key()) == false) {
+		if(!player.hasPermission("ee.dust.craft." + dust.key())) {
 			Language.get("Permission.warning.craft-dust").send(player);
 			Settings.settings.sound_warning.play(player);
 			v.setResult(null);
@@ -278,16 +280,16 @@ public final class EventRegistry implements Listener {
 		
 		IDustItem item = dust.item();
 		
-		if(event.isShiftClick() == false) {
+		if(!event.isShiftClick()) {
 			if(event.getClick() == ClickType.NUMBER_KEY) {
 				int button = event.getHotbarButton();
 				PlayerInventory pi = player.getInventory();
-				if(ItemRegistry.nulled(pi.getItem(button)) == false) return; 
+				if(!ItemRegistry.nulled(pi.getItem(button))) return; 
 				pi.setItem(button, item.item(dust.percent()));
 				recipe.reduce(matrix, 1);
 			} else {
 				ItemStack curs = player.getItemOnCursor();
-				if(ItemRegistry.nulled(curs) == false) return; 
+				if(!ItemRegistry.nulled(curs)) return; 
 				player.setItemOnCursor(item.item(dust.percent()));
 				recipe.reduce(matrix, 1);
 			}
@@ -312,17 +314,17 @@ public final class EventRegistry implements Listener {
 		ItemStack current = event.getCurrentItem(), cursor = event.getCursor();
 		
 		Player player = (Player) event.getWhoClicked();
-		if(ItemRegistry.nulled(current) == false)  {
-			if(ItemRegistry.nulled(cursor) == true) {
+		if(!ItemRegistry.nulled(current))  {
+			if(ItemRegistry.nulled(cursor)) {
 				// dust splitting to cursor
 				if(event.getClick() != ClickType.SHIFT_RIGHT) return;
 				
 				ItemStack item_dust = current;
 				IDust dust = DustRegistry.get(item_dust);
-				if(dust == null || allow(player) == false) return;
+				if(dust == null || !allow(player)) return;
 				event.setCancelled(true);
 				
-				if(player.hasPermission("ee.dust.split." + dust.key()) == false) {
+				if(!player.hasPermission("ee.dust.split." + dust.key())) {
 					Language.get("Permission.warning.split-dust").send(player);
 					Settings.settings.sound_warning.play(player);
 					return;
@@ -349,14 +351,14 @@ public final class EventRegistry implements Listener {
 				return;
 			}
 			IDust dust = DustRegistry.get(cursor);
-			if(dust == null || allow(player) == false) return;
+			if(dust == null || !allow(player)) return;
 			IDust other = DustRegistry.get(current);
 			if(other != null) {
 				// dust combining
-				if(dust.equals(other) == false) return;
+				if(!dust.equals(other)) return;
 				event.setCancelled(true);
 				
-				if(player.hasPermission("ee.dust.use." + dust.key()) == false) {
+				if(!player.hasPermission("ee.dust.use." + dust.key())) {
 					Language.get("Permission.warning.use-dust").send(player);
 					Settings.settings.sound_warning.play(player);
 					return;
@@ -405,11 +407,11 @@ public final class EventRegistry implements Listener {
 			ItemStack item_dust = cursor, item_hand = current;
 			byte b = 0;
 			IExtractor extractor = ExtractorRegistry.get(item_hand);
-			if(extractor != null) b |= (dust.applicable().accepts(extractor) == true ? 1 : 0);
-			else if(dust.applicable().books() == true) b |= (item_hand.getType() == Material.ENCHANTED_BOOK ? 2 : 0);
+			if(extractor != null) b |= (dust.applicable().accepts(extractor) ? 1 : 0);
+			else if(dust.applicable().books()) b |= (item_hand.getType() == Material.ENCHANTED_BOOK ? 2 : 0);
 			
 			if(b == 0) return;
-			if(player.hasPermission("ee.dust.use." + dust.key()) == false) {
+			if(!player.hasPermission("ee.dust.use." + dust.key())) {
 				Language.get("Permission.warning.use-dust").send(player);
 				Settings.settings.sound_warning.play(player);
 				return;
@@ -449,17 +451,17 @@ public final class EventRegistry implements Listener {
 			if(b == 1) ItemRegistry.replace(item_hand, Language.list("Extractor.info.chance", "chance", perc_hand));
 			else ItemRegistry.replace(item_hand, Language.list("Book.info.chance", "chance", perc_hand));
 			
-		} else if(ItemRegistry.nulled(cursor) == false) {
+		} else if(!ItemRegistry.nulled(cursor)) {
 			// dust splitting from cursor
 			if(event.getClick() != ClickType.SHIFT_RIGHT) return;
 			
 			ItemStack item_dust = cursor;
 			IDust dust = DustRegistry.get(item_dust);
-			if(dust == null || allow(player) == false) return;
+			if(dust == null || !allow(player)) return;
 			
 			event.setCancelled(true);
 			
-			if(player.hasPermission("ee.dust.split." + dust.key()) == false) {
+			if(!player.hasPermission("ee.dust.split." + dust.key())) {
 				Language.get("Permission.warning.split-dust").send(player);
 				Settings.settings.sound_warning.play(player);
 				return;
@@ -500,23 +502,23 @@ public final class EventRegistry implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onAnvilUse(InventoryClickEvent event) {
 		if(!(event.getInventory() instanceof AnvilInventory anvil)) return;
-		if(anvil.equals(event.getClickedInventory()) == false) return;
+		if(!anvil.equals(event.getClickedInventory())) return;
 		if(event.getSlot() != 2) return;
 		
 		ItemStack item = anvil.getItem(0), book = anvil.getItem(1);
 		
-		if(ItemRegistry.nulled(item) == true
-				|| ItemRegistry.nulled(book) == true) return;
+		if(ItemRegistry.nulled(item)
+				|| ItemRegistry.nulled(book)) return;
 		if(book.getType() != Material.ENCHANTED_BOOK) return;
 		
 		Player player = (Player) event.getWhoClicked();
-		if(player.hasPermission("ee.books.apply") == false) {
+		if(!player.hasPermission("ee.books.apply")) {
 			Language.get("Permission.warning.apply-book").send(player);
 			Settings.settings.sound_warning.play(player);
 			return;
 		}
-		if(Settings.settings.book_chance_enabled == false
-				|| ItemRegistry.chance(book) == true) return;
+		if(!Settings.settings.book_chance_enabled
+				|| ItemRegistry.chance(book)) return;
 		
 		int level = player.getLevel();
 		int cost = repair(player, anvil);
@@ -535,7 +537,7 @@ public final class EventRegistry implements Listener {
 	
 	private int repair(Player player, Inventory v) {
 		Object from;
-		if(Version.version.atleast(VersionType.v_21_1) == true) from = player.getOpenInventory();
+		if(Version.version.atleast(VersionType.v_21_1)) from = player.getOpenInventory();
 		else from = v;
 		return RF.order(from, "getRepairCost").as(int.class).invoke(0);
 	}
@@ -543,27 +545,27 @@ public final class EventRegistry implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onAnvilPrepare(PrepareAnvilEvent event) {
 		ItemStack result = event.getResult();
-		if(ItemRegistry.nulled(result) == true) return;
+		if(ItemRegistry.nulled(result)) return;
 		
 		AnvilInventory anvil = event.getInventory();
 		
 		ItemStack first = anvil.getItem(0), second = anvil.getItem(1);
-		if(ItemRegistry.nulled(first) == true
-				|| ItemRegistry.nulled(second) == true) return;
+		if(ItemRegistry.nulled(first)
+				|| ItemRegistry.nulled(second)) return;
 		
-		if(Settings.settings.anvils_apply_books == false) {
+		if(!Settings.settings.anvils_apply_books) {
 			if(second.getType() == Material.ENCHANTED_BOOK) {
 				event.setResult(null);
 				return;
 			}
 		}
-		if(Settings.restricted(second.getType(), first.getType()) == true) {
+		if(Settings.restricted(second.getType(), first.getType())) {
 			event.setResult(null);
 			return;
 		}
-		if(Settings.settings.anvils_apply_unsafe == true) {
+		if(Settings.settings.anvils_apply_unsafe) {
 			Map<String, ILevelledEnchantment> enchantments = EnchantmentRegistry.keyed(result);
-			if(enchantments.isEmpty() == true) return;
+			if(enchantments.isEmpty()) return;
 			
 			merge(enchantments, EnchantmentRegistry.keyed(first));
 			merge(enchantments, EnchantmentRegistry.keyed(second));

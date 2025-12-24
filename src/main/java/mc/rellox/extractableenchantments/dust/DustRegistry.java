@@ -22,7 +22,7 @@ public final class DustRegistry {
 	
 	public static void add(IDust dust) {
 		String key = dust.key();
-		if(DUST.containsKey(key) == true)
+		if(DUST.containsKey(key))
 			throw new IllegalArgumentException("Diplicate dust with key: " + key);
 		DUST.put(key, dust);
 	}
@@ -48,7 +48,7 @@ public final class DustRegistry {
 	}
 	
 	public static int readPercent(ItemStack item) {
-		if(ItemRegistry.nulled(item) == true) return -1;
+		if(ItemRegistry.nulled(item)) return -1;
 		PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 		return data.getOrDefault(Keys.percent(), PersistentDataType.INTEGER, -1);
 	}
@@ -61,7 +61,7 @@ public final class DustRegistry {
 	}
 	
 	public static int readChance(ItemStack item) {
-		if(ItemRegistry.nulled(item) == true) return -1;
+		if(ItemRegistry.nulled(item)) return -1;
 		PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 		return data.getOrDefault(Keys.chance(), PersistentDataType.INTEGER, -1);
 	}

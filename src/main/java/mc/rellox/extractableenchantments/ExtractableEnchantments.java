@@ -39,9 +39,9 @@ public class ExtractableEnchantments extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		if(loaded == true) {
+		if(loaded) {
 			Utility.check(73954, s -> {
-				if(Utility.isDouble(s) == false) return; 
+				if(!Utility.isDouble(s)) return; 
 				double v = Double.parseDouble(s);
 				if(v <= PLUGIN_VERSION) return;
 				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] " + ChatColor.YELLOW + "A newer version is available! "
@@ -99,7 +99,7 @@ public class ExtractableEnchantments extends JavaPlugin {
 		@EventHandler
 		private void onJoin(PlayerJoinEvent event) {
 			Player player = event.getPlayer();
-			if(player.isOp() == false) return; 
+			if(!player.isOp()) return; 
 			player.sendMessage(ChatColor.DARK_AQUA + "[EE] " + 
 					ChatColor.YELLOW + "A newer version is available! " + ChatColor.GOLD + "To download visit: " + 
 					"https://www.spigotmc.org/resources/extractable-enchantments.73954/");

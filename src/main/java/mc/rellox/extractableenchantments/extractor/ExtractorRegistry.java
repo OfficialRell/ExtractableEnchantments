@@ -33,7 +33,7 @@ public final class ExtractorRegistry {
 	
 	public static void add(IExtractor extractor) {
 		String key = extractor.key();
-		if(EXTRACTORS.containsKey(key) == true)
+		if(EXTRACTORS.containsKey(key))
 			throw new IllegalArgumentException("Diplicate extractor with key: " + key);
 		EXTRACTORS.put(key, extractor);
 	}
@@ -69,10 +69,10 @@ public final class ExtractorRegistry {
 		
 		boolean success = extractor.chance().chance(item_extractor);
 		
-		if(success == false) {
+		if(!success) {
 			if(extraction == ExtractType.RANDOM) player.setItemOnCursor(null);
 			String l;
-			if(extractor.chance().destroy() == true) {
+			if(extractor.chance().destroy()) {
 				enchantment.remove(item_enchanted);
 				l = "Extraction.destroy";
 				Settings.settings.sound_extract_destroy.play(player);
@@ -87,9 +87,9 @@ public final class ExtractorRegistry {
 
 		enchantment.remove(item_enchanted);
 		
-		if(extractor.clearing() == false) {
+		if(!extractor.clearing()) {
 			ItemStack book = to_remove.book();
-			if(Settings.settings.book_chance_enabled == true) {
+			if(Settings.settings.book_chance_enabled) {
 				int chance = extractor.override().enabled()
 						? extractor.override().value() : Settings.book();
 				ItemMeta meta = book.getItemMeta();

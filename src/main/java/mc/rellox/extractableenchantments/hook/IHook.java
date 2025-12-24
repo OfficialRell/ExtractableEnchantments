@@ -11,7 +11,7 @@ public interface IHook {
 	
 	default boolean load() {
 		Plugin plugin = plugin();
-		return plugin != null && plugin.isEnabled() == true;
+		return plugin != null && plugin.isEnabled();
 	}
 	
 	default Plugin plugin() {
