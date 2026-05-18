@@ -1,12 +1,9 @@
 package mc.rellox.extractableenchantments.utility;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.function.Consumer;
-
+import mc.rellox.extractableenchantments.ExtractableEnchantments;
+import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
+import mc.rellox.extractableenchantments.utility.Version.VersionType;
+import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.Recipe;
@@ -14,10 +11,12 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import mc.rellox.extractableenchantments.ExtractableEnchantments;
-import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
-import mc.rellox.extractableenchantments.utility.Version.VersionType;
-import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.function.Consumer;
 
 public final class Utility {
 	

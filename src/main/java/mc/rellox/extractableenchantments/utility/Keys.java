@@ -1,8 +1,7 @@
 package mc.rellox.extractableenchantments.utility;
 
-import org.bukkit.NamespacedKey;
-
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
+import org.bukkit.NamespacedKey;
 
 public final class Keys {
 	

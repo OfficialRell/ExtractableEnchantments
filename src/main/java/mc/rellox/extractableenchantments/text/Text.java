@@ -68,9 +68,9 @@ public final class Text {
 	public static String color(String hex) {
 		if(hex == null || hex.isEmpty()) return "";
 		if(hex.charAt(0) == '#') hex = hex.substring(1);
-		String s = color_code + "x";
-		for(char c : hex.toCharArray()) s += color_code + "" + c;
-		return s;
+		StringBuilder s = new StringBuilder(color_code + "x");
+		for(char c : hex.toCharArray()) s.append(color_code + "").append(c);
+		return s.toString();
 	}
 	
 	public static String color(int rgb) {
@@ -115,6 +115,7 @@ public final class Text {
 				case v_18_2 -> new String[] {"w", "a"};
 				case v_19_1, v_19_2, v_19_3, v_20_4 -> new String[] {"x", "getString"};
 				case v_21_1 -> new String[] {"w", "getString"};
+				case v_26 ->  new String[] {"getHoverName", "getString"};
 				default -> new String[] {"y", "getString"};
 			};
 			
