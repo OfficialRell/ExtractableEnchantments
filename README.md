@@ -8,7 +8,7 @@ Implements extractors that can remove enchantments from items.
 <dependency>
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>12.6</version>
+  <version>12.7</version>
   <scope>provided</scope>
 </dependency>
 

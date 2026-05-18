@@ -1,7 +1,13 @@
 package mc.rellox.extractableenchantments;
 
-import java.util.List;
-
+import mc.rellox.extractableenchantments.command.CommandRegistry;
+import mc.rellox.extractableenchantments.configuration.Configuration;
+import mc.rellox.extractableenchantments.event.EventRegistry;
+import mc.rellox.extractableenchantments.hook.HookRegistry;
+import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
+import mc.rellox.extractableenchantments.utility.Keys;
+import mc.rellox.extractableenchantments.utility.Utility;
+import mc.rellox.extractableenchantments.utility.Version;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,19 +19,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jspecify.annotations.NonNull;
 
-import mc.rellox.extractableenchantments.command.CommandRegistry;
-import mc.rellox.extractableenchantments.configuration.Configuration;
-import mc.rellox.extractableenchantments.event.EventRegistry;
-import mc.rellox.extractableenchantments.hook.HookRegistry;
-import mc.rellox.extractableenchantments.item.enchantment.EnchantmentRegistry;
-import mc.rellox.extractableenchantments.utility.Keys;
-import mc.rellox.extractableenchantments.utility.Utility;
-import mc.rellox.extractableenchantments.utility.Version;
+import java.util.List;
 
 public class ExtractableEnchantments extends JavaPlugin {
 	
-	public static final double PLUGIN_VERSION = 12.6;
+	public static final double PLUGIN_VERSION = 12.7;
     
 	private static Plugin plugin;
 	
@@ -72,13 +72,15 @@ public class ExtractableEnchantments extends JavaPlugin {
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command,
+							 @NonNull String label, String @NonNull [] args) {
 		CommandRegistry.onCommand(sender, command, args);
 		return super.onCommand(sender, command, label, args);
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+	public List<String> onTabComplete(@NonNull CommandSender sender, @NonNull Command command,
+									  @NonNull String alias, String @NonNull [] args) {
 		return CommandRegistry.onTabComplete(sender, command, args);
 	}
 	
