@@ -62,7 +62,7 @@ public interface IEnchantment {
 	/**
 	 * This should always be false if you are implementing custom enchantments.
 	 * 
-	 * @return If this enchantment is in vanilla minecraft
+	 * @return If this enchantment is in vanilla Minecraft
 	 */
 	
 	default boolean minecraft() {

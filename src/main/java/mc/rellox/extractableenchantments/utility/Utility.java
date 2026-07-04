@@ -58,7 +58,7 @@ public final class Utility {
 		try {
 			removed = RF.order(Bukkit.getServer(), "removeRecipe", false, NamespacedKey.class).as(boolean.class)
 					.invoke(false, recipe.namespace());
-		} catch (Exception e) {}
+		} catch(Exception ignored) {}
 		if(!removed) {
 			Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
 			while(it.hasNext()) {
@@ -85,7 +85,7 @@ public final class Utility {
 				try(InputStream is = new URI("https://api.spigotmc.org/legacy/update.php?resource=" + id).toURL().openStream();
 						Scanner sc = new Scanner(is)) {
 					if(sc.hasNext()) action.accept(sc.next());
-				} catch(Exception x) {}
+				} catch(Exception ignored) {}
 			}
 		}.runTaskLaterAsynchronously(ExtractableEnchantments.instance(), 50);
 	}

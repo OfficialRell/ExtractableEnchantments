@@ -31,10 +31,9 @@ public record DatapackEnchantmentReader(String namespace) implements IEnchantmen
 		fetcher.enchantments().forEach((e, level) -> {
 			@SuppressWarnings("deprecation")
 			NamespacedKey ns = e.getKey();
-			if(ns == null) return;
-
-			String key = ns.getKey();
 			if(!ns.getNamespace().equals(namespace)) return;
+
+            String key = ns.getKey();
 
 			TextComponent t = new TextComponent();
 			t.addExtra(new TranslatableComponent(e.getTranslationKey()));

@@ -37,7 +37,7 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		List<Content> name = new ArrayList<>(this.name);
 		if(name.size() > 0) meta.setDisplayName(name.remove(0).text());
 		
-		IOrder order = Settings.settings.order_extractor.oderer();
+		IOrder order = Settings.settings.order_extractor.ordered();
 		
 		order.named(name);
 		
@@ -70,7 +70,7 @@ public class ExtractorItem extends Item implements IExtractorItem {
 		List<Content> name = new ArrayList<>(this.name);
 		if(name.size() > 0) meta.setDisplayName(name.remove(0).text());
 		
-		IOrder order = Settings.settings.order_extractor.oderer();
+		IOrder order = Settings.settings.order_extractor.ordered();
 		
 		order.named(name);
 		

@@ -27,8 +27,9 @@ import mc.rellox.extractableenchantments.item.ItemRegistry;
 public final class EnchantmentRegistry {
 
 	private static final Map<String, IEnchantmentReader> READERS = new HashMap<>();
-	
+
 	public static final Map<String, IEnchantment> ENCHANTMENTS = new HashMap<>();
+
 	static {
 		put("aqua_affinity", "Aqua Affinity");
 		put("bane_of_arthropods", "Bane of Arthropods");
@@ -92,12 +93,11 @@ public final class EnchantmentRegistry {
 				Map<IEnchantment, Integer> map = new HashMap<>();
 				if(ItemRegistry.nulled(item) || !item.hasItemMeta()) return map;
 				
-				IMetaFetcher fetcher = EnchantmentRegistry.fetcher(item.getItemMeta());
+				IMetaFetcher fetcher = fetcher(item.getItemMeta());
 				fetcher.enchantments().forEach((e, l) -> {
 					@SuppressWarnings("deprecation")
 					NamespacedKey key = e.getKey();
-					if(key == null) return;
-					IEnchantment enchantment = ENCHANTMENTS.get(key.getKey());
+                    IEnchantment enchantment = ENCHANTMENTS.get(key.getKey());
 					if(enchantment == null) return;
 					map.put(enchantment, l);
 				});

@@ -44,7 +44,7 @@ public class DustItem extends Item implements IDustItem {
 		name.replaceAll(c -> c.modified(Variables.with("percent", dust.percent())));
 		if(name.size() > 0) meta.setDisplayName(name.remove(0).text());
 		
-		IOrder order = Settings.settings.order_dust.oderer();
+		IOrder order = Settings.settings.order_dust.ordered();
 		
 		order.named(name);
 		
@@ -65,7 +65,7 @@ public class DustItem extends Item implements IDustItem {
 		name.replaceAll(c -> c.modified(Variables.with("percent", percent)));
 		if(name.size() > 0) meta.setDisplayName(name.remove(0).text());
 		
-		IOrder order = Settings.settings.order_dust.oderer();
+		IOrder order = Settings.settings.order_dust.ordered();
 		
 		order.named(name);
 		

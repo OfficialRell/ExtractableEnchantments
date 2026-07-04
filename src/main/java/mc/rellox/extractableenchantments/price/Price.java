@@ -1,10 +1,5 @@
 package mc.rellox.extractableenchantments.price;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
 import mc.rellox.extractableenchantments.api.price.IPrice;
 import mc.rellox.extractableenchantments.api.price.PriceType;
 import mc.rellox.extractableenchantments.configuration.Language;
@@ -12,6 +7,10 @@ import mc.rellox.extractableenchantments.hook.HookRegistry;
 import mc.rellox.extractableenchantments.hook.ICurrency;
 import mc.rellox.extractableenchantments.text.Text;
 import mc.rellox.extractableenchantments.text.content.Content;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class Price implements IPrice {
 	

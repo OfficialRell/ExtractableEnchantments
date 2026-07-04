@@ -24,9 +24,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 public class ExtractableEnchantments extends JavaPlugin {
-	
-	public static final double PLUGIN_VERSION = 12.7;
-    
+
 	private static Plugin plugin;
 	
 	private boolean loaded;
@@ -40,16 +38,18 @@ public class ExtractableEnchantments extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		if(loaded) {
+			var version = version();
 			Utility.check(73954, s -> {
-				if(!Utility.isDouble(s)) return; 
+				if(!Utility.isDouble(s) || !Utility.isDouble(version)) return;
 				double v = Double.parseDouble(s);
-				if(v <= PLUGIN_VERSION) return;
+				double c = Double.parseDouble(version());
+				if(v >= c) return;
 				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[EE] " + ChatColor.YELLOW + "A newer version is available! "
 						+ ChatColor.GOLD + "To download visit: " + "https://www.spigotmc.org/resources/extractable-enchantments.73954/");
 				new UpdateAvailable();
 			});
 			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "Extractable Enchantments " + 
-					ChatColor.AQUA + "v" + PLUGIN_VERSION + ChatColor.GREEN + " enabled!");
+					ChatColor.AQUA + "v" + version + ChatColor.GREEN + " enabled!");
 			
 			Keys.initialize();
 			EnchantmentRegistry.initialize();
@@ -68,7 +68,7 @@ public class ExtractableEnchantments extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "Extractable Enchantments " + 
-				ChatColor.AQUA + "v" + PLUGIN_VERSION + ChatColor.GOLD + " disabled!");
+				ChatColor.AQUA + "v" + version() + ChatColor.GOLD + " disabled!");
 	}
 	
 	@Override
@@ -86,6 +86,10 @@ public class ExtractableEnchantments extends JavaPlugin {
 	
 	public static Plugin instance() {
 		return plugin;
+	}
+
+	public static String version() {
+		return plugin.getDescription().getVersion();
 	}
 	
 	private void initializeMetrics() {

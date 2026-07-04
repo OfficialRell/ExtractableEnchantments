@@ -1,36 +1,5 @@
 package mc.rellox.extractableenchantments.event;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Keyed;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.api.dust.IDust;
 import mc.rellox.extractableenchantments.api.extractor.IExtractPrice;
@@ -54,6 +23,20 @@ import mc.rellox.extractableenchantments.utility.Utility;
 import mc.rellox.extractableenchantments.utility.Version;
 import mc.rellox.extractableenchantments.utility.Version.VersionType;
 import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class EventRegistry implements Listener {
 	
@@ -321,7 +304,7 @@ public final class EventRegistry implements Listener {
 				
 				ItemStack item_dust = current;
 				IDust dust = DustRegistry.get(item_dust);
-				if(dust == null || !allow(player)) return;
+				if(dust == null || deny(player)) return;
 				event.setCancelled(true);
 				
 				if(!player.hasPermission("ee.dust.split." + dust.key())) {
@@ -351,7 +334,7 @@ public final class EventRegistry implements Listener {
 				return;
 			}
 			IDust dust = DustRegistry.get(cursor);
-			if(dust == null || !allow(player)) return;
+			if(dust == null || deny(player)) return;
 			IDust other = DustRegistry.get(current);
 			if(other != null) {
 				// dust combining
@@ -407,8 +390,10 @@ public final class EventRegistry implements Listener {
 			ItemStack item_dust = cursor, item_hand = current;
 			byte b = 0;
 			IExtractor extractor = ExtractorRegistry.get(item_hand);
-			if(extractor != null) b |= (dust.applicable().accepts(extractor) ? 1 : 0);
-			else if(dust.applicable().books()) b |= (item_hand.getType() == Material.ENCHANTED_BOOK ? 2 : 0);
+			if(extractor != null)
+				b |= (byte) (dust.applicable().accepts(extractor) ? 1 : 0);
+			else if(dust.applicable().books())
+				b |= (byte) (item_hand.getType() == Material.ENCHANTED_BOOK ? 2 : 0);
 			
 			if(b == 0) return;
 			if(!player.hasPermission("ee.dust.use." + dust.key())) {
@@ -457,7 +442,7 @@ public final class EventRegistry implements Listener {
 			
 			ItemStack item_dust = cursor;
 			IDust dust = DustRegistry.get(item_dust);
-			if(dust == null || !allow(player)) return;
+			if(dust == null || deny(player)) return;
 			
 			event.setCancelled(true);
 			
@@ -491,12 +476,12 @@ public final class EventRegistry implements Listener {
 		}
 	}
 	
-	private static boolean allow(Player player) {
-		if(player.getGameMode() != GameMode.CREATIVE) return true;
+	private static boolean deny(Player player) {
+		if(player.getGameMode() != GameMode.CREATIVE) return false;
 		player.sendMessage(ChatColor.DARK_RED + "Cannot use dust while in creative mode, "
 				+ "due to item duplication!");
 		Settings.settings.sound_warning.play(player);
-		return false;
+		return true;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

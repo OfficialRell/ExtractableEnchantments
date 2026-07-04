@@ -1,17 +1,16 @@
 package mc.rellox.extractableenchantments.item.recipe;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-
 import mc.rellox.extractableenchantments.ExtractableEnchantments;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipe;
 import mc.rellox.extractableenchantments.api.item.recipe.IRecipeObject;
 import mc.rellox.extractableenchantments.utility.Utility;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class ItemRecipe implements IRecipe {
 	

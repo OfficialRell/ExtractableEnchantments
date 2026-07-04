@@ -1,19 +1,18 @@
 package mc.rellox.extractableenchantments.text;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
+import mc.rellox.extractableenchantments.ExtractableEnchantments;
+import mc.rellox.extractableenchantments.text.content.Content;
+import mc.rellox.extractableenchantments.utility.Version;
+import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import mc.rellox.extractableenchantments.ExtractableEnchantments;
-import mc.rellox.extractableenchantments.text.content.Content;
-import mc.rellox.extractableenchantments.utility.Version;
-import mc.rellox.extractableenchantments.utility.reflect.Reflect.RF;
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public final class Text {
 	
@@ -22,17 +21,17 @@ public final class Text {
 	
 	public static void logLoad() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "ExtractableEnchantments " + ChatColor.AQUA + "v"
-				+ ExtractableEnchantments.PLUGIN_VERSION + ChatColor.DARK_PURPLE + "]" + ChatColor.GREEN + " enabled!");
+				+ ExtractableEnchantments.version() + ChatColor.DARK_PURPLE + "]" + ChatColor.GREEN + " enabled!");
 	}
 	
 	public static void logUnload() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "ExtractableEnchantments " + ChatColor.AQUA + "v"
-				+ ExtractableEnchantments.PLUGIN_VERSION + ChatColor.DARK_PURPLE + "]" + ChatColor.RED + " disabled!");
+				+ ExtractableEnchantments.version() + ChatColor.DARK_PURPLE + "]" + ChatColor.RED + " disabled!");
 	}
 	
 	public static void logOutdated(double v) {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "Spawner Meta "
-				+ ChatColor.AQUA + "v" + ExtractableEnchantments.PLUGIN_VERSION + ChatColor.DARK_PURPLE + "] "
+				+ ChatColor.AQUA + "v" + ExtractableEnchantments.version() + ChatColor.DARK_PURPLE + "] "
 				+ ChatColor.YELLOW + "New version is available: v" + v + "! " + ChatColor.GOLD + "To download visit: "
 				+ "https://www.spigotmc.org/resources/ExtractableEnchantments.74188/");
 	}
@@ -44,7 +43,7 @@ public final class Text {
 	
 	public static void logFail(String fail) {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "ExtractableEnchantments " + ChatColor.AQUA + "v"
-				+ ExtractableEnchantments.PLUGIN_VERSION + ChatColor.DARK_PURPLE + "] " + ChatColor.DARK_RED + fail);
+				+ ExtractableEnchantments.version() + ChatColor.DARK_PURPLE + "] " + ChatColor.DARK_RED + fail);
 	}
 	
 	public static void success(String success, Object... os) {
@@ -166,7 +165,7 @@ public final class Text {
 	public static String fromLegacy(String s) {
 		StringBuilder sb = new StringBuilder();
 		boolean l = false, h = false, i = false;
-		String x = "";
+		StringBuilder x = new StringBuilder();
 		for(char c : s.toCharArray()) {
 			if(c == '<') i = true;
 			else if(c == '&') l = true;
@@ -189,10 +188,10 @@ public final class Text {
 					sb.append(o);
 					l = false;
 				} else if(h) {
-					x += "" + c;
+					x.append(c);
 					if(x.length() >= 6) {
 						sb.append("<#").append(x).append('>');
-						x = "";
+						x = new StringBuilder();
 						h = false;
 					}
 				} else sb.append(c);
