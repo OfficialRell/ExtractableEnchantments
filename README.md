@@ -4,11 +4,11 @@ Implements extractors that can remove enchantments from items.
 
 ## Using with Maven
 
-```
+```xml
 <dependency>
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
-  <version>12.7</version>
+  <version>latest</version>
   <scope>provided</scope>
 </dependency>
 
