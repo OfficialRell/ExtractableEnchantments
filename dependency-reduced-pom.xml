@@ -4,10 +4,25 @@
   <groupId>mc.rellox</groupId>
   <artifactId>ExtractableEnchantments</artifactId>
   <name>ExtractableEnchantments</name>
-  <version>12.6</version>
+  <version>12.8</version>
   <description>Implements enchantment extraction from items</description>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>plugin.yml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>plugin.yml</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -69,7 +84,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.21.10-R0.1-SNAPSHOT</version>
+      <version>26.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
